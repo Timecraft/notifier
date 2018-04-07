@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright 2018 Timecraft <timemaster23x@gmail.com> -->
+<component type="desktop">
+  <id>com.github.Timecraft.notify.desktop</id>
+  <metadata_license>CC0</metadata_license>
+  <name>Notifier
+  </name>
+  <summary>A reminders app</summary>
+  <description>
+    <p>Never forget to do something.</p>
+    <ul>
+      <li>Get notified of what to do and when to do it</li>
+      <li>Set the time of the reminder</li>
+      <li>Set the priority of the notification just as a developer would</li>
+      <li>Automatically saves your remindes</li>
+      <li>Supports closing with Ctrl + Q</li>
+    </ul>
+  </description>
+  <releases>
+    <release version="0.0.5" date="2018-04-07">
+      <description>
+        <p>Source code release. Project still work in progress, and this line will only be seen by those looking at the source code prior to its initial release on the AppCenter</p>
+      </description>
+    </release>
+  </releases>
+  <url type="bugtracker">https://github.com/Timecraft/notifier/issues</url>
+  <url type="help">https://github.com/Timecraft/notifier/issues</url>
+  <custom>
+    <value key="x-appcenter-color-primary">#FF0010</value>
+    <value key="x-appcenter-color-primary-text">#000000</value>
+    <value key="x-appcenter-suggested-price">free</value>
+  </custom>
+</component>
