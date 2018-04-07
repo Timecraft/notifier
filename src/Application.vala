@@ -186,6 +186,7 @@ protected override void activate () {
                                         names[i] -= names[i];
                                         priority[i] -= priority[i];
                                         complete[i] = complete[i];
+
                                         i--;
 
                                 }
