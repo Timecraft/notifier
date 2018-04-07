@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Copyright 2018 Timecraft <timemaster23x@gmail.com> -->
+<component type="desktop">
+  <id>com.github.Timecraft.notify.desktop</id>
+  <metadata_license>CC0</metadata_license>
+  <name>notify
+  </name>
+  <summary>Notifying</summary>
+  <description>
+    <p>Basic Gtk apps written in vala.</p>
+  </description>
+  <custom>
+    <value key="x-appcenter-color-primary">#FFC833</value>
+    <value key="x-appcenter-color-primary-text">rgb(0,0,0)</value>
+    <value key="x-appcenter-suggested-price">free</value>
+  </custom>
+</component>
