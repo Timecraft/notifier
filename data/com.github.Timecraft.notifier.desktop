@@ -1,12 +1,12 @@
 [Desktop Entry]
-Name=notifier
-GenericName=notifier Application
-Comment=triggers the notifier
-Categories=Utility;Education;
+Name=Notifier
+GenericName=Reminders Application
+Comment=Remind yourself
+Categories=Utility; Accessories;
 Exec=com.github.Timecraft.notify
 Icon=application-default-icon
 Terminal=false
 Type=Application
 X-GNOME-Gettext-domain=notifier
 X-GNOME-UsesNotifications=true
-Keywords=Hello;World;Example
+Keywords=Reminders;Alerts;
