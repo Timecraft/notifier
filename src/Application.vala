@@ -32,69 +32,84 @@ protected override void activate () {
 
         var window = new Gtk.ApplicationWindow (this);
         window.title="Notifier";
-
-
-
-
-
-
-
-
-
         var col = 4;
         var spc= 2;
+        int[] months = {};
+        int[] days = {};
         int[] times = {};
         string[] names = {};
         int[] priority = {};
         bool[] complete = {};
 
-
-
-
-
         this.app.deletable = true;
         this.app.resizable = true;
-        this.app.get_style_context ().add_class (_("window-background-color")_);
+        this.app.get_style_context ().add_class ("window-background-color");
 
         var layout = new Gtk.Grid ();
+        layout.set_halign(Gtk.Align.CENTER);
         layout.column_spacing = col;
         layout.row_spacing = spc;
         uint rows=layout.get_row_spacing ();
-        var newrembtn = new Gtk.Button.with_label (_("New Reminder")_);
+        var newrembtn = new Gtk.Button.with_label ("New Reminder");
 
-        var saverembtn = new Gtk.Button.with_label (_("Save Reminders")_);
+        var saverembtn = new Gtk.Button.with_label ("Save Reminders");
 
         if (rows<3) {
-                layout.attach (new Gtk.Label (_("Create a new Notifier!")_),1,2,1,1);
+                layout.attach (new Gtk.Label ("Create a new Notifier!"),1,2,1,1);
         }
         newrembtn.clicked.connect ( ()=>{
                         spc++;
                         var newrem = new Gtk.Window ();
-                        newrem.title (_("New Reminder")_)
+                        newrem.title = "New Reminder";
                         var newremname = new Gtk.Entry ();
                         var newremhour = new Gtk.SpinButton.with_range (0,23,1);
                         var newremmin = new Gtk.SpinButton.with_range (0,60,5);
+                        var newremmonth = new Gtk.SpinButton.with_range (1,12,1);
+                        var newremday = new Gtk.SpinButton.with_range (1,31,1);
                         var newremprior = new Gtk.SpinButton.with_range (0,3,1);
-                        var newremcanc = new Gtk.Button.with_label (_("Cancel")_);
-                        var newremsave = new Gtk.Button.with_label (_("Save")_);
+                        var newremcanc = new Gtk.Button.with_label ("Cancel");
+                        var newremsave = new Gtk.Button.with_label ("Save");
                         var newremgrid = new Gtk.Grid ();
-                        newremgrid.attach (new Gtk.Label (_("Reminder Name")_),0,0,1,1);
-                        newremgrid.attach (new Gtk.Label (_("Remind Time")_),1,0,2,1);
-                        newremgrid.attach (new Gtk.Label (_("Hour")_),1,1,1,1);
-                        newremgrid.attach (new Gtk.Label (_("Minute")_),2,1,1,1);
-                        newremgrid.attach (new Gtk.Label (_("Priority")_),3,0,1,1);
+                        newremgrid.set_halign(Gtk.Align.CENTER);
+                        newremgrid.attach (new Gtk.Label ("Reminder Name"),0,0,1,1);
+                        newremgrid.attach (new Gtk.Label ("Remind Time"),1,0,4,1);
+                        newremgrid.attach (new Gtk.Label ("Hour"),3,1,1,1);
+                        newremgrid.attach (new Gtk.Label ("Minute"),4,1,1,1);
+                        newremgrid.attach (new Gtk.Label ("Month"),1,1,1,1);
+                        newremgrid.attach (new Gtk.Label ("Day"),2,1,1,1);
+                        newremgrid.attach (new Gtk.Label ("Priority"),5,0,1,1);
                         newremgrid.attach (newremname,0,2,1,1);
-                        newremgrid.attach (newremhour,1,2,1,1);
-                        newremgrid.attach (newremmin,2,2,1,1);
-                        newremgrid.attach (newremprior,3,2,1,1);
+                        newremgrid.attach (newremmonth,1,2,1,1);
+                        newremgrid.attach (newremday,2,2,1,1);
+                        newremgrid.attach (newremhour,3,2,1,1);
+                        newremgrid.attach (newremmin,4,2,1,1);
+                        newremgrid.attach (newremprior,5,2,1,1);
                         if (rows==2) {
                                 layout.remove_row (2);
                                 layout.insert_row (2);
                         }
+                        var monthname = new Gtk.Label("January");
+                        newremgrid.attach(monthname,1,3,1,1);
+                        newremmonth.value_changed.connect( ()=>{
+                        switch ( (int) newremmonth.get_value ()){
+                          case 1: monthname.set_text("January"); break;
+                          case 2: monthname.set_text("February"); break;
+                          case 3: monthname.set_text("March"); break;
+                          case 4: monthname.set_text("April"); break;
+                          case 5: monthname.set_text("May"); break;
+                          case 6: monthname.set_text("June"); break;
+                          case 7: monthname.set_text("July"); break;
+                          case 8: monthname.set_text("August"); break;
+                          case 9: monthname.set_text("September"); break;
+                          case 10: monthname.set_text("October"); break;
+                          case 11: monthname.set_text("November"); break;
+                          case 12: monthname.set_text("December"); break;
+
+                        }});
 
 
-                        newremgrid.attach (newremsave,3,3,1,1);
-                        newremgrid.attach (newremcanc,0,3,1,1);
+                        newremgrid.attach (newremsave,5,4,1,1);
+                        newremgrid.attach (newremcanc,0,4,1,1);
                         newrem.add (newremgrid);
                         newrem.show_all ();
                         /*newremcanc.clicked.connect ( ()=>{
@@ -107,11 +122,22 @@ protected override void activate () {
                                 string hour = newremhour.get_value ().to_string ();
                                 string colon = ":";
                                 string min =  newremmin.get_value ().to_string ();
-                                if (min=="0") {
-                                        min="00";
+                                switch (min){
+                                  case "0": min="00"; break;
+                                  case "1": min="01"; break;
+                                  case "2": min="02"; break;
+                                  case "3": min="03"; break;
+                                  case "4": min="04"; break;
+                                  case "5": min="05"; break;
+                                  case "6": min="06"; break;
+                                  case "7": min="07"; break;
+                                  case "8": min="08"; break;
+                                  case "9": min="09"; break;
+
                                 }
                                 string time = hour + colon + min;
-
+                                string month = monthname.get_text();
+                                string day = newremday.get_value ().to_string();
                                 string prior = newremprior.get_value ().to_string ();
 
 
@@ -119,9 +145,13 @@ protected override void activate () {
                                 layout.attach (new Gtk.CheckButton (),0,spc,1,1);
                                 layout.attach (new Gtk.Label (newremname.get_text ()),1,spc,1,1);
                                 layout.attach (new Gtk.Label (prior),2,spc,1,1);
-                                layout.attach (new Gtk.Label (time),3,spc,1,1);
+                                layout.attach (new Gtk.Label (month+" "+day),3,spc,1,1);
+                                //layout.attach (new Gtk.Label ();,3,spc,1,1);
+                                layout.attach (new Gtk.Label (time),4,spc,1,1);
 
                                 complete += false;
+                                months += int.parse (month);
+                                days += int.parse (day);
                                 names += newremname.get_text ();
                                 times += int.parse (time);
                                 priority += int.parse (prior);
@@ -141,7 +171,7 @@ protected override void activate () {
 
                 });
         saverembtn.clicked.connect ( ()=>{
-                        var file = File.new_for_path (Environment.get_home_dir () + "/.reminders.txt")_);
+                        var file = File.new_for_path (Environment.get_home_dir () + "/.reminders.txt");
 
 
                         for (int i=0; i<complete.length; i++) {
@@ -153,7 +183,7 @@ protected override void activate () {
                                         i--;
 
                                 }
-                                new DataOutputStream (file.create (FileCreateFlags.NONE)).put_string (complete[i].to_string ()+"\n")_);
+                                new DataOutputStream (file.create (FileCreateFlags.NONE)).put_string (complete[i].to_string ()+"\n");
 
 
                         }
@@ -165,9 +195,9 @@ protected override void activate () {
         layout.insert_column (0);
         layout.insert_column (4);
 
-        layout.attach (new Gtk.Label (_("Name")_),1,1,1,1);
-        layout.attach (new Gtk.Label (_("Priority")_),2,1,1,1);
-        layout.attach (new Gtk.Label (_("Time\t")_),3,1,2,1);
+        layout.attach (new Gtk.Label ("Name"),1,1,1,1);
+        layout.attach (new Gtk.Label ("Priority"),2,1,1,1);
+        layout.attach (new Gtk.Label ("Time\t"),3,1,3,1);
 
         window.add (layout);
 
@@ -177,7 +207,7 @@ protected override void activate () {
         quit_action.activate.connect ( () => {
 
 
-                        var file = File.new_for_path (Environment.get_home_dir () + "/.reminders.txt")_);
+                        var file = File.new_for_path (Environment.get_home_dir () + ("/.reminders.txt"));
 
 
                         for (int i=0; i<complete.length; i++) {
@@ -190,7 +220,7 @@ protected override void activate () {
                                         i--;
 
                                 }
-                                new DataOutputStream (file.create (FileCreateFlags.NONE)).put_string (complete[i].to_string ()+"\n")_);
+                                new DataOutputStream (file.create (FileCreateFlags.NONE)).put_string (complete[i].to_string ()+"\n");
 
                         }
 
