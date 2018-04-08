@@ -23,7 +23,7 @@ set (VERSION_INFO "functioning compiler")
 find_package(PkgConfig)
 
 # now let's actually check for the required dependencies
-pkg_check_modules(DEPS REQUIRED gtk+-3.0 granite)
+pkg_check_modules(DEPS REQUIRED gtk+-3.0)
 
 add_definitions(${DEPS_CFLAGS})
 add_definitions (-w)
@@ -44,7 +44,7 @@ vala_precompile(VALA_C ${EXEC_NAME}
 # tell what libraries to use when compiling
 PACKAGES
     gtk+-3.0
-    granite
+    
 )
 
 # tell cmake what to call the executable we just made
@@ -55,6 +55,3 @@ install (TARGETS ${EXEC_NAME} RUNTIME DESTINATION bin)
 
  # install our .desktop file so the Applications menu will see it
     install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.Timecraft.notify.desktop DESTINATION ${DATADIR}/applications/)
-
-
-
