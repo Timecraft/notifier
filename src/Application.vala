@@ -29,6 +29,8 @@ public notifier (){
                 );
 }
 protected override void activate () {
+  
+
 
         var window = new Gtk.ApplicationWindow (this);
         window.title="Notifier";
