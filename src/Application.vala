@@ -59,14 +59,14 @@ protected override void activate () {
 
                         string q = """
                         CREATE TABLE Reminders (
-              complete		TEXT   		NOT NULL,
-              name            TEXT        		NOT NULL,
-              year          INTEGER		NOT NULL,
-              month           INTEGER		NOT NULL,
-              day          	INTEGER		NOT NULL,
-              hour			INTEGER         NOT NULL,
-              minute		INTEGER         NOT NULL,
-              priority		INTEGER           NOT NULL
+              Complete		TEXT   		,
+              Name            TEXT        		,
+              Year          INTEGER		,
+              Month           INTEGER		,
+              Day          	INTEGER		,
+              Hour			INTEGER         ,
+              Minute		INTEGER         ,
+              Priority		INTEGER
                           );
             """;
                         data = db.exec (q,null, out errmsg);
@@ -207,23 +207,69 @@ protected override void activate () {
                                 layout.attach (new Gtk.Label (time),5,spc,1,1);
                                 Sqlite.Database db;
                                 Sqlite.Statement save;
-                                colmn ++;
+
+                                var yearnum = (int) newremyear.get_value ();
+                                var monthnum = (int) newremmonth.get_value ();
+                                var daynum = (int) newremday.get_value ();
+                                var hournum = (int) newremhour.get_value ();
+                                var minutenum = (int) newremmin.get_value ();
+                                var priornum = (int) newremprior.get_value ();
 
 
                                 Sqlite.Database.open(Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
 
+                                string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority) VALUES (?,?,?,?,?,?,?,?);";
+                                int res = db.prepare_v2(savequery,-1,out save);
+                                if (res != Sqlite.OK) {
+		stderr.printf ("Error: %d: %s\n", db.errcode (), db.errmsg ());
 
-                                int res = db.prepare_v2("INSERT INTO Reminders (complete,name,year,month,day,hour,minute,priority) VALUES ('false',?,?,?,?,?,?,?)",-1,out save);
-                                save.bind_text (colmn, name);
-                                save.bind_int (colmn, (int) newremyear.get_value ());
-                                save.bind_int (colmn, (int) newremmonth);
-                                save.bind_int (colmn, (int) newremday);
-                                save.bind_int (colmn, (int) newremhour);
-                                save.bind_int (colmn, (int) newremmin);
-                                save.bind_int (colmn, (int) newremprior);
-                                save.step();
+	}
+                                  colmn ++;
+                                  save.bind_text (colmn, "false");
+                                  colmn ++;
 
-                                save.reset();
+
+                                  save.bind_text (colmn, name);
+                                  colmn ++;
+
+
+
+                                save.bind_int64 (colmn, yearnum);
+                                colmn ++;
+
+
+
+                                save.bind_int64 (colmn, monthnum);
+                                colmn ++;
+
+
+
+                                save.bind_int64 (colmn, daynum);
+                                colmn ++;
+
+
+
+                                save.bind_int64 (colmn,hournum);
+                                colmn ++;
+
+
+
+                                save.bind_int64 (colmn, minutenum);
+                                colmn ++;
+
+
+
+                                save.bind_int64 (colmn, priornum);
+
+
+
+                                var rc=save.step();
+                                switch (rc) {
+                                  case Sqlite.DONE: save.reset(); break;
+                                  default: layout.attach(new Gtk.Label(db.errmsg ()),3,5,1,1); break;
+                                }
+
+
 
 
 
