@@ -35,11 +35,14 @@ protected override void activate () {
 
         var window = new Gtk.ApplicationWindow (this);
         int colmn = 0;
+        var bar = new Gtk.HeaderBar();
 
         window.title="Notifier";
+
         var col = 4;
         var spc= 2;
-
+        Gtk.CheckButton[] checkbtn = {};
+        int b = 0;
         //Create database directory
         File notifdir = File.new_for_path (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier");
         File notifdata = File.new_for_path (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/" + "reminders.db");
@@ -59,11 +62,11 @@ protected override void activate () {
 
                         string q = """
                         CREATE TABLE Reminders (
-              Complete		TEXT   		,
-              Name            TEXT        		,
+              Complete		TEXT      ,
+              Name            TEXT            ,
               Year          INTEGER		,
               Month           INTEGER		,
-              Day          	INTEGER		,
+              Day           INTEGER		,
               Hour			INTEGER         ,
               Minute		INTEGER         ,
               Priority		INTEGER
@@ -77,16 +80,19 @@ protected override void activate () {
                 } catch (Error e) {
                         stdout.printf("Error:  %s\n",e.message);
 
-                }
-        }
+
+                }}
+
         else{
                 try{
 
                         Sqlite.Database db;
+
                         int data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
                         if (data != Sqlite.OK) {
                                 stderr.printf ("Can't open the reminders database: %d: %s\n", db.errcode (), db.errmsg ());
                         }
+
                 }finally{}
         }
 
@@ -101,12 +107,19 @@ protected override void activate () {
         layout.row_spacing = spc;
         uint rows=layout.get_row_spacing ();
         var newrembtn = new Gtk.Button.with_label ("New Reminder");
+        int c = 0;
 
 
+
+int lngth = checkbtn.length-1;
 
         if (rows<3) {
                 layout.attach (new Gtk.Label ("Create a new Notifier!"),1,2,1,1);
+
         }
+
+
+        //create new reminder
         newrembtn.clicked.connect ( ()=>{
                         spc++;
                         var newrem = new Gtk.Window ();
@@ -170,6 +183,7 @@ protected override void activate () {
                         /*newremcanc.clicked.connect ( ()=>{
                            newrem.quit
                            });*/
+                        //saves new reminder
                         newremsave.clicked.connect ( ()=>{
 
 
@@ -198,13 +212,18 @@ protected override void activate () {
                                 string prior = newremprior.get_value ().to_string ();
 
 
-
-                                layout.attach (new Gtk.CheckButton (),0,spc,1,1);
+                                //makes reminder visible in main window
+                                checkbtn += new Gtk.CheckButton ();
+                                lngth = checkbtn.length-1;
+                                layout.attach (checkbtn[b],0,spc,1,1);
                                 layout.attach (new Gtk.Label (newremname.get_text ()),1,spc,1,1);
                                 layout.attach (new Gtk.Label (prior),2,spc,1,1);
                                 layout.attach (new Gtk.Label (" "),3,spc,1,1);
                                 layout.attach (new Gtk.Label (year + " " + month + " " + day),4,spc,1,1);
                                 layout.attach (new Gtk.Label (time),5,spc,1,1);
+                                b++;
+
+                                //saves reminder into database
                                 Sqlite.Database db;
                                 Sqlite.Statement save;
 
@@ -221,65 +240,64 @@ protected override void activate () {
                                 string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority) VALUES (?,?,?,?,?,?,?,?);";
                                 int res = db.prepare_v2(savequery,-1,out save);
                                 if (res != Sqlite.OK) {
-		stderr.printf ("Error: %d: %s\n", db.errcode (), db.errmsg ());
+                                        stderr.printf ("Error: %d: %s\n", db.errcode (), db.errmsg ());
 
-	}
-                                  colmn ++;
-                                  save.bind_text (colmn, "false");
-                                  colmn ++;
+                                }
+                                colmn = 1;
+                                save.bind_text (colmn, "false");
+                                colmn = 2;
 
 
-                                  save.bind_text (colmn, name);
-                                  colmn ++;
+
+                                save.bind_text (colmn, name);
+                                colmn = 3;
+
 
 
 
                                 save.bind_int64 (colmn, yearnum);
-                                colmn ++;
+                                colmn = 4;
 
 
 
                                 save.bind_int64 (colmn, monthnum);
-                                colmn ++;
+                                colmn = 5;
 
 
 
                                 save.bind_int64 (colmn, daynum);
-                                colmn ++;
+                                colmn =6;
 
 
 
                                 save.bind_int64 (colmn,hournum);
-                                colmn ++;
+                                colmn =7;
 
 
 
                                 save.bind_int64 (colmn, minutenum);
-                                colmn ++;
-
+                                colmn =8;
 
 
                                 save.bind_int64 (colmn, priornum);
 
 
 
-                                var rc=save.step();
-                                switch (rc) {
-                                  case Sqlite.DONE: save.reset(); break;
-                                  default: layout.attach(new Gtk.Label(db.errmsg ()),3,5,1,1); break;
-                                }
+                                save.step();
+                                save.clear_bindings();
+                                save.reset();
 
 
 
 
 
 
-                                //save reminders to a file for reload reference
 
 
 
 
 
+                                //destroys the "new reminder" window as it is no longer necessary
                                 newrem.destroy ();
 
                                 window.show_all ();
@@ -290,9 +308,9 @@ protected override void activate () {
 
                 });
 
-
+        //sets up main UI
         layout.attach (newrembtn,0,0,1,1);
-;
+
         layout.insert_column (0);
         layout.insert_column (4);
 
@@ -300,20 +318,58 @@ protected override void activate () {
         layout.attach (new Gtk.Label ("Priority"),2,1,1,1);
         layout.attach (new Gtk.Label ("Time\t"),3,1,3,1);
 
+        var quitbtn = new Gtk.Button.with_label("x");
+        quitbtn.clicked.connect( () => {
+          c=1;
+          for(int i = 0; i<lngth; i++) {
+
+                                  Sqlite.Database db;
+                                  int data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
+                                  if (data != Sqlite.OK) {
+                                          stderr.printf ("Can't open the reminders database: %d: %s\n", db.errcode (), db.errmsg ());
+                                  }
+                                  Sqlite.Statement update;
+
+                                  string updatequery = "UPDATE Reminders SET Complete=? WHERE rowid=?;";
+
+                                  int res = db.prepare_v2(updatequery,-1,out update);
+                                  update.bind_text (1, "true"/*checkbtn[c].get_active ().to_string ()*/);
+                                  update.bind_int64 (0,c);
+                                  update.step();
+                                  update.clear_bindings();
+                                  update.reset();
+                                  c++;
+
+        }
+        window.destroy ();
+
+
+          });
+
+        bar.title = "Notifier";
+        bar.set_show_close_button (false);
+        bar.pack_start(quitbtn);
+
         window.add (layout);
+        window.add (bar);
 
-        window.show_all ();
-
+        window.show_all();
         var quit_action = new SimpleAction ("quit", null);
         quit_action.activate.connect ( () => {
 
                         if (window != null) {
-                                window.destroy ();
-                        }
-                });
+
+                        window.destroy ();
+                }});
 
         add_action (quit_action);
         set_accels_for_action ("app.quit",{"<Control>Q",null});
+
+        
+
+
+
+
 }
 }
 public static int main (string [] args ){
