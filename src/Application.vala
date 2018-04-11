@@ -35,7 +35,8 @@ protected override void activate () {
 
         var window = new Gtk.ApplicationWindow (this);
         int colmn = 0;
-        var bar = new Gtk.HeaderBar();
+
+        int rownum=0;
 
         window.title="Notifier";
 
@@ -49,6 +50,8 @@ protected override void activate () {
         if (!notifdir.query_exists ()) {
                 notifdir.make_directory();
         }
+        
+
         if(!notifdata.query_exists ()) {
                 try{
 
@@ -62,6 +65,7 @@ protected override void activate () {
 
                         string q = """
                         CREATE TABLE Reminders (
+              rowid       INTEGER,
               Complete		TEXT      ,
               Name            TEXT            ,
               Year          INTEGER		,
@@ -237,46 +241,49 @@ int lngth = checkbtn.length-1;
 
                                 Sqlite.Database.open(Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
 
-                                string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority) VALUES (?,?,?,?,?,?,?,?);";
+                                string savequery = "INSERT INTO Reminders (rowid,Complete,Name,Year,Month,Day,Hour,Minute,Priority) VALUES (?,?,?,?,?,?,?,?,?);";
                                 int res = db.prepare_v2(savequery,-1,out save);
                                 if (res != Sqlite.OK) {
                                         stderr.printf ("Error: %d: %s\n", db.errcode (), db.errmsg ());
 
                                 }
+                                rownum++;
                                 colmn = 1;
-                                save.bind_text (colmn, "false");
+                                save.bind_int (colmn, rownum);
                                 colmn = 2;
+                                save.bind_text (colmn, "false");
+                                colmn = 3;
 
 
 
                                 save.bind_text (colmn, name);
-                                colmn = 3;
+                                colmn = 4;
 
 
 
 
                                 save.bind_int64 (colmn, yearnum);
-                                colmn = 4;
-
-
-
-                                save.bind_int64 (colmn, monthnum);
                                 colmn = 5;
 
 
 
+                                save.bind_int64 (colmn, monthnum);
+                                colmn = 6;
+
+
+
                                 save.bind_int64 (colmn, daynum);
-                                colmn =6;
-
-
-
-                                save.bind_int64 (colmn,hournum);
                                 colmn =7;
 
 
 
-                                save.bind_int64 (colmn, minutenum);
+                                save.bind_int64 (colmn,hournum);
                                 colmn =8;
+
+
+
+                                save.bind_int64 (colmn, minutenum);
+                                colmn =9;
 
 
                                 save.bind_int64 (colmn, priornum);
@@ -318,40 +325,12 @@ int lngth = checkbtn.length-1;
         layout.attach (new Gtk.Label ("Priority"),2,1,1,1);
         layout.attach (new Gtk.Label ("Time\t"),3,1,3,1);
 
-        var quitbtn = new Gtk.Button.with_label("x");
-        quitbtn.clicked.connect( () => {
-          c=1;
-          for(int i = 0; i<lngth; i++) {
-
-                                  Sqlite.Database db;
-                                  int data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
-                                  if (data != Sqlite.OK) {
-                                          stderr.printf ("Can't open the reminders database: %d: %s\n", db.errcode (), db.errmsg ());
-                                  }
-                                  Sqlite.Statement update;
-
-                                  string updatequery = "UPDATE Reminders SET Complete=? WHERE rowid=?;";
-
-                                  int res = db.prepare_v2(updatequery,-1,out update);
-                                  update.bind_text (1, "true"/*checkbtn[c].get_active ().to_string ()*/);
-                                  update.bind_int64 (0,c);
-                                  update.step();
-                                  update.clear_bindings();
-                                  update.reset();
-                                  c++;
-
-        }
-        window.destroy ();
 
 
-          });
 
-        bar.title = "Notifier";
-        bar.set_show_close_button (false);
-        bar.pack_start(quitbtn);
 
         window.add (layout);
-        window.add (bar);
+
 
         window.show_all();
         var quit_action = new SimpleAction ("quit", null);
@@ -365,8 +344,52 @@ int lngth = checkbtn.length-1;
         add_action (quit_action);
         set_accels_for_action ("app.quit",{"<Control>Q",null});
 
-        
 
+
+          window.destroy.connect( () =>{
+            c=1;
+
+            int i = 0;
+            while( i <=lngth) {
+
+                                      Sqlite.Database db;
+                                      int data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
+                                      if (data != Sqlite.OK) {
+                                              stderr.printf ("Can't open the reminders database: %d: %s\n", db.errcode (), db.errmsg ());
+                                      }
+                                      Sqlite.Statement update;
+
+                                      string updatequery = "UPDATE Reminders SET Complete='false' WHERE rowid=?;";
+
+
+
+
+
+                                    if (checkbtn[i].get_active () == true){
+                                      updatequery = "UPDATE Reminders SET Complete='true' WHERE rowid=1;";
+
+                                    }
+                                    if(db.prepare_v2(updatequery,-1,out update) != Sqlite.OK){
+                                      layout.attach (new Gtk.Label(db.errmsg ()),3,0,1,3);
+                                    }
+
+
+
+                                      if(update.bind_int64 (1,c) != Sqlite.OK){
+                                        layout.attach (new Gtk.Label(db.errmsg ()),3,0,1,3);
+                                      }
+                                      if(update.step() != Sqlite.OK){
+                                        layout.attach (new Gtk.Label(db.errmsg ()),3,0,1,3);
+                                      }
+                                      else{
+                                        layout.attach (new Gtk.Label("EXECUTED!"),3,0,1,3);
+                                      }
+                                      update.clear_bindings ();
+                                      update.reset ();
+                                      i++;
+                                      c++;
+            }
+            });
 
 
 
