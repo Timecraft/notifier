@@ -11,15 +11,15 @@
     <ul>
       <li>Get notified of what to do and when to do it</li>
       <li>Set the time of the reminder</li>
-      <li>Set the priority of the notification just as a developer would</li>
-      <li>Automatically saves your remindes</li>
+      <li>Set the priority of the notification</li>
+      <li>Automatically saves your reminders</li>
       <li>Supports closing with Ctrl + Q</li>
     </ul>
   </description>
   <releases>
-    <release version="0.0.5" date="2018-04-07">
+    <release version="0.0.85" date="2018-04-11">
       <description>
-        <p>Source code release. Project still work in progress, and this line will only be seen by those looking at the source code prior to its initial release on the AppCenter</p>
+        <p>Almost there. About now, it's just the daemon and things will be good to go.</p>
       </description>
     </release>
   </releases>
