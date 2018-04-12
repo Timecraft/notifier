@@ -40,6 +40,30 @@ protected override void activate () {
 
         window.title="Notifier";
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         var col = 4;
         var spc= 2;
         Gtk.CheckButton[] checkbtn = {};
@@ -50,7 +74,7 @@ protected override void activate () {
         if (!notifdir.query_exists ()) {
                 notifdir.make_directory();
         }
-        
+
 
         if(!notifdata.query_exists ()) {
                 try{
@@ -65,7 +89,6 @@ protected override void activate () {
 
                         string q = """
                         CREATE TABLE Reminders (
-              rowid       INTEGER,
               Complete		TEXT      ,
               Name            TEXT            ,
               Year          INTEGER		,
@@ -85,7 +108,8 @@ protected override void activate () {
                         stdout.printf("Error:  %s\n",e.message);
 
 
-                }}
+                }
+        }
 
         else{
                 try{
@@ -101,21 +125,118 @@ protected override void activate () {
         }
 
 
+
+
+
         this.app.deletable = true;
         this.app.resizable = true;
         this.app.get_style_context ().add_class ("window-background-color");
 
         var layout = new Gtk.Grid ();
-        layout.set_halign(Gtk.Align.CENTER);
-        layout.column_spacing = col;
-        layout.row_spacing = spc;
-        uint rows=layout.get_row_spacing ();
+        layout.set_halign(Gtk.Align.START);
+        layout.insert_column (0);
+        layout.insert_column (1);
+        layout.insert_column (2);
+        layout.insert_column (3);
+        layout.insert_column (4);
+        layout.insert_column (5);
+
+
+
+
         var newrembtn = new Gtk.Button.with_label ("New Reminder");
         int c = 0;
 
 
 
-int lngth = checkbtn.length-1;
+        int lngth = checkbtn.length-1;
+        uint rows=layout.get_row_spacing ();
+
+
+        var countq = "SELECT * FROM Reminders WHERE rowid=?";
+        Sqlite.Statement countstmt;
+        Sqlite.Database db;
+        Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
+
+        db.prepare_v2 (countq,-1, out countstmt);
+        int bv = 1;
+        countstmt.bind_int64(1,bv);
+
+
+
+
+
+
+        while(countstmt.step () ==Sqlite.ROW) {
+
+
+                layout.insert_row(spc);
+
+
+                string name = countstmt.column_value (1).to_text ();
+
+                string hour = countstmt.column_value (5).to_text ();
+
+                string min = countstmt.column_value (6).to_text ();
+
+                switch (min) {
+                case "0": min="00"; break;
+                case "1": min="01"; break;
+                case "2": min="02"; break;
+                case "3": min="03"; break;
+                case "4": min="04"; break;
+                case "5": min="05"; break;
+                case "6": min="06"; break;
+                case "7": min="07"; break;
+                case "8": min="08"; break;
+                case "9": min="09"; break;
+
+                }
+
+                string time = hour + ":" + min;
+
+
+                string year = countstmt.column_value (2).to_text ();
+
+                int month =  countstmt.column_value (3).to_int ();
+                string monthn = "";
+
+                switch ( month) {
+                case 1: monthn = "January"; break;
+                case 2: monthn = "February"; break;
+                case 3: monthn = "March"; break;
+                case 4: monthn = "April"; break;
+                case 5: monthn = "May"; break;
+                case 6: monthn = "June"; break;
+                case 7: monthn = "July"; break;
+                case 8: monthn = "August"; break;
+                case 9: monthn = "September"; break;
+                case 10: monthn = "October"; break;
+                case 11: monthn = "November"; break;
+                case 12: monthn = "December"; break;
+
+                }
+
+                string day = countstmt.column_value (4).to_text ();
+
+                string prior = countstmt.column_value (7).to_text ();
+
+                checkbtn += new Gtk.CheckButton ();
+                lngth = checkbtn.length-1;
+                layout.attach (checkbtn[b],0,spc,1,1);
+                layout.attach (new Gtk.Label (name),1,spc,1,1);
+                layout.attach (new Gtk.Label (prior),2,spc,1,1);
+                layout.attach (new Gtk.Label (""),3,spc,1,1);
+                layout.attach (new Gtk.Label (year + " " + monthn + " " + day),4,spc,1,1);
+                layout.attach (new Gtk.Label (time),5,spc,1,1);
+                b++;
+                spc++;
+                rows=3;
+                var countq2 = "SELECT * FROM Reminders WHERE rowid=?";
+                db.prepare_v2 (countq2,-1, out countstmt);
+                bv++;
+                countstmt.bind_int64(1,bv);
+        }
 
         if (rows<3) {
                 layout.attach (new Gtk.Label ("Create a new Notifier!"),1,2,1,1);
@@ -155,7 +276,7 @@ int lngth = checkbtn.length-1;
                         newremgrid.attach (newremhour,4,2,1,1);
                         newremgrid.attach (newremmin,5,2,1,1);
                         newremgrid.attach (newremprior,6,2,1,1);
-                        if (rows==2) {
+                        if (rows<3) {
                                 layout.remove_row (2);
                                 layout.insert_row (2);
                         }
@@ -228,7 +349,7 @@ int lngth = checkbtn.length-1;
                                 b++;
 
                                 //saves reminder into database
-                                Sqlite.Database db;
+                                Sqlite.Database db3;
                                 Sqlite.Statement save;
 
                                 var yearnum = (int) newremyear.get_value ();
@@ -239,51 +360,51 @@ int lngth = checkbtn.length-1;
                                 var priornum = (int) newremprior.get_value ();
 
 
-                                Sqlite.Database.open(Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
+                                Sqlite.Database.open(Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db3);
 
-                                string savequery = "INSERT INTO Reminders (rowid,Complete,Name,Year,Month,Day,Hour,Minute,Priority) VALUES (?,?,?,?,?,?,?,?,?);";
-                                int res = db.prepare_v2(savequery,-1,out save);
+                                string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority) VALUES (?,?,?,?,?,?,?,?);";
+                                int res = db3.prepare_v2(savequery,-1,out save);
                                 if (res != Sqlite.OK) {
-                                        stderr.printf ("Error: %d: %s\n", db.errcode (), db.errmsg ());
+                                        stderr.printf ("Error: %d: %s\n", db3.errcode (), db3.errmsg ());
 
                                 }
                                 rownum++;
                                 colmn = 1;
-                                save.bind_int (colmn, rownum);
-                                colmn = 2;
+
+
                                 save.bind_text (colmn, "false");
-                                colmn = 3;
+                                colmn = 2;
 
 
 
                                 save.bind_text (colmn, name);
-                                colmn = 4;
+                                colmn = 3;
 
 
 
 
                                 save.bind_int64 (colmn, yearnum);
-                                colmn = 5;
+                                colmn = 4;
 
 
 
                                 save.bind_int64 (colmn, monthnum);
-                                colmn = 6;
+                                colmn = 5;
 
 
 
                                 save.bind_int64 (colmn, daynum);
-                                colmn =7;
+                                colmn =6;
 
 
 
                                 save.bind_int64 (colmn,hournum);
-                                colmn =8;
+                                colmn =7;
 
 
 
                                 save.bind_int64 (colmn, minutenum);
-                                colmn =9;
+                                colmn =8;
 
 
                                 save.bind_int64 (colmn, priornum);
@@ -316,14 +437,14 @@ int lngth = checkbtn.length-1;
                 });
 
         //sets up main UI
-        layout.attach (newrembtn,0,0,1,1);
+        layout.attach (newrembtn,0,0,2,1);
 
-        layout.insert_column (0);
-        layout.insert_column (4);
 
-        layout.attach (new Gtk.Label ("Name"),1,1,1,1);
-        layout.attach (new Gtk.Label ("Priority"),2,1,1,1);
-        layout.attach (new Gtk.Label ("Time\t"),3,1,3,1);
+
+        layout.row_spacing =5;
+        layout.attach (new Gtk.Label ("Name\t"),1,1,1,1);
+        layout.attach (new Gtk.Label ("Priority\t"),2,1,1,1);
+        layout.attach (new Gtk.Label ("Time\t"),4,1,1,1);
 
 
 
@@ -338,58 +459,72 @@ int lngth = checkbtn.length-1;
 
                         if (window != null) {
 
-                        window.destroy ();
-                }});
+                                window.destroy ();
+                        }
+                });
 
         add_action (quit_action);
         set_accels_for_action ("app.quit",{"<Control>Q",null});
 
 
 
-          window.destroy.connect( () =>{
-            c=1;
+        window.destroy.connect( () =>{
+                        c=1;
 
-            int i = 0;
-            while( i <=lngth) {
+                        int i = 0;
+                        while( i <=lngth) {
 
-                                      Sqlite.Database db;
-                                      int data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
-                                      if (data != Sqlite.OK) {
-                                              stderr.printf ("Can't open the reminders database: %d: %s\n", db.errcode (), db.errmsg ());
-                                      }
-                                      Sqlite.Statement update;
+                                Sqlite.Database db4;
+                                int data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db4);
+                                if (data != Sqlite.OK) {
+                                        stderr.printf ("Can't open the reminders database: %d: %s\n", db4.errcode (), db4.errmsg ());
+                                }
+                                Sqlite.Statement update;
 
-                                      string updatequery = "UPDATE Reminders SET Complete='false' WHERE rowid=?;";
-
-
+                                string updatequery = "UPDATE Reminders SET Complete='false' WHERE rowid=?;";
 
 
 
-                                    if (checkbtn[i].get_active () == true){
-                                      updatequery = "UPDATE Reminders SET Complete='true' WHERE rowid=1;";
-
-                                    }
-                                    if(db.prepare_v2(updatequery,-1,out update) != Sqlite.OK){
-                                      layout.attach (new Gtk.Label(db.errmsg ()),3,0,1,3);
-                                    }
 
 
+                                if (checkbtn[i].get_active () == true) {
+                                        updatequery = "UPDATE Reminders SET Complete='true' WHERE rowid=?;";
 
-                                      if(update.bind_int64 (1,c) != Sqlite.OK){
-                                        layout.attach (new Gtk.Label(db.errmsg ()),3,0,1,3);
-                                      }
-                                      if(update.step() != Sqlite.OK){
-                                        layout.attach (new Gtk.Label(db.errmsg ()),3,0,1,3);
-                                      }
-                                      else{
-                                        layout.attach (new Gtk.Label("EXECUTED!"),3,0,1,3);
-                                      }
-                                      update.clear_bindings ();
-                                      update.reset ();
-                                      i++;
-                                      c++;
-            }
-            });
+                                }
+                                if(db4.prepare_v2(updatequery,-1,out update) != Sqlite.OK) {
+                                        layout.attach (new Gtk.Label(db4.errmsg ()),3,0,1,3);
+                                }
+
+
+
+                                if(update.bind_int64 (1,c) != Sqlite.OK) {
+                                        layout.attach (new Gtk.Label(db4.errmsg ()),3,0,1,3);
+                                }
+                                if(update.step () != Sqlite.OK) {
+                                        layout.attach (new Gtk.Label(db4.errmsg ()),3,0,1,3);
+                                }
+
+                                update.clear_bindings ();
+                                update.reset ();
+                                i++;
+                                c++;
+                        }
+                        Sqlite.Database db5;
+                        Sqlite.Statement del;
+                        Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db5);
+                        var deletecomplete = "DELETE FROM Reminders WHERE (Complete='true');";
+                        db5.prepare_v2 (deletecomplete,-1,out del);
+                        del.step ();
+                        del.reset ();
+
+
+                        Sqlite.Statement chngrowid;
+                        var changerowid = "VACUUM;";
+                        db.prepare_v2 (changerowid, -1, out chngrowid);
+                        chngrowid.step();
+                        chngrowid.reset();
+
+                });
 
 
 
