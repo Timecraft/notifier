@@ -29,6 +29,8 @@ public notifier () {
                 flags : ApplicationFlags.FLAGS_NONE
                 );
 }
+
+
 protected override void activate () {
 
 
@@ -57,14 +59,14 @@ protected override void activate () {
                 try {
 
                         Sqlite.Database db;
-                        string errmsg;
+
                         //Create Database
                         int data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
                         if (data != Sqlite.OK) {
                                 stderr.printf ("Can't open the reminders database: %d: %s\n", db.errcode (), db.errmsg ());
                         }
                         //create table
-                        string q = """
+                        string q = "
                         CREATE TABLE Reminders (
               Complete		TEXT      ,
               Name            TEXT            ,
@@ -73,13 +75,21 @@ protected override void activate () {
               Day           INTEGER		,
               Hour			INTEGER         ,
               Minute		INTEGER         ,
-              Priority		INTEGER
+              Priority		INTEGER     ,
+              Description TEXT
                           );
-            """;
+            ";
                         //checking for errors
-                        data = db.exec (q,null, out errmsg);
+
+
                         if (data != Sqlite.OK) {
-                                stderr.printf ("Error:  %s\n", errmsg);
+                                stderr.printf ("Can't open the reminders database: %d: %s\n", db.errcode (), db.errmsg ());
+                        }
+                        Sqlite.Statement query;
+                         db.prepare_v2 (q,-1, out query);
+
+                        if (query.step () != Sqlite.OK) {
+                                stderr.printf ("Error:  %s\n", db.errmsg ());
                         }
                         stdout.puts ("Created.\n");
                 } catch (Error e) {
@@ -121,6 +131,7 @@ protected override void activate () {
         layout.insert_column (3);
         layout.insert_column (4);
         layout.insert_column (5);
+        layout.insert_column (6);
 
         //sets up main UI
 
@@ -138,12 +149,13 @@ protected override void activate () {
 
         layout.row_spacing = 5;
         layout.attach (new Gtk.Label ("\tName\t"),1,1,1,1);
-        layout.attach (new Gtk.Label ("\tPriority\t"),2,1,1,1);
-        layout.attach (new Gtk.Label ("\tTime\t"),4,1,4,1);
+        layout.attach (new Gtk.Label ("\tDescription\t"),2,1,1,1);
+        layout.attach (new Gtk.Label ("\tPriority\t"),3,1,1,1);
+        layout.attach (new Gtk.Label ("\tTime\t"),5,1,4,1);
 
 
         int lngth = checkbtn.length - 1;
-        uint rows = layout.get_row_spacing ();
+        int rows = 1;
 
 
         //prepare to load reminders from database...
@@ -214,6 +226,8 @@ protected override void activate () {
 
                 string day = countstmt.column_value (4).to_text ();
 
+                string description = countstmt.column_value (8).to_text ();
+
                 string prior = countstmt.column_value (7).to_text ();
 
                 checkbtn += new Gtk.CheckButton ();
@@ -221,10 +235,11 @@ protected override void activate () {
                 //adding to the UI
                 layout.attach (checkbtn[b],0,spc,1,1);
                 layout.attach (new Gtk.Label (name),1,spc,1,1);
-                layout.attach (new Gtk.Label (prior),2,spc,1,1);
-                layout.attach (new Gtk.Label (""),3,spc,1,1);
-                layout.attach (new Gtk.Label (year + " " + monthn + " " + day),4,spc,1,1);
-                layout.attach (new Gtk.Label (time),5,spc,1,1);
+                layout.attach (new Gtk.Label (description),2,spc,1,1);
+                layout.attach (new Gtk.Label (prior),3,spc,1,1);
+                layout.attach (new Gtk.Label (""),4,spc,1,1);
+                layout.attach (new Gtk.Label (year + " " + monthn + " " + day + " "),5,spc,1,1);
+                layout.attach (new Gtk.Label (time),6,spc,1,1);
                 b++;
                 spc++;
                 rows = 3;
@@ -235,7 +250,7 @@ protected override void activate () {
                 countstmt.bind_int64 (1,bv);
         }
         //You have no reminders!
-        if (rows<3) {
+        if (rows==1) {
                 layout.attach (new Gtk.Label ("Create a new Reminder!"),1,2,1,1);
 
         }
@@ -252,6 +267,7 @@ protected override void activate () {
                         newrem.set_titlebar (newbar);
                         var newremname = new Gtk.Entry ();
                         var rn = new GLib.DateTime.now_local ();
+                        var newremdesc = new Gtk.Entry ();
                         var newremyear = new Gtk.SpinButton.with_range (rn.get_year (),9999,1);
                         var newremhour = new Gtk.SpinButton.with_range (0,23,1);
                         var newremmin = new Gtk.SpinButton.with_range (0,60,5);
@@ -263,27 +279,26 @@ protected override void activate () {
                         var newremgrid = new Gtk.Grid ();
                         newremgrid.set_halign (Gtk.Align.CENTER);
                         newremgrid.attach (new Gtk.Label ("Reminder Name"),0,0,1,1);
-                        newremgrid.attach (new Gtk.Label ("Remind Time"),1,0,4,1);
-                        newremgrid.attach (new Gtk.Label ("Year"),1,1,1,1);
-                        newremgrid.attach (new Gtk.Label ("Hour"),4,1,1,1);
-                        newremgrid.attach (new Gtk.Label ("Minute"),5,1,1,1);
-                        newremgrid.attach (new Gtk.Label ("Month"),2,1,1,1);
-                        newremgrid.attach (new Gtk.Label ("Day"),3,1,1,1);
-                        newremgrid.attach (new Gtk.Label ("Priority"),6,0,1,1);
+                        newremgrid.attach (new Gtk.Label ("Remind Time"),2,0,4,1);
+                        newremgrid.attach (new Gtk.Label ("Reminder description"),1,0,1,1);
+                        newremgrid.attach (new Gtk.Label ("Year"),2,1,1,1);
+                        newremgrid.attach (new Gtk.Label ("Hour"),5,1,1,1);
+                        newremgrid.attach (new Gtk.Label ("Minute"),6,1,1,1);
+                        newremgrid.attach (new Gtk.Label ("Month"),3,1,1,1);
+                        newremgrid.attach (new Gtk.Label ("Day"),4,1,1,1);
+                        newremgrid.insert_column(7);
+                        newremgrid.attach (new Gtk.Label ("Priority"),7,0,1,1);
                         newremgrid.attach (newremname,0,2,1,1);
-                        newremgrid.attach (newremyear,1,2,1,1);
-                        newremgrid.attach (newremmonth,2,2,1,1);
-                        newremgrid.attach (newremday,3,2,1,1);
-                        newremgrid.attach (newremhour,4,2,1,1);
-                        newremgrid.attach (newremmin,5,2,1,1);
-                        newremgrid.attach (newremprior,6,2,1,1);
-                        //clears out that "create new reminder" message
-                        if (rows<3) {
-                                layout.remove_row (2);
-                                layout.insert_row (2);
-                        }
+                        newremgrid.attach (newremdesc,1,2,1,1);
+                        newremgrid.attach (newremyear,2,2,1,1);
+                        newremgrid.attach (newremmonth,3,2,1,1);
+                        newremgrid.attach (newremday,4,2,1,1);
+                        newremgrid.attach (newremhour,5,2,1,1);
+                        newremgrid.attach (newremmin,6,2,1,1);
+                        newremgrid.attach (newremprior,7,2,1,1);
+
                         var monthname = new Gtk.Label ("January");
-                        newremgrid.attach (monthname,2,3,1,1);
+                        newremgrid.attach (monthname,3,3,1,1);
                         newremmonth.value_changed.connect ( () => {
                                 //human friendly string month
                                 switch ( (int) newremmonth.get_value ()) {
@@ -314,6 +329,12 @@ protected override void activate () {
                         });
                         //saves new reminder
                         newremsave.clicked.connect ( () => {
+                          //clears out that "create new reminder" message
+                          rows=3;
+                          if (rows==3) {
+                                  layout.remove_row (2);
+                                  layout.insert_row (2);
+                          }
 
 
                                 /* convert integer to string with .to_string (); */
@@ -348,10 +369,11 @@ protected override void activate () {
                                 lngth = checkbtn.length - 1;
                                 layout.attach (checkbtn[b],0,spc,1,1);
                                 layout.attach (new Gtk.Label (newremname.get_text ()),1,spc,1,1);
-                                layout.attach (new Gtk.Label (prior),2,spc,1,1);
-                                layout.attach (new Gtk.Label (" "),3,spc,1,1);
-                                layout.attach (new Gtk.Label (year + " " + month + " " + day),4,spc,1,1);
-                                layout.attach (new Gtk.Label (time),5,spc,1,1);
+                                layout.attach (new Gtk.Label (newremdesc.get_text ()),2,spc,1,1);
+                                layout.attach (new Gtk.Label (prior),3,spc,1,1);
+                                layout.attach (new Gtk.Label (" "),4,spc,1,1);
+                                layout.attach (new Gtk.Label (year + " " + month + " " + day + " "),5,spc,1,1);
+                                layout.attach (new Gtk.Label (time),6,spc,1,1);
                                 b++;
 
                                 //saves reminder into database
@@ -365,11 +387,12 @@ protected override void activate () {
                                 var hournum = (int) newremhour.get_value ();
                                 var minutenum = (int) newremmin.get_value ();
                                 var priornum = (int) newremprior.get_value ();
+                                var description = newremdesc.get_text ();
 
                                 //open, prep, error trap
                                 Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db3);
 
-                                string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority) VALUES (?,?,?,?,?,?,?,?);";
+                                string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority,Description) VALUES (?,?,?,?,?,?,?,?,?);";
                                 int res = db3.prepare_v2 (savequery,-1,out save);
                                 if (res != Sqlite.OK) {
                                         stderr.printf ("Error: %d: %s\n", db3.errcode (), db3.errmsg ());
@@ -415,6 +438,9 @@ protected override void activate () {
 
                                 //how important it is. determines the notification level type in the daemon
                                 save.bind_int64 (colmn, priornum);
+                                colmn = 9;
+
+                                save.bind_text (colmn,description);
 
 
                                 //save and clear
