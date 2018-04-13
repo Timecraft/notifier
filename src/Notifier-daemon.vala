@@ -82,7 +82,7 @@ while (true){
                     if (day <= today) {
                       if (hour <= thishour) {
                         if (min <= thismin){
-                          var notification = new Notification (name);
+                          var notification = new Notification (_(name));
                           switch (prior){
                             case 0: priority = NotificationPriority.LOW; break;
                             case 1: priority = NotificationPriority.NORMAL; break;
@@ -90,7 +90,7 @@ while (true){
                             case 3: priority = NotificationPriority.URGENT; break;
                           }
                           notification.set_priority (priority);
-                          notification.set_body (description);
+                          notification.set_body (_(description));
                           this.send_notification ("com.github.Timecraft.Notifier",notification);
 
 

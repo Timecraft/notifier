@@ -63,7 +63,7 @@ protected override void activate () {
                         //Create Database
                         int data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
                         if (data != Sqlite.OK) {
-                                stderr.printf ("Can't open the reminders database: %d: %s\n", db.errcode (), db.errmsg ());
+                                stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
                         }
                         //create table
                         string q = "
@@ -83,17 +83,17 @@ protected override void activate () {
 
 
                         if (data != Sqlite.OK) {
-                                stderr.printf ("Can't open the reminders database: %d: %s\n", db.errcode (), db.errmsg ());
+                                stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
                         }
                         Sqlite.Statement query;
                          db.prepare_v2 (q,-1, out query);
 
                         if (query.step () != Sqlite.OK) {
-                                stderr.printf ("Error:  %s\n", db.errmsg ());
+                                stderr.printf (_("Error:  %s\n"), db.errmsg ());
                         }
-                        stdout.puts ("Created.\n");
+                        stdout.puts (_("Created.\n"));
                 } catch (Error e) {
-                        stdout.printf ("Error:  %s\n",e.message);
+                        stdout.printf (_("Error:  %s\n"),e.message));
 
 
                 }
@@ -106,7 +106,7 @@ protected override void activate () {
 
                         int data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
                         if (data != Sqlite.OK) {
-                                stderr.printf ("Can't open the reminders database: %d: %s\n", db.errcode (), db.errmsg ());
+                                stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
                         }
 
                 }finally { /*do what?*/}
@@ -138,9 +138,9 @@ protected override void activate () {
         //button for new reminder. in headerbar
         var newrembtn = new Gtk.Button ();
         newrembtn.set_image (new Gtk.Image.from_icon_name ("add",Gtk.IconSize.LARGE_TOOLBAR));
-        newrembtn.tooltip_text = "Add a new reminder";
+        newrembtn.tooltip_text = _("Add a new reminder");
         bar.pack_end (newrembtn);
-        bar.set_title ("Notifier");
+        bar.set_title (_("Notifier"));
         bar.show_close_button = true;
         window.set_titlebar (bar);
 
@@ -148,10 +148,10 @@ protected override void activate () {
 
 
         layout.row_spacing = 5;
-        layout.attach (new Gtk.Label ("\tName\t"),1,1,1,1);
-        layout.attach (new Gtk.Label ("\tDescription\t"),2,1,1,1);
-        layout.attach (new Gtk.Label ("\tPriority\t"),3,1,1,1);
-        layout.attach (new Gtk.Label ("\tTime\t"),5,1,4,1);
+        layout.attach (new Gtk.Label (_("\tName\t")),1,1,1,1);
+        layout.attach (new Gtk.Label (_("\tDescription\t")),2,1,1,1);
+        layout.attach (new Gtk.Label (_("\tPriority\t")),3,1,1,1);
+        layout.attach (new Gtk.Label (_("\tTime\t")),5,1,4,1);
 
 
         int lngth = checkbtn.length - 1;
@@ -237,8 +237,8 @@ protected override void activate () {
                 layout.attach (new Gtk.Label (name),1,spc,1,1);
                 layout.attach (new Gtk.Label (description),2,spc,1,1);
                 layout.attach (new Gtk.Label (prior),3,spc,1,1);
-                layout.attach (new Gtk.Label (""),4,spc,1,1);
-                layout.attach (new Gtk.Label (year + " " + monthn + " " + day + " "),5,spc,1,1);
+                layout.attach (new Gtk.Label (_("")),4,spc,1,1);
+                layout.attach (new Gtk.Label (_(year + " " + monthn + " " + day + " ")),5,spc,1,1);
                 layout.attach (new Gtk.Label (time),6,spc,1,1);
                 b++;
                 spc++;
@@ -251,7 +251,7 @@ protected override void activate () {
         }
         //You have no reminders!
         if (rows==1) {
-                layout.attach (new Gtk.Label ("Create a new Reminder!"),1,2,1,1);
+                layout.attach (new Gtk.Label (_("Create a new Reminder!")),1,2,1,1);
 
         }
 
@@ -262,7 +262,7 @@ protected override void activate () {
                         //setup new reminder prompt UI
                         var newrem = new Gtk.Window ();
                         var newbar = new Gtk.HeaderBar ();
-                        newbar.set_title ("New Reminder");
+                        newbar.set_title (_("New Reminder"));
                         newbar.show_close_button = true;
                         newrem.set_titlebar (newbar);
                         var newremname = new Gtk.Entry ();
@@ -274,20 +274,20 @@ protected override void activate () {
                         var newremmonth = new Gtk.SpinButton.with_range (1,12,1);
                         var newremday = new Gtk.SpinButton.with_range (1,31,1);
                         var newremprior = new Gtk.SpinButton.with_range (0,3,1);
-                        var newremcanc = new Gtk.Button.with_label ("Cancel");
-                        var newremsave = new Gtk.Button.with_label ("Save");
+                        var newremcanc = new Gtk.Button.with_label (_("Cancel"));
+                        var newremsave = new Gtk.Button.with_label (_("Save"));
                         var newremgrid = new Gtk.Grid ();
                         newremgrid.set_halign (Gtk.Align.CENTER);
-                        newremgrid.attach (new Gtk.Label ("Reminder Name"),0,0,1,1);
-                        newremgrid.attach (new Gtk.Label ("Remind Time"),2,0,4,1);
-                        newremgrid.attach (new Gtk.Label ("Reminder description"),1,0,1,1);
-                        newremgrid.attach (new Gtk.Label ("Year"),2,1,1,1);
-                        newremgrid.attach (new Gtk.Label ("Hour"),5,1,1,1);
-                        newremgrid.attach (new Gtk.Label ("Minute"),6,1,1,1);
-                        newremgrid.attach (new Gtk.Label ("Month"),3,1,1,1);
-                        newremgrid.attach (new Gtk.Label ("Day"),4,1,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Reminder Name")),0,0,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Remind Time")),2,0,4,1);
+                        newremgrid.attach (new Gtk.Label (_("Reminder description")),1,0,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Year")),2,1,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Hour")),5,1,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Minute")),6,1,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Month")),3,1,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Day")),4,1,1,1);
                         newremgrid.insert_column(7);
-                        newremgrid.attach (new Gtk.Label ("Priority"),7,0,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Priority")),7,0,1,1);
                         newremgrid.attach (newremname,0,2,1,1);
                         newremgrid.attach (newremdesc,1,2,1,1);
                         newremgrid.attach (newremyear,2,2,1,1);
@@ -297,23 +297,23 @@ protected override void activate () {
                         newremgrid.attach (newremmin,6,2,1,1);
                         newremgrid.attach (newremprior,7,2,1,1);
 
-                        var monthname = new Gtk.Label ("January");
+                        var monthname = new Gtk.Label (_("January"));
                         newremgrid.attach (monthname,3,3,1,1);
                         newremmonth.value_changed.connect ( () => {
                                 //human friendly string month
                                 switch ( (int) newremmonth.get_value ()) {
-                                case 1: monthname.set_text ("January"); break;
-                                case 2: monthname.set_text ("February"); break;
-                                case 3: monthname.set_text ("March"); break;
-                                case 4: monthname.set_text ("April"); break;
-                                case 5: monthname.set_text ("May"); break;
-                                case 6: monthname.set_text ("June"); break;
-                                case 7: monthname.set_text ("July"); break;
-                                case 8: monthname.set_text ("August"); break;
-                                case 9: monthname.set_text ("September"); break;
-                                case 10: monthname.set_text ("October"); break;
-                                case 11: monthname.set_text ("November"); break;
-                                case 12: monthname.set_text ("December"); break;
+                                case 1: monthname.set_text (_("January")); break;
+                                case 2: monthname.set_text (_("February")); break;
+                                case 3: monthname.set_text (_("March")); break;
+                                case 4: monthname.set_text (_("April")); break;
+                                case 5: monthname.set_text (_("May")); break;
+                                case 6: monthname.set_text (_("June")); break;
+                                case 7: monthname.set_text (_("July")); break;
+                                case 8: monthname.set_text (_("August")); break;
+                                case 9: monthname.set_text (_("September")); break;
+                                case 10: monthname.set_text (_("October")); break;
+                                case 11: monthname.set_text (_("November")); break;
+                                case 12: monthname.set_text (_("December")); break;
 
                                 }
                         });
@@ -371,8 +371,8 @@ protected override void activate () {
                                 layout.attach (new Gtk.Label (newremname.get_text ()),1,spc,1,1);
                                 layout.attach (new Gtk.Label (newremdesc.get_text ()),2,spc,1,1);
                                 layout.attach (new Gtk.Label (prior),3,spc,1,1);
-                                layout.attach (new Gtk.Label (" "),4,spc,1,1);
-                                layout.attach (new Gtk.Label (year + " " + month + " " + day + " "),5,spc,1,1);
+                                layout.attach (new Gtk.Label (_(" ")),4,spc,1,1);
+                                layout.attach (new Gtk.Label (_(year + " " + month + " " + day + " ")),5,spc,1,1);
                                 layout.attach (new Gtk.Label (time),6,spc,1,1);
                                 b++;
 
@@ -395,7 +395,7 @@ protected override void activate () {
                                 string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority,Description) VALUES (?,?,?,?,?,?,?,?,?);";
                                 int res = db3.prepare_v2 (savequery,-1,out save);
                                 if (res != Sqlite.OK) {
-                                        stderr.printf ("Error: %d: %s\n", db3.errcode (), db3.errmsg ());
+                                        stderr.printf (_("Error: %d: %s\n"), db3.errcode (), db3.errmsg ());
 
                                 }
                                 rownum++;
@@ -492,7 +492,7 @@ protected override void activate () {
                                 Sqlite.Database db4;
                                 int data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db4);
                                 if (data != Sqlite.OK) {
-                                        stderr.printf ("Can't open the reminders database: %d: %s\n", db4.errcode (), db4.errmsg ());
+                                        stderr.printf (_("Can't open the reminders database: %d: %s\n", db4.errcode (), db4.errmsg ());
                                 }
                                 Sqlite.Statement update;
 
