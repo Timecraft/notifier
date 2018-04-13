@@ -19,6 +19,7 @@
 
 
 public class notifier : Gtk.Application {
+  const string GETTEXT_PACKAGE = "...";
 
 
 
@@ -93,7 +94,7 @@ protected override void activate () {
                         }
                         stdout.puts (_("Created.\n"));
                 } catch (Error e) {
-                        stdout.printf (_("Error:  %s\n"),e.message));
+                        stdout.printf (_("Error:  %s\n"),e.message);
 
 
                 }
@@ -492,7 +493,7 @@ protected override void activate () {
                                 Sqlite.Database db4;
                                 int data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db4);
                                 if (data != Sqlite.OK) {
-                                        stderr.printf (_("Can't open the reminders database: %d: %s\n", db4.errcode (), db4.errmsg ());
+                                        stderr.printf (_("Can't open the reminders database: %d: %s\n"), db4.errcode (), db4.errmsg ());
                                 }
                                 Sqlite.Statement update;
 

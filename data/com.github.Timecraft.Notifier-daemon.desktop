@@ -1,7 +1,8 @@
 [Desktop Entry]
-Name=Notifier Daemon
-Exec=com.github.Timecraft.notifier-daemon
-Icon=com.github.Timecraft.notifier.svg
 Type=Application
+Name=com.github.Timecraft.Notifier-daemon
+Comment=A daemon to handle sending Notifier's notifications
+Exec=com.github.Timecraft.Notifier-daemon
+Icon=com.github.Timecraft.Notifier
 X-GNOME-UsesNotifications=true
 X-GNOME-Autostart-enabled=true
