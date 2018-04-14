@@ -252,7 +252,7 @@ protected override void activate () {
         }
         //You have no reminders!
         if (rows==1) {
-                layout.attach (new Gtk.Label (_("Create a new Reminder!")),1,2,1,1);
+                layout.attach (new Gtk.Label (_("Create a new Reminder!")),2,2,2,1);
 
         }
 
@@ -299,7 +299,9 @@ protected override void activate () {
                         newremgrid.attach (newremprior,7,2,1,1);
 
                         var monthname = new Gtk.Label (_("January"));
+
                         newremgrid.attach (monthname,3,3,1,1);
+
                         newremmonth.value_changed.connect ( () => {
                                 //human friendly string month
                                 switch ( (int) newremmonth.get_value ()) {
@@ -316,8 +318,41 @@ protected override void activate () {
                                 case 11: monthname.set_text (_("November")); break;
                                 case 12: monthname.set_text (_("December")); break;
 
-                                }
+                              }
                         });
+
+                        // a very rudimentary way of allowing for AM/PM style time.
+                        //Need help figuring out how to ask the system for this information.
+                        var hourampm = new Gtk.Label ("12:00 AM");
+                        newremgrid.attach (hourampm,5,3,1,1);
+                        newremhour.value_changed.connect ( () =>{
+                          switch ( (int) newremhour.get_value ()){
+                            case 0: hourampm.set_text ("12:00 AM"); break;
+                            case 1: hourampm.set_text ("1:00 AM"); break;
+                            case 2: hourampm.set_text ("2:00 AM"); break;
+                            case 3: hourampm.set_text ("3:00 AM"); break;
+                            case 4: hourampm.set_text ("4:00 AM"); break;
+                            case 5: hourampm.set_text ("5:00 AM"); break;
+                            case 6: hourampm.set_text ("6:00 AM"); break;
+                            case 7: hourampm.set_text ("7:00 AM"); break;
+                            case 8: hourampm.set_text ("8:00 AM"); break;
+                            case 9: hourampm.set_text ("9:00 AM"); break;
+                            case 10: hourampm.set_text ("10:00 AM"); break;
+                            case 11: hourampm.set_text ("11:00 AM"); break;
+                            case 12: hourampm.set_text ("12:00 PM"); break;
+                            case 13: hourampm.set_text ("1:00 PM"); break;
+                            case 14: hourampm.set_text ("2:00 PM"); break;
+                            case 15: hourampm.set_text ("3:00 PM"); break;
+                            case 16: hourampm.set_text ("4:00 PM"); break;
+                            case 17: hourampm.set_text ("5:00 PM"); break;
+                            case 18: hourampm.set_text ("6:00 PM"); break;
+                            case 19: hourampm.set_text ("7:00 PM"); break;
+                            case 20: hourampm.set_text ("8:00 PM"); break;
+                            case 21: hourampm.set_text ("9:00 PM"); break;
+                            case 22: hourampm.set_text ("10:00 PM"); break;
+                            case 23: hourampm.set_text ("11:00 PM"); break;
+                          }
+                          });
 
                         //attach the necessary buttons to the window, and show
                         newremgrid.attach (newremsave,5,4,1,1);
