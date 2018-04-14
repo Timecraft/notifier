@@ -6,4 +6,4 @@
 
 
 ### Installation
-<a href="https://appcenter.elementary.io/com.github.sgpthomas.hourglass"><img alt="Get it on the AppCenter" src="https://appcenter.elementary.io/badge.svg"></a>
+<a href="https://appcenter.elementary.io/com.github.Timecraft.Notifier"><img alt="Get it on the AppCenter" src="https://appcenter.elementary.io/badge.svg"></a>
