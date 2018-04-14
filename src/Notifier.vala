@@ -19,7 +19,7 @@
 
 
 public class notifier : Gtk.Application {
-  const string GETTEXT_PACKAGE = "...";
+const string GETTEXT_PACKAGE = "...";
 
 
 
@@ -87,7 +87,7 @@ protected override void activate () {
                                 stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
                         }
                         Sqlite.Statement query;
-                         db.prepare_v2 (q,-1, out query);
+                        db.prepare_v2 (q,-1, out query);
 
                         if (query.step () != Sqlite.OK) {
                                 stderr.printf (_("Error:  %s\n"), db.errmsg ());
@@ -318,7 +318,7 @@ protected override void activate () {
                                 case 11: monthname.set_text (_("November")); break;
                                 case 12: monthname.set_text (_("December")); break;
 
-                              }
+                                }
                         });
 
                         // a very rudimentary way of allowing for AM/PM style time.
@@ -326,33 +326,33 @@ protected override void activate () {
                         var hourampm = new Gtk.Label ("12:00 AM");
                         newremgrid.attach (hourampm,5,3,1,1);
                         newremhour.value_changed.connect ( () =>{
-                          switch ( (int) newremhour.get_value ()){
-                            case 0: hourampm.set_text ("12:00 AM"); break;
-                            case 1: hourampm.set_text ("1:00 AM"); break;
-                            case 2: hourampm.set_text ("2:00 AM"); break;
-                            case 3: hourampm.set_text ("3:00 AM"); break;
-                            case 4: hourampm.set_text ("4:00 AM"); break;
-                            case 5: hourampm.set_text ("5:00 AM"); break;
-                            case 6: hourampm.set_text ("6:00 AM"); break;
-                            case 7: hourampm.set_text ("7:00 AM"); break;
-                            case 8: hourampm.set_text ("8:00 AM"); break;
-                            case 9: hourampm.set_text ("9:00 AM"); break;
-                            case 10: hourampm.set_text ("10:00 AM"); break;
-                            case 11: hourampm.set_text ("11:00 AM"); break;
-                            case 12: hourampm.set_text ("12:00 PM"); break;
-                            case 13: hourampm.set_text ("1:00 PM"); break;
-                            case 14: hourampm.set_text ("2:00 PM"); break;
-                            case 15: hourampm.set_text ("3:00 PM"); break;
-                            case 16: hourampm.set_text ("4:00 PM"); break;
-                            case 17: hourampm.set_text ("5:00 PM"); break;
-                            case 18: hourampm.set_text ("6:00 PM"); break;
-                            case 19: hourampm.set_text ("7:00 PM"); break;
-                            case 20: hourampm.set_text ("8:00 PM"); break;
-                            case 21: hourampm.set_text ("9:00 PM"); break;
-                            case 22: hourampm.set_text ("10:00 PM"); break;
-                            case 23: hourampm.set_text ("11:00 PM"); break;
-                          }
-                          });
+                                switch ( (int) newremhour.get_value ()) {
+                                case 0: hourampm.set_text ("12:00 AM"); break;
+                                case 1: hourampm.set_text ("1:00 AM"); break;
+                                case 2: hourampm.set_text ("2:00 AM"); break;
+                                case 3: hourampm.set_text ("3:00 AM"); break;
+                                case 4: hourampm.set_text ("4:00 AM"); break;
+                                case 5: hourampm.set_text ("5:00 AM"); break;
+                                case 6: hourampm.set_text ("6:00 AM"); break;
+                                case 7: hourampm.set_text ("7:00 AM"); break;
+                                case 8: hourampm.set_text ("8:00 AM"); break;
+                                case 9: hourampm.set_text ("9:00 AM"); break;
+                                case 10: hourampm.set_text ("10:00 AM"); break;
+                                case 11: hourampm.set_text ("11:00 AM"); break;
+                                case 12: hourampm.set_text ("12:00 PM"); break;
+                                case 13: hourampm.set_text ("1:00 PM"); break;
+                                case 14: hourampm.set_text ("2:00 PM"); break;
+                                case 15: hourampm.set_text ("3:00 PM"); break;
+                                case 16: hourampm.set_text ("4:00 PM"); break;
+                                case 17: hourampm.set_text ("5:00 PM"); break;
+                                case 18: hourampm.set_text ("6:00 PM"); break;
+                                case 19: hourampm.set_text ("7:00 PM"); break;
+                                case 20: hourampm.set_text ("8:00 PM"); break;
+                                case 21: hourampm.set_text ("9:00 PM"); break;
+                                case 22: hourampm.set_text ("10:00 PM"); break;
+                                case 23: hourampm.set_text ("11:00 PM"); break;
+                                }
+                        });
 
                         //attach the necessary buttons to the window, and show
                         newremgrid.attach (newremsave,5,4,1,1);
@@ -365,12 +365,12 @@ protected override void activate () {
                         });
                         //saves new reminder
                         newremsave.clicked.connect ( () => {
-                          //clears out that "create new reminder" message
-                          rows=3;
-                          if (rows==3) {
-                                  layout.remove_row (2);
-                                  layout.insert_row (2);
-                          }
+                                //clears out that "create new reminder" message
+                                rows=3;
+                                if (rows==3) {
+                                        layout.remove_row (2);
+                                        layout.insert_row (2);
+                                }
 
 
                                 /* convert integer to string with .to_string (); */
