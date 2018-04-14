@@ -31,4 +31,10 @@
     <value key="x-appcenter-color-primary-text">#000000</value>
     <value key="x-appcenter-suggested-price">free</value>
   </custom>
+  <screenshots>
+        <screenshot type="default">
+            <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/MainUI.png</image>
+            <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/NewReminder.png</image>
+        </screenshot>
+    </screenshots>
 </component>
