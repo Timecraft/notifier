@@ -1,8 +1,8 @@
 # Notifier
 
-##A reminders application designed with elementary OS in mind.
+## A reminders application designed with elementary OS in mind.
 
-Author: Timecraft <mailto:timemaster23x@gmail.com>
+#### Author: Timecraft <mailto:timemaster23x@gmail.com>
 
 ### Installation
 
