@@ -5,7 +5,7 @@ GenericName=Reminders
 Comment=Remind yourself
 Categories=GNOME;GTK;Utility;
 Exec=com.github.timecraft.notifier
-Icon=com.github.Timecraft.Notifier
+Icon=com.github.timecraft.notifier
 Terminal=false
 
 X-GNOME-Gettext-domain=notifier
