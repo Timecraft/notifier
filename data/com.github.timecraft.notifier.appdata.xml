@@ -11,6 +11,7 @@
 
   <developer_name>Timecraft</developer_name>
   <provides>com.github.timecraft.notifier</provides>
+  <provides>com.github.timecraft.notifier-daemon</provides>
 
   <description>
     <p>Get notified of what to do and when to do it</p>
@@ -38,13 +39,12 @@
     </screenshot>
   </screenshots>
 
-
-<releases>
-  <release version="0.1.0" date="2018-04-15">
-    <description>
-      <p>Initial Release to AppCenter</p>
-    </description>
-  </release>
-</releases>
+  <releases>
+    <release version="0.1.0" date="2018-04-15">
+      <description>
+        <p>Initial Release to AppCenter</p>
+      </description>
+    </release>
+  </releases>
 
 </component>
