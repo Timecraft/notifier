@@ -1,7 +1,7 @@
 
-set (PKGDATADIR "${DATADIR}/com.github.Timecraft.Notifier")
-set (EXEC_NAME "com.github.Timecraft.Notifier")
-set (EXEC_NAME_DAEMON "com.github.Timecraft.Notifier-daemon")
+set (PKGDATADIR "${DATADIR}/com.github.timecraft.notifier")
+set (EXEC_NAME "com.github.timecraft.notifier")
+set (EXEC_NAME_DAEMON "com.github.timecraft.notifier-daemon")
 
 
 
@@ -30,8 +30,8 @@ PACKAGES
         gtk+-3.0
         sqlite3
         glib-2.0
-        
+
     )
-    
+
 add_executable(${EXEC_NAME_DAEMON} ${VALA_C})
 install (TARGETS ${EXEC_NAME_DAEMON} RUNTIME DESTINATION bin)

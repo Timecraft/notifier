@@ -1,8 +1,8 @@
   # project name
-    project (Notifier)
-    
+    project (notifier)
+
     #some variables
-set (GIT_PREFIX com.github.Timecraft.)
+set (GIT_PREFIX com.github.timecraft.)
 set (GETTEXT_PACKAGE ${CMAKE_PROJECT_NAME})
 set (EXEC_NAME ${GIT_PREFIX}${CMAKE_PROJECT_NAME})
 set (DAEMON_EXEC_NAME ${GIT_PREFIX}${CMAKE_PROJECT_NAME}-daemon)
@@ -46,7 +46,7 @@ set (CPACK_SOURCE_IGNORE_FILES "/build/;/.bzr/;/.bzrignore;~$;${CPACK_SOURCE_IGN
     set (RELEASE_NAME "A Reminders app")
     set (VERSION "0.1")
     set (VERSION_INFO "Initial Release")
-    
+
     #configuration file
 configure_file (${CMAKE_SOURCE_DIR}/src/Config.vala.cmake ${CMAKE_SOURCE_DIR}/src/Config.vala)
 
@@ -60,7 +60,7 @@ add_definitions(-w) # Disable gcc warnings
 
     # now let's actually check for the required dependencies
     pkg_check_modules(DEPS REQUIRED gtk+-3.0)
-    
+
 pkg_check_modules(SQLITE3 REQUIRED sqlite3)
 set(CFLAGS
     ${SQLITE3_CFLAGS} ${SQLITE3_CFLAGS_OTHER} )
@@ -68,7 +68,7 @@ add_definitions(${CFLAGS})
 
 set(LIBS
     ${SQLITE3_LIBRARIES}
-    )    
+    )
 link_libraries(${LIBS})
 
 set(LIB_PATHS
@@ -99,9 +99,9 @@ link_directories(${LIB_PATHS})
         sqlite3
 
     )
-    
+
     #some other necessary things
-    
+
 set(NORMAL_CFLAGS ${DEPS_CFLAGS} ${LIBSOURCE_CFLAGS} ${GCONF_CFLAGS})
 set(NORMAL_LINK_DIRS ${DEPS_LIBRARY_DIRS} ${LIBSOURCE_LIBRARY_DIRS} ${GCONF_LIBRARY_DIRS})
 set(NORMAL_LIBRARIES ${DEPS_LIBRARIES} ${LIBSOURCE_LIBRARIES} ${GCONF_LIBRARIES})
@@ -115,35 +115,35 @@ link_directories (${DEPS_LIBRARY_DIRS} ${LIBSOURCE_LIBRARY_DIRS} ${GCONF_LIBRARY
 include_directories(${CMAKE_BINARY_DIR}/src)
     # tell cmake what to call the executable we just made
     add_executable(${EXEC_NAME} ${VALA_C})
-    
+
     # install the binaries we just made
     install (TARGETS ${EXEC_NAME} RUNTIME DESTINATION bin)
-    
-    
-    
+
+
+
     #install daemon .desktop
     install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.Timecraft.Notifier-daemon.desktop DESTINATION /etc/xdg/autostart)
 
     #install icons
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/16/com.github.Timecraft.Notifier.svg"
   DESTINATION share/icons/hicolor/16x16/apps)
-  
+
    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/32/com.github.Timecraft.Notifier.svg"
   DESTINATION share/icons/hicolor/32x32/apps)
 
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/64/com.github.Timecraft.Notifier.svg"
   DESTINATION share/icons/hicolor/64x64/apps)
-  
+
   install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/128/com.github.Timecraft.Notifier.svg"
   DESTINATION share/icons/hicolor/128x128/apps)
-  
+
   install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/256/com.github.Timecraft.Notifier.svg"
   DESTINATION share/icons/hicolor/128x128/apps)
-  
-  
+
+
     # install our .desktop file so the Applications Menu will see it
     install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.Timecraft.Notifier.desktop DESTINATION ${DATADIR}/applications/)
     # install our .appdata.xml file so AppCenter will see it
     install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.Timecraft.Notifier.appdata.xml DESTINATION ${DATADIR}/metainfo/)
-    
+
 add_subdirectory(src)
