@@ -24,7 +24,7 @@ pkg_check_modules(DEPS REQUIRED gtk+-3.0 sqlite3 glib-2.0)
  include(ValaPrecompile)
     vala_precompile(VALA_C ${EXEC_NAME_DAEMON}
 
-        Notifier-daemon.vala
+        notifier-daemon.vala
        # config.vala
 PACKAGES
         gtk+-3.0

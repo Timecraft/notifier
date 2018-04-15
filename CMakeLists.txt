@@ -90,7 +90,7 @@ link_directories(${LIB_PATHS})
     # files we want to compile
     include(ValaPrecompile)
     vala_precompile(VALA_C ${EXEC_NAME}
-        src/Notifier.vala
+        src/notifier.vala
 
 
     # tell what libraries to use when compiling
