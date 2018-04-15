@@ -40,9 +40,9 @@ set (CPACK_SOURCE_IGNORE_FILES "/build/;/.bzr/;/.bzrignore;~$;${CPACK_SOURCE_IGN
     set (DATADIR "${CMAKE_INSTALL_PREFIX}/share")
 
     # what to call that directory where we install data too
-    set (PKGDATADIR "${DATADIR}/com.github.Timecraft.Notifier")
+    set (PKGDATADIR "${DATADIR}/com.github.timecraft.notifier")
 
-    set (EXEC_NAME "com.github.Timecraft.Notifier")
+    set (EXEC_NAME "com.github.timecraft.notifier")
     set (RELEASE_NAME "A Reminders app")
     set (VERSION "0.1")
     set (VERSION_INFO "Initial Release")
@@ -122,28 +122,28 @@ include_directories(${CMAKE_BINARY_DIR}/src)
 
 
     #install daemon .desktop
-    install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.Timecraft.Notifier-daemon.desktop DESTINATION /etc/xdg/autostart)
+    install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.timecraft.notifier-daemon.desktop DESTINATION /etc/xdg/autostart)
 
     #install icons
-    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/16/com.github.Timecraft.Notifier.svg"
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/16/com.github.timecraft.notifier.svg"
   DESTINATION share/icons/hicolor/16x16/apps)
 
-   install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/32/com.github.Timecraft.Notifier.svg"
+   install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/32/com.github.timecraft.notifier.svg"
   DESTINATION share/icons/hicolor/32x32/apps)
 
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/64/com.github.Timecraft.Notifier.svg"
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/64/com.github.timecraft.notifier.svg"
   DESTINATION share/icons/hicolor/64x64/apps)
 
-  install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/128/com.github.Timecraft.Notifier.svg"
+  install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/128/com.github.timecraft.notifier.svg"
   DESTINATION share/icons/hicolor/128x128/apps)
 
-  install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/256/com.github.Timecraft.Notifier.svg"
+  install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/256/com.github.timecraft.notifier.svg"
   DESTINATION share/icons/hicolor/128x128/apps)
 
 
     # install our .desktop file so the Applications Menu will see it
-    install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.Timecraft.Notifier.desktop DESTINATION ${DATADIR}/applications/)
+    install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.timecraft.notifier.desktop DESTINATION ${DATADIR}/applications/)
     # install our .appdata.xml file so AppCenter will see it
-    install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.Timecraft.Notifier.appdata.xml DESTINATION ${DATADIR}/metainfo/)
+    install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.timecraft.notifier.appdata.xml DESTINATION ${DATADIR}/metainfo/)
 
 add_subdirectory(src)
