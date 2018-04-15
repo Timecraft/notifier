@@ -125,19 +125,19 @@ include_directories(${CMAKE_BINARY_DIR}/src)
     install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.timecraft.notifier-daemon.desktop DESTINATION /etc/xdg/autostart)
 
     #install icons
-    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/16/com.github.Timecraft.Notifier.svg"
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/16/com.github.timecraft.notifier.svg"
   DESTINATION share/icons/hicolor/16x16/apps)
 
-   install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/32/com.github.Timecraft.Notifier.svg"
+   install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/32/com.github.timecraft.notifier.svg"
   DESTINATION share/icons/hicolor/32x32/apps)
 
-install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/64/com.github.Timecraft.Notifier.svg"
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/64/com.github.timecraft.notifier.svg"
   DESTINATION share/icons/hicolor/64x64/apps)
 
-  install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/128/com.github.Timecraft.Notifier.svg"
+  install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/128/com.github.timecraft.notifier.svg"
   DESTINATION share/icons/hicolor/128x128/apps)
 
-  install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/256/com.github.Timecraft.Notifier.svg"
+  install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/256/com.github.timecraft.notifier.svg"
   DESTINATION share/icons/hicolor/128x128/apps)
 
 
