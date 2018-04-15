@@ -3,7 +3,7 @@
 <component type="desktop">
   <id>com.github.timecraft.notifier.desktop</id>
 
-  <metadata_license>CC0-1.0</metadata_license>
+  <metadata_license>CC0</metadata_license>
   <project_license>GPL-3.0+</project_license>
 
   <name>Notifier</name>
@@ -37,7 +37,7 @@
       <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/NewReminder.png</image>
     </screenshot>
   </screenshots>
-</component>
+
 
 <releases>
   <release version="0.1" date="2018-04-14">
@@ -46,3 +46,5 @@
     </description>
   </release>
 </releases>
+
+</component>
