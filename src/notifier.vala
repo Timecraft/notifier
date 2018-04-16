@@ -140,6 +140,7 @@ protected override void activate () {
         var newrembtn = new Gtk.Button ();
         newrembtn.set_image (new Gtk.Image.from_icon_name ("add",Gtk.IconSize.LARGE_TOOLBAR));
         newrembtn.tooltip_text = _("Add a new reminder");
+
         bar.pack_end (newrembtn);
         bar.set_title (_("Notifier"));
         bar.show_close_button = true;
@@ -175,6 +176,9 @@ protected override void activate () {
 
         //load reminders from database
         while (countstmt.step () == Sqlite.ROW) {
+
+                layout.attach (new Gtk.Label (" "),1,spc,1,1);
+                spc++;
 
 
                 layout.insert_row (spc);
@@ -241,7 +245,9 @@ protected override void activate () {
                 layout.attach (new Gtk.Label (_("")),4,spc,1,1);
                 layout.attach (new Gtk.Label (_(year + " " + monthn + " " + day + " ")),5,spc,1,1);
                 layout.attach (new Gtk.Label (time),6,spc,1,1);
+                layout.attach (new Gtk.Label (" "),7,spc,1,1);
                 b++;
+                spc++;
                 spc++;
                 rows = 3;
                 //Onto the next database row, if any
@@ -260,6 +266,7 @@ protected override void activate () {
         //create new reminder
         newrembtn.clicked.connect ( () => {
                         spc++;
+
                         //setup new reminder prompt UI
                         var newrem = new Gtk.Window ();
                         var newbar = new Gtk.HeaderBar ();
@@ -365,6 +372,8 @@ protected override void activate () {
                         });
                         //saves new reminder
                         newremsave.clicked.connect ( () => {
+                                layout.attach (new Gtk.Label (" "),1,spc,1,1);
+                                spc++;
                                 //clears out that "create new reminder" message
                                 rows=3;
                                 if (rows==3) {
@@ -410,6 +419,7 @@ protected override void activate () {
                                 layout.attach (new Gtk.Label (_(" ")),4,spc,1,1);
                                 layout.attach (new Gtk.Label (_(year + " " + month + " " + day + " ")),5,spc,1,1);
                                 layout.attach (new Gtk.Label (time),6,spc,1,1);
+                                layout.attach (new Gtk.Label (" "),7,spc,1,1);
                                 b++;
 
                                 //saves reminder into database
