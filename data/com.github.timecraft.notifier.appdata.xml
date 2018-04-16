@@ -7,17 +7,17 @@
   <project_license>GPL-3.0+</project_license>
 
   <name>Notifier</name>
-  <summary>Never forget to do something</summary>
+  <summary>Never forget to do something.</summary>
 
   <developer_name>Timecraft</developer_name>
   <provides>com.github.timecraft.notifier</provides>
   <provides>com.github.timecraft.notifier-daemon</provides>
 
   <description>
-    <p>Get notified of what to do and when to do it</p>
-    <p>Set the time of the reminder</p>
-    <p>Set the priority of the notification</p>
-    <p>Automatically saves your reminders</p>
+    <p>Get notified of what to do and when to do it.</p>
+    <p>Set the time of the reminder.</p>
+    <p>Set the priority of the notification.</p>
+    <p>Automatically saves your reminders.</p>
     <p>Supports closing with Ctrl + Q</p>
   </description>
 
