@@ -35,7 +35,8 @@ public notifier () {
 protected override void activate () {
 
 
-
+      /*  var provider = new Gtk.CssProvider ();
+        provider.load_from_path("com/github/timecraft/notifier/style/style.css");*/
         var window = new Gtk.ApplicationWindow (this);
         var bar = new Gtk.HeaderBar ();
 
