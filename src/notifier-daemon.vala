@@ -120,6 +120,11 @@ while (true){
 
                           db.exec("VACUUM",null, out errmsg);
 
+                          //here will go the piece of the script that will handle the timing
+
+
+
+                          //marks the reminder as 'complete'
                           var makecomplete = "UPDATE Reminders SET Complete = 'true' WHERE rowid = ?;";
                           db.prepare_v2 (makecomplete,-1,out makecom);
                           makecom.bind_int64 (1,bv);
