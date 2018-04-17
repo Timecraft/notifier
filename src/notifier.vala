@@ -78,7 +78,8 @@ protected override void activate () {
               Hour			INTEGER         ,
               Minute		INTEGER         ,
               Priority		INTEGER     ,
-              Description TEXT
+              Description TEXT        ,
+              Timing TEXT
                           );
             ";
                         //checking for errors
@@ -110,6 +111,22 @@ protected override void activate () {
                         if (data != Sqlite.OK) {
                                 stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
                         }
+                        /*Since this is a new update and users who have the app will have
+                        the database but not the timing column, we're going to check to see if it exists.
+                        If it does not, we'll alter the table to have that column.
+                        */
+                        var timingstmt = "SELECT * FROM Reminders WHERE Timing;";
+                        Sqlite.Statement timingq;
+                        db.prepare_v2 (timingstmt,-1,out timingq);
+                        if (timingq.step () != Sqlite.OK) {
+                          Sqlite.Statement ctq;
+                          var ctstmt = "ALTER TABLE Reminders ADD COLUMN Timing";
+                          db.prepare_v2 (ctstmt,-1,out ctq);
+
+                          if (ctq.step () != Sqlite.OK) {
+                            stderr.printf (_("Unable to add TIMING column"));
+                          }
+                        }
 
                 }finally { /*do what?*/}
         }
@@ -134,6 +151,10 @@ protected override void activate () {
         layout.insert_column (4);
         layout.insert_column (5);
         layout.insert_column (6);
+        layout.insert_column (7);
+        layout.insert_column (8);
+        layout.insert_column (9);
+        layout.insert_column (10);
 
         //sets up main UI
 
@@ -155,6 +176,7 @@ protected override void activate () {
         layout.attach (new Gtk.Label (_("\tDescription\t")),2,1,1,1);
         layout.attach (new Gtk.Label (_("\tPriority\t")),3,1,1,1);
         layout.attach (new Gtk.Label (_("\tTime\t")),5,1,4,1);
+        layout.attach (new Gtk.Label (_("\tFrequency\t")),9,1,1,1);
 
 
         int lngth = checkbtn.length - 1;
@@ -234,6 +256,9 @@ protected override void activate () {
 
                 string description = countstmt.column_value (8).to_text ();
 
+                string timing = countstmt.column_value (9).to_text ();
+
+
                 string prior = countstmt.column_value (7).to_text ();
 
                 checkbtn += new Gtk.CheckButton ();
@@ -246,7 +271,8 @@ protected override void activate () {
                 layout.attach (new Gtk.Label (_("")),4,spc,1,1);
                 layout.attach (new Gtk.Label (_(year + " " + monthn + " " + day + " ")),5,spc,1,1);
                 layout.attach (new Gtk.Label (time),6,spc,1,1);
-                layout.attach (new Gtk.Label (" "),7,spc,1,1);
+                layout.attach (new Gtk.Label (" "),10,spc,1,1);
+                layout.attach (new Gtk.Label (timing),9,spc,1,1);
                 b++;
                 spc++;
                 spc++;
@@ -259,7 +285,7 @@ protected override void activate () {
         }
         //You have no reminders!
         if (rows==1) {
-                layout.attach (new Gtk.Label (_("Create a new Reminder!")),2,2,2,1);
+                layout.attach (new Gtk.Label (_("Create a new Reminder!")),3,2,2,1);
 
         }
 
@@ -267,6 +293,7 @@ protected override void activate () {
         //create new reminder
         newrembtn.clicked.connect ( () => {
                         spc++;
+
 
                         //setup new reminder prompt UI
                         var newrem = new Gtk.Window ();
@@ -283,6 +310,15 @@ protected override void activate () {
                         var newremmonth = new Gtk.SpinButton.with_range (1,12,1);
                         var newremday = new Gtk.SpinButton.with_range (1,31,1);
                         var newremprior = new Gtk.SpinButton.with_range (0,3,1);
+                        var newremtime = new Gtk.SpinButton.with_range (0,3,1);
+
+
+                        newremmonth.set_wrap (true);
+                        newremday.set_wrap (true);
+                        newremhour.set_wrap (true);
+                        newremmin.set_wrap (true);
+                        newremtime.set_wrap (true);
+
                         var newremcanc = new Gtk.Button.with_label (_("Cancel"));
                         var newremsave = new Gtk.Button.with_label (_("Save"));
                         var newremgrid = new Gtk.Grid ();
@@ -297,6 +333,7 @@ protected override void activate () {
                         newremgrid.attach (new Gtk.Label (_("Day")),4,1,1,1);
                         newremgrid.insert_column(7);
                         newremgrid.attach (new Gtk.Label (_("Priority")),7,0,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Frequency")),8,0,1,1);
                         newremgrid.attach (newremname,0,2,1,1);
                         newremgrid.attach (newremdesc,1,2,1,1);
                         newremgrid.attach (newremyear,2,2,1,1);
@@ -305,7 +342,19 @@ protected override void activate () {
                         newremgrid.attach (newremhour,5,2,1,1);
                         newremgrid.attach (newremmin,6,2,1,1);
                         newremgrid.attach (newremprior,7,2,1,1);
+                        newremgrid.attach (newremtime,8,2,1,1);
 
+                        var timename = new Gtk.Label ("None");
+                        newremgrid.attach (timename,8,3,1,1);
+                        newremtime.value_changed.connect ( () => {
+                          switch (newremtime.get_value_as_int ()){
+                            case 0: timename.set_text ("None"); break;
+                            case 1: timename.set_text ("Daily"); break;
+                          //case 2: timename.set_text ("Weekly"); break;
+                            case 2: timename.set_text ("Monthly"); break;
+                            case 3: timename.set_text ("Yearly"); break;
+                          }
+                          });
                         var monthname = new Gtk.Label (_("January"));
 
                         newremgrid.attach (monthname,3,3,1,1);
@@ -408,6 +457,7 @@ protected override void activate () {
                                 string month = monthname.get_text ();
                                 string day = newremday.get_value ().to_string ();
                                 string prior = newremprior.get_value ().to_string ();
+                                string frequency = timename.get_text ();
 
 
                                 //makes reminder visible in main window
@@ -421,6 +471,7 @@ protected override void activate () {
                                 layout.attach (new Gtk.Label (_(year + " " + month + " " + day + " ")),5,spc,1,1);
                                 layout.attach (new Gtk.Label (time),6,spc,1,1);
                                 layout.attach (new Gtk.Label (" "),7,spc,1,1);
+                                layout.attach (new Gtk.Label (frequency),9,spc,1,1);
                                 b++;
 
                                 //saves reminder into database
@@ -439,7 +490,7 @@ protected override void activate () {
                                 //open, prep, error trap
                                 Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db3);
 
-                                string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority,Description) VALUES (?,?,?,?,?,?,?,?,?);";
+                                string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority,Description,Timing) VALUES (?,?,?,?,?,?,?,?,?,?);";
                                 int res = db3.prepare_v2 (savequery,-1,out save);
                                 if (res != Sqlite.OK) {
                                         stderr.printf (_("Error: %d: %s\n"), db3.errcode (), db3.errmsg ());
@@ -488,6 +539,9 @@ protected override void activate () {
                                 colmn = 9;
 
                                 save.bind_text (colmn,description);
+                                colmn=10;
+
+                                save.bind_text (colmn, frequency);
 
 
                                 //save and clear

@@ -88,6 +88,7 @@ while (true){
                 int min = countstmt.column_value (6).to_int ();
 
 
+                string frequency = countstmt.column_value (9).to_text ();
 
 
 
@@ -114,30 +115,160 @@ while (true){
                           this.send_notification ("com.github.Timecraft.Notifier",notification);
 
 
+                          switch (frequency) {
+                            case "None": //no repeats of this reminder
+                            Sqlite.Statement makecom;
+                            string errmsg;
 
-                          Sqlite.Statement makecom;
-                          string errmsg;
+                            db.exec("VACUUM",null, out errmsg);
 
-                          db.exec("VACUUM",null, out errmsg);
-
-                          //here will go the piece of the script that will handle the timing
-
-
-
-                          //marks the reminder as 'complete'
-                          var makecomplete = "UPDATE Reminders SET Complete = 'true' WHERE rowid = ?;";
-                          db.prepare_v2 (makecomplete,-1,out makecom);
-                          makecom.bind_int64 (1,bv);
-
-                          makecom.step ();
-                          makecom.reset ();
+                            //here will go the piece of the script that will handle the timing
 
 
-                          Sqlite.Statement del;
-                          var deletecomplete = "DELETE FROM Reminders WHERE (Complete = 'true');";
-                          db.prepare_v2 (deletecomplete,-1,out del);
-                          del.step ();
-                          del.reset ();
+
+                            //marks the reminder as 'complete'
+                            var makecomplete = "UPDATE Reminders SET Complete = 'true' WHERE rowid = ?;";
+                            db.prepare_v2 (makecomplete,-1,out makecom);
+                            makecom.bind_int64 (1,bv);
+                            makecom.step ();
+                            makecom.reset ();
+                            Sqlite.Statement del;
+                            var deletecomplete = "DELETE FROM Reminders WHERE (Complete = 'true');";
+                            db.prepare_v2 (deletecomplete,-1,out del);
+                            del.step ();
+                            del.reset ();
+                            break;
+
+                            case "Daily": //Daily repeats
+                            Sqlite.Statement makecom;
+                            string errmsg;
+
+                            db.exec("VACUUM",null, out errmsg);
+
+                            //here will go the piece of the script that will handle the timing
+
+
+
+                            //marks the reminder as 'complete'
+                            var makecomplete = "UPDATE Reminders SET Day = ? WHERE rowid = ?;";
+                            db.prepare_v2 (makecomplete,-1,out makecom);
+                            today++;
+                            makecom.bind_int64 (1,today);
+                            makecom.bind_int64 (2,bv);
+                            makecom.step ();
+                            makecom.reset ();
+
+                            //make sure that the year is "this year", otherwise the reminder will be going forever, basically.
+                            makecomplete = "UPDATE Reminders SET Year = ? WHERE rowid = ?;";
+                            db.prepare_v2 (makecomplete,-1,out makecom);
+
+                            makecom.bind_int64 (1,thisyear);
+                            makecom.bind_int64 (2,bv);
+                            makecom.step ();
+                            makecom.reset ();
+
+                            //similarly with the year thing
+                            makecomplete = "UPDATE Reminders SET Month = ? WHERE rowid = ?;";
+                            db.prepare_v2 (makecomplete,-1,out makecom);
+
+                            makecom.bind_int64 (1,thismonth);
+                            makecom.bind_int64 (2,bv);
+                            makecom.step ();
+                            makecom.reset ();
+
+                            Sqlite.Statement del;
+                            var deletecomplete = "DELETE FROM Reminders WHERE (Complete = 'true');";
+                            db.prepare_v2 (deletecomplete,-1,out del);
+                            del.step ();
+                            del.reset ();
+                            break;
+
+                          /*  case "Weekly": //Weekly reminders
+                            Sqlite.Statement makecom;
+                            string errmsg;
+
+                            db.exec("VACUUM",null, out errmsg);
+
+                            //here will go the piece of the script that will handle the timing
+
+
+
+                            //marks the reminder as 'complete'
+                            var makecomplete = "UPDATE Reminders SET Day = ? WHERE rowid = ?;";
+                            db.prepare_v2 (makecomplete,-1,out makecom);
+                            day += 7;
+
+                            makecom.bind_int64 (1,day);
+                            makecom.bind_int64 (2,bv);
+                            makecom.step ();
+                            makecom.reset ();
+                            Sqlite.Statement del;
+                            var deletecomplete = "DELETE FROM Reminders WHERE (Complete = 'true');";
+                            db.prepare_v2 (deletecomplete,-1,out del);
+                            del.step ();
+                            del.reset ();
+                            break;*/
+
+
+                            case "Monthly": //monthly reminder
+                            Sqlite.Statement makecom;
+                            string errmsg;
+
+                            db.exec("VACUUM",null, out errmsg);
+
+                            //here will go the piece of the script that will handle the timing
+
+
+
+                            //marks the reminder as 'complete'
+                            var makecomplete = "UPDATE Reminders SET Month = ? WHERE rowid = ?;";
+                            db.prepare_v2 (makecomplete,-1,out makecom);
+                            thismonth ++;
+                            makecom.bind_int64 (1,month);
+                            makecom.bind_int64 (2,bv);
+                            makecom.step ();
+                            makecom.reset ();
+
+                            makecomplete = "UPDATE Reminders SET Year = ? WHERE rowid = ?;";
+                            db.prepare_v2 (makecomplete,-1,out makecom);
+
+                            makecom.bind_int64 (1,thisyear);
+                            makecom.bind_int64 (2,bv);
+                            makecom.step ();
+                            makecom.reset ();
+                            Sqlite.Statement del;
+                            var deletecomplete = "DELETE FROM Reminders WHERE (Complete = 'true');";
+                            db.prepare_v2 (deletecomplete,-1,out del);
+                            del.step ();
+                            del.reset ();
+                            break;
+
+                            case "Yearly": //yearly reminder
+                            Sqlite.Statement makecom;
+                            string errmsg;
+
+                            db.exec("VACUUM",null, out errmsg);
+
+                            //here will go the piece of the script that will handle the timing
+
+
+
+                            //marks the reminder as 'complete'
+                            var makecomplete = "UPDATE Reminders SET Year = ? WHERE rowid = ?;";
+                            db.prepare_v2 (makecomplete,-1,out makecom);
+                            thisyear ++;
+                            makecom.bind_int64 (1,year);
+                            makecom.bind_int64 (2,bv);
+                            makecom.step ();
+                            makecom.reset ();
+                            Sqlite.Statement del;
+                            var deletecomplete = "DELETE FROM Reminders WHERE (Complete = 'true');";
+                            db.prepare_v2 (deletecomplete,-1,out del);
+                            del.step ();
+                            del.reset ();
+                            break;
+                          }
+
                         }
                       }
                     }
