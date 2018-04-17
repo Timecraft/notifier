@@ -255,7 +255,7 @@ protected override void activate () {
                 string day = countstmt.column_value (4).to_text ();
 
                 string description = countstmt.column_value (8).to_text ();
-
+                Sqlite.Statement notimeupd;
                 string timing = countstmt.column_value (9).to_text ();
                 if (timing == ""){
                   timing="None";
