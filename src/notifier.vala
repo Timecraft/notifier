@@ -259,7 +259,7 @@ protected override void activate () {
                 string timing = countstmt.column_value (9).to_text ();
                 if (timing == ""){
                   timing="None";
-                  notime = "UPDATE Reminders SET Timing = 'None' WHERE rowid = ?;";
+                  string notime = "UPDATE Reminders SET Timing = 'None' WHERE rowid = ?;";
                   db.prepare_v2 (notime,-1,out notimeupd);
                   notimeupd.bind_int64(1,bv);
                   notimeupd.step ();
