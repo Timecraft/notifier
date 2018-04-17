@@ -47,7 +47,10 @@
       <description>
         <p>Minor UI improvements</p>
         <p>Changed App icon</p>
+        <p>Added support for reminder frequencies. Please note that this will require a restart to initiate.</p>
+
         <p>Up to date with the github release</p>
+
       </release>
 
       <release version="0.1.0" date="2018-04-15">
