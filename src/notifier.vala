@@ -257,6 +257,15 @@ protected override void activate () {
                 string description = countstmt.column_value (8).to_text ();
 
                 string timing = countstmt.column_value (9).to_text ();
+                if (timing == ""){
+                  timing="None";
+                  notime = "UPDATE Reminders SET Timing = 'None' WHERE rowid = ?;";
+                  db.prepare_v2 (notime,-1,out notimeupd);
+                  notimeupd.bind_int64(1,bv);
+                  notimeupd.step ();
+                  notimeupd.reset ();
+                  notimeupd.clear_bindings ();
+                }
 
 
                 string prior = countstmt.column_value (7).to_text ();
