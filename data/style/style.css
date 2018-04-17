@@ -23,7 +23,3 @@
 @define-color black #000000;
 @define-color whiteElementary #FAFAFA;
 @define-color blackElementary #333333;
-
-.progress_bar.progressbar {
-    background: @colorPrimary;
-}
