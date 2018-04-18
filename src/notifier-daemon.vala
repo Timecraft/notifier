@@ -30,7 +30,7 @@ public class NotifierDaemon : GLib.Application {
 
 
 public NotifierDaemon () {
-        Object (application_id: "com.github.Timecraft.Notifier", flags : ApplicationFlags.NON_UNIQUE);
+        Object (application_id: "com.github.timecraft.notifier", flags : ApplicationFlags.NON_UNIQUE);
         set_inactivity_timeout (1000);
 }
 
