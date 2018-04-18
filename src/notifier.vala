@@ -171,12 +171,13 @@ protected override void activate () {
 
 
 
-        layout.row_spacing = 5;
+        layout.row_spacing = 10;
         layout.attach (new Gtk.Label (_("\tName\t")),1,1,1,1);
-        layout.attach (new Gtk.Label (_("\tDescription\t")),2,1,1,1);
-        layout.attach (new Gtk.Label (_("\tPriority\t")),3,1,1,1);
-        layout.attach (new Gtk.Label (_("\tTime\t")),5,1,4,1);
-        layout.attach (new Gtk.Label (_("\tFrequency\t")),9,1,1,1);
+        layout.attach (new Gtk.Label ("\t"),2,1,1,1);
+        layout.attach (new Gtk.Label (_("\tDescription\t")),3,1,1,1);
+        layout.attach (new Gtk.Label (_("\tPriority\t")),4,1,1,1);
+        layout.attach (new Gtk.Label (_("\tTime\t")),6,1,4,1);
+        layout.attach (new Gtk.Label (_("\tFrequency\t")),10,1,1,1);
 
 
         int lngth = checkbtn.length - 1;
@@ -275,13 +276,13 @@ protected override void activate () {
                 //adding to the UI
                 layout.attach (checkbtn[b],0,spc,1,1);
                 layout.attach (new Gtk.Label (name),1,spc,1,1);
-                layout.attach (new Gtk.Label (description),2,spc,1,1);
-                layout.attach (new Gtk.Label (prior),3,spc,1,1);
-                layout.attach (new Gtk.Label (_("")),4,spc,1,1);
+                layout.attach (new Gtk.Label (description),3,spc,1,1);
+                layout.attach (new Gtk.Label (prior),4,spc,1,1);
+                layout.attach (new Gtk.Label (_("")),5,spc,1,1);
                 layout.attach (new Gtk.Label (_(year + " " + monthn + " " + day + " ")),5,spc,1,1);
-                layout.attach (new Gtk.Label (time),6,spc,1,1);
-                layout.attach (new Gtk.Label (" "),10,spc,1,1);
-                layout.attach (new Gtk.Label (timing),9,spc,1,1);
+                layout.attach (new Gtk.Label (time),7,spc,1,1);
+                layout.attach (new Gtk.Label (" "),11,spc,1,1);
+                layout.attach (new Gtk.Label (timing),10,spc,1,1);
                 b++;
                 spc++;
                 spc++;
@@ -294,7 +295,7 @@ protected override void activate () {
         }
         //You have no reminders!
         if (rows==1) {
-                layout.attach (new Gtk.Label (_("Create a new Reminder!")),3,2,2,1);
+                layout.attach (new Gtk.Label (_("Create a new Reminder!")),4,2,2,1);
 
         }
 
@@ -474,13 +475,13 @@ protected override void activate () {
                                 lngth = checkbtn.length - 1;
                                 layout.attach (checkbtn[b],0,spc,1,1);
                                 layout.attach (new Gtk.Label (newremname.get_text ()),1,spc,1,1);
-                                layout.attach (new Gtk.Label (newremdesc.get_text ()),2,spc,1,1);
-                                layout.attach (new Gtk.Label (prior),3,spc,1,1);
-                                layout.attach (new Gtk.Label (_(" ")),4,spc,1,1);
-                                layout.attach (new Gtk.Label (_(year + " " + month + " " + day + " ")),5,spc,1,1);
-                                layout.attach (new Gtk.Label (time),6,spc,1,1);
-                                layout.attach (new Gtk.Label (" "),7,spc,1,1);
-                                layout.attach (new Gtk.Label (frequency),9,spc,1,1);
+                                layout.attach (new Gtk.Label (newremdesc.get_text ()),3,spc,1,1);
+                                layout.attach (new Gtk.Label (prior),4,spc,1,1);
+                                layout.attach (new Gtk.Label (_(" ")),5,spc,1,1);
+                                layout.attach (new Gtk.Label (_(year + " " + month + " " + day + " ")),6,spc,1,1);
+                                layout.attach (new Gtk.Label (time),7,spc,1,1);
+                                layout.attach (new Gtk.Label (" "),8,spc,1,1);
+                                layout.attach (new Gtk.Label (frequency),10,spc,1,1);
                                 b++;
 
                                 //saves reminder into database
