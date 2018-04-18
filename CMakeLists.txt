@@ -146,4 +146,6 @@ install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/64/com.github.timecraft.no
     # install our .appdata.xml file so AppCenter will see it
     install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.timecraft.notifier.appdata.xml DESTINATION ${DATADIR}/metainfo/)
 
+    #install styles
+    install (DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/data/style/ DESTINATION ${PKG_DATADIR}/style)
 add_subdirectory(src)
