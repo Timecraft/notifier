@@ -315,7 +315,7 @@ protected override void activate () {
                         var newremdesc = new Gtk.Entry ();
                         var newremyear = new Gtk.SpinButton.with_range (rn.get_year (),9999,1);
                         var newremhour = new Gtk.SpinButton.with_range (0,23,1);
-                        var newremmin = new Gtk.SpinButton.with_range (0,60,5);
+                        var newremmin = new Gtk.SpinButton.with_range (0,59,5);
                         var newremmonth = new Gtk.SpinButton.with_range (1,12,1);
                         var newremday = new Gtk.SpinButton.with_range (1,31,1);
                         var newremprior = new Gtk.SpinButton.with_range (0,3,1);
@@ -496,7 +496,7 @@ protected override void activate () {
                                 var priornum = (int) newremprior.get_value ();
                                 var description = newremdesc.get_text ();
 
-                                //open, prep, error trap
+                                //open, prep, error trap, save
                                 Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db3);
 
                                 string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority,Description,Timing) VALUES (?,?,?,?,?,?,?,?,?,?);";
