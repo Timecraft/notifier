@@ -60,6 +60,7 @@ add_definitions(-w) # Disable gcc warnings
 
     # now let's actually check for the required dependencies
     pkg_check_modules(DEPS REQUIRED gtk+-3.0)
+    pkg_check_modules(DEPS REQUIRED granite)
 
 pkg_check_modules(SQLITE3 REQUIRED sqlite3)
 set(CFLAGS
@@ -76,12 +77,11 @@ set(LIB_PATHS
     )
 link_directories(${LIB_PATHS})
 
-    add_definitions(${DEPS_CFLAGS})
-    link_libraries(${DEPS_LIBRARIES})
-    link_directories(${DEPS_LIBRARY_DIRS})
+
 
     # make sure we have vala
     find_package(Vala REQUIRED)
+
     # make sure we use vala
     include(ValaVersion)
     # make sure it's the desired version of vala
@@ -95,8 +95,11 @@ link_directories(${LIB_PATHS})
 
     # tell what libraries to use when compiling
     PACKAGES
+    
         gtk+-3.0
         sqlite3
+
+
 
     )
 
