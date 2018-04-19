@@ -39,7 +39,7 @@ protected override void activate () {
 
         var window = new Gtk.ApplicationWindow (this);
         var bar = new Gtk.HeaderBar ();
-        
+
         //lets set a few variables, eh?
         int c = 0;
         int colmn = 0;
@@ -298,7 +298,7 @@ protected override void activate () {
                 layout.attach (new Gtk.Label (_("Create a new Reminder!")),4,2,2,1);
 
         }
-
+        
 
         //create new reminder
         newrembtn.clicked.connect ( () => {
@@ -426,6 +426,7 @@ protected override void activate () {
                         newremgrid.attach (newremcanc,0,4,1,1);
                         newrem.add (newremgrid);
                         newrem.show_all ();
+
                         newremcanc.clicked.connect ( () => {
                                 //user didn't want a new reminder : (
                                 newrem.destroy ();
