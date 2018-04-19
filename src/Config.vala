@@ -17,13 +17,13 @@
 */
 
 namespace Constants {
-	public const string DATADIR = "/usr/local/share";
-	public const string PKG_DATADIR = "/usr/local/share/notifier";
+	public const string DATADIR = "/usr/share";
+	public const string PKG_DATADIR = "/usr/share/notifier";
 	public const string GETTEXT_PACKAGE = "notifier";
 	public const string RELEASE_NAME = "A Reminders app";
 	public const string VERSION = "0.1.2";
 	public const string VERSION_INFO = "Minor UI update";
-	public const string INSTALL_PREFIX = "/usr/local";
+	public const string INSTALL_PREFIX = "/usr";
     public const string APP_NAME = "Notifier";
 	public const string EXEC_NAME = "com.github.timecraft.notifier";
 	public const string ICON_NAME = "notifier";

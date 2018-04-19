@@ -30,6 +30,8 @@ PACKAGES
         gtk+-3.0
         sqlite3
         glib-2.0
+				
+
 
     )
 
