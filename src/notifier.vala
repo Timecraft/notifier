@@ -320,7 +320,7 @@ protected override void activate () {
                         var newremmonth = new Gtk.SpinButton.with_range (1,12,1);
                         var newremday = new Gtk.SpinButton.with_range (1,31,1);
                         var newremprior = new Gtk.SpinButton.with_range (0,3,1);
-                        var newremtime = new Gtk.SpinButton.with_range (0,4,1);
+                        var newremtime = new Gtk.SpinButton.with_range (0,3,1);
 
 
                         newremmonth.set_wrap (true);
@@ -358,11 +358,11 @@ protected override void activate () {
                         newremgrid.attach (timename,8,3,1,1);
                         newremtime.value_changed.connect ( () => {
                           switch (newremtime.get_value_as_int ()){
-                            case 0: timename.set_text (_("None")); break;
-                            case 1: timename.set_text (_("Daily")); break;
-                            case 2: timename.set_text (_("Weekly")); break;
-                            case 3: timename.set_text (_("Monthly")); break;
-                            case 4: timename.set_text (_("Yearly")); break;
+                            case 0: timename.set_text ("None"); break;
+                            case 1: timename.set_text ("Daily"); break;
+                          //case 2: timename.set_text ("Weekly"); break;
+                            case 2: timename.set_text ("Monthly"); break;
+                            case 3: timename.set_text ("Yearly"); break;
                           }
                           });
                         var monthname = new Gtk.Label (_("January"));
@@ -371,7 +371,7 @@ protected override void activate () {
 
                         newremmonth.value_changed.connect ( () => {
                                 //human friendly string month
-                                switch ( newremmonth.get_value_as_int ()) {
+                                switch ( (int) newremmonth.get_value ()) {
                                 case 1: monthname.set_text (_("January")); break;
                                 case 2: monthname.set_text (_("February")); break;
                                 case 3: monthname.set_text (_("March")); break;
