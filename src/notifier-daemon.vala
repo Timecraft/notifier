@@ -149,30 +149,15 @@ while (true){
 
 
 
-                            //marks the reminder as 'complete'
-                            var makecomplete = "UPDATE Reminders SET Day = ? WHERE rowid = ?;";
+
+                            var makecomplete = "UPDATE Reminders SET Day = ? AND Month = ? AND Year = ? WHERE rowid = ?;";
                             db.prepare_v2 (makecomplete,-1,out makecom);
-                            today++;
-                            makecom.bind_int64 (1,today);
-                            makecom.bind_int64 (2,bv);
-                            makecom.step ();
-                            makecom.reset ();
+                            var rn2 = rn.add_days (1);
+                            makecom.bind_int64 (1,rn2.get_day_of_month ());
+                            makecom.bind_int64 (2,rn2.get_month ());
+                            makecom.bind_int64 (3,rn2.get_year ());
+                            makecom.bind_int64 (4,bv);
 
-                            //make sure that the year is "this year", otherwise the reminder will be going forever, basically.
-                            makecomplete = "UPDATE Reminders SET Year = ? WHERE rowid = ?;";
-                            db.prepare_v2 (makecomplete,-1,out makecom);
-
-                            makecom.bind_int64 (1,thisyear);
-                            makecom.bind_int64 (2,bv);
-                            makecom.step ();
-                            makecom.reset ();
-
-                            //similarly with the year thing
-                            makecomplete = "UPDATE Reminders SET Month = ? WHERE rowid = ?;";
-                            db.prepare_v2 (makecomplete,-1,out makecom);
-
-                            makecom.bind_int64 (1,thismonth);
-                            makecom.bind_int64 (2,bv);
                             makecom.step ();
                             makecom.reset ();
 
@@ -183,7 +168,10 @@ while (true){
                             del.reset ();
                             break;
 
-                          /*  case "Weekly": //Weekly reminders
+
+
+
+                            case "Weekly": //Weekly reminders
                             Sqlite.Statement makecom;
                             string errmsg;
 
@@ -194,12 +182,15 @@ while (true){
 
 
                             //marks the reminder as 'complete'
-                            var makecomplete = "UPDATE Reminders SET Day = ? WHERE rowid = ?;";
+                            var makecomplete = "UPDATE Reminders SET Day = ? AND Month = ? AND Year = ? WHERE rowid = ?;";
                             db.prepare_v2 (makecomplete,-1,out makecom);
-                            day += 7;
+                            var rn2 = rn.add_days (7);
 
-                            makecom.bind_int64 (1,day);
-                            makecom.bind_int64 (2,bv);
+
+                            makecom.bind_int64 (1,rn2.get_day_of_month ());
+                            makecom.bind_int64 (2,rn2.get_month ());
+                            makecom.bind_int64 (3,rn2.get_year ());
+                            makecom.bind_int64 (4,bv);
                             makecom.step ();
                             makecom.reset ();
                             Sqlite.Statement del;
@@ -207,7 +198,7 @@ while (true){
                             db.prepare_v2 (deletecomplete,-1,out del);
                             del.step ();
                             del.reset ();
-                            break;*/
+                            break;
 
 
                             case "Monthly": //monthly reminder
@@ -221,19 +212,12 @@ while (true){
 
 
                             //marks the reminder as 'complete'
-                            var makecomplete = "UPDATE Reminders SET Month = ? WHERE rowid = ?;";
+                            var makecomplete = "UPDATE Reminders SET Month = ? AND Year = ? WHERE rowid = ?;";
                             db.prepare_v2 (makecomplete,-1,out makecom);
-                            thismonth ++;
-                            makecom.bind_int64 (1,month);
-                            makecom.bind_int64 (2,bv);
-                            makecom.step ();
-                            makecom.reset ();
-
-                            makecomplete = "UPDATE Reminders SET Year = ? WHERE rowid = ?;";
-                            db.prepare_v2 (makecomplete,-1,out makecom);
-
-                            makecom.bind_int64 (1,thisyear);
-                            makecom.bind_int64 (2,bv);
+                            var rn2 = rn.add_months (1);
+                            makecom.bind_int64 (1,rn2.get_month ());
+                            makecom.bind_int64 (1,rn2.get_year ());
+                            makecom.bind_int64 (3,bv);
                             makecom.step ();
                             makecom.reset ();
                             Sqlite.Statement del;
@@ -242,6 +226,9 @@ while (true){
                             del.step ();
                             del.reset ();
                             break;
+
+
+
 
                             case "Yearly": //yearly reminder
                             Sqlite.Statement makecom;
@@ -256,8 +243,8 @@ while (true){
                             //marks the reminder as 'complete'
                             var makecomplete = "UPDATE Reminders SET Year = ? WHERE rowid = ?;";
                             db.prepare_v2 (makecomplete,-1,out makecom);
-                            thisyear ++;
-                            makecom.bind_int64 (1,year);
+                            var rn2 = rn.add_years (1);
+                            makecom.bind_int64 (1,rn2.get_year ());
                             makecom.bind_int64 (2,bv);
                             makecom.step ();
                             makecom.reset ();
