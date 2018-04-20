@@ -320,7 +320,7 @@ protected override void activate () {
                         var newremmonth = new Gtk.SpinButton.with_range (1,12,1);
                         var newremday = new Gtk.SpinButton.with_range (1,31,1);
                         var newremprior = new Gtk.SpinButton.with_range (0,3,1);
-                        var newremtime = new Gtk.SpinButton.with_range (0,3,1);
+                        var newremtime = new Gtk.SpinButton.with_range (0,4,1);
 
 
                         newremmonth.set_wrap (true);
@@ -360,9 +360,9 @@ protected override void activate () {
                                 switch (newremtime.get_value_as_int ()) {
                                 case 0: timename.set_text ("None"); break;
                                 case 1: timename.set_text ("Daily"); break;
-                                //case 2: timename.set_text ("Weekly"); break;
-                                case 2: timename.set_text ("Monthly"); break;
-                                case 3: timename.set_text ("Yearly"); break;
+                                case 2: timename.set_text ("Weekly"); break;
+                                case 3: timename.set_text ("Monthly"); break;
+                                case 4: timename.set_text ("Yearly"); break;
                                 }
                         });
                         var monthname = new Gtk.Label (_("January"));
