@@ -241,6 +241,7 @@ protected override void activate () {
 
 
 
+
                                                                         var rn2 = rn.add_days (7);
 
 
@@ -275,17 +276,17 @@ protected override void activate () {
 
 
                                                                         //day of reminder
-                                                                        save.bind_int64 (colmn, rn2.get_day_of_month ());
+                                                                        save.bind_int64 (colmn, countstmt.column_value (4).to_int ()+7);
                                                                         colmn = 6;
 
 
                                                                         //hour of reminder
-                                                                        save.bind_int64 (colmn,hour);
+                                                                        save.bind_int64 (colmn,countstmt.column_value (5).to_int ());
                                                                         colmn = 7;
 
 
                                                                         //and minute of reminder
-                                                                        save.bind_int64 (colmn, min);
+                                                                        save.bind_int64 (colmn, countstmt.column_value (6).to_int ());
                                                                         colmn = 8;
 
                                                                         //how important it is. determines the notification level type in the daemon
@@ -365,17 +366,19 @@ protected override void activate () {
 
 
                                                                         //day of reminder
-                                                                        save.bind_int64 (colmn, rn2.get_day_of_month ());
+                                                                        save.bind_int64 (colmn, countstmt.column_value (4).to_int ());
                                                                         colmn = 6;
 
 
+
+
                                                                         //hour of reminder
-                                                                        save.bind_int64 (colmn,hour);
+                                                                        save.bind_int64 (colmn,countstmt.column_value (5).to_int ());
                                                                         colmn = 7;
 
 
                                                                         //and minute of reminder
-                                                                        save.bind_int64 (colmn, min);
+                                                                        save.bind_int64 (colmn, countstmt.column_value (6).to_int ());
                                                                         colmn = 8;
 
                                                                         //how important it is. determines the notification level type in the daemon
@@ -419,7 +422,8 @@ protected override void activate () {
 
 
 
-                                                                        //marks the reminder as 'complete'
+
+
                                                                         var rn2 = rn.add_years (1);
 
 
@@ -449,12 +453,12 @@ protected override void activate () {
 
 
                                                                         //saves the month of the reminder
-                                                                        save.bind_int64 (colmn, rn2.get_month ());
+                                                                        save.bind_int64 (colmn,month);
                                                                         colmn = 5;
 
 
                                                                         //day of reminder
-                                                                        save.bind_int64 (colmn, rn2.get_day_of_month ());
+                                                                        save.bind_int64 (colmn, day);
                                                                         colmn = 6;
 
 
