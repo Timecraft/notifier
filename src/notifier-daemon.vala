@@ -63,8 +63,8 @@ protected override void activate () {
 
                 //load reminders from database
                 while (countstmt.step () == Sqlite.ROW) {
-                  int colmn = 0;
-                  Sqlite.Statement save;
+                        int colmn = 0;
+                        Sqlite.Statement save;
                         stdout.printf ("Running...\n");
 
                         //get times, prepare times
@@ -231,93 +231,93 @@ protected override void activate () {
                                                                         del.reset ();
                                                                         break;
 
-                                                                  case "Weekly": //Weekly reminders
-                                                                   Sqlite.Statement makecom;
-                                                                   string errmsg;
+                                                                case "Weekly":   //Weekly reminders
+                                                                        Sqlite.Statement makecom;
+                                                                        string errmsg;
 
-                                                                   db.exec("VACUUM",null, out errmsg);
+                                                                        db.exec("VACUUM",null, out errmsg);
 
-                                                                   //here will go the piece of the script that will handle the timing
-
-
-
-                                                                   var rn2 = rn.add_days (7);
-
-
-                                                                   string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority,Description,Timing) VALUES (?,?,?,?,?,?,?,?,?,?);";
-                                                                   int res = db.prepare_v2 (savequery,-1,out save);
-                                                                   if (res != Sqlite.OK) {
-                                                                           stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
-
-                                                                   }
-
-                                                                   colmn = 1;
-
-                                                                   //saves the completed state, false by default
-                                                                   save.bind_text (colmn, "false");
-                                                                   colmn = 2;
-
-
-                                                                   //saves name
-                                                                   save.bind_text (colmn, name);
-                                                                   colmn = 3;
+                                                                        //here will go the piece of the script that will handle the timing
 
 
 
-                                                                   //saves the year of the reminder
-                                                                   save.bind_int64 (colmn, rn2.get_year ());
-                                                                   colmn = 4;
+                                                                        var rn2 = rn.add_days (7);
 
 
-                                                                   //saves the month of the reminder
-                                                                   save.bind_int64 (colmn, rn2.get_month ());
-                                                                   colmn = 5;
+                                                                        string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority,Description,Timing) VALUES (?,?,?,?,?,?,?,?,?,?);";
+                                                                        int res = db.prepare_v2 (savequery,-1,out save);
+                                                                        if (res != Sqlite.OK) {
+                                                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
+
+                                                                        }
+
+                                                                        colmn = 1;
+
+                                                                        //saves the completed state, false by default
+                                                                        save.bind_text (colmn, "false");
+                                                                        colmn = 2;
 
 
-                                                                   //day of reminder
-                                                                   save.bind_int64 (colmn, rn2.get_day_of_month ());
-                                                                   colmn = 6;
-
-
-                                                                   //hour of reminder
-                                                                   save.bind_int64 (colmn,hour);
-                                                                   colmn = 7;
-
-
-                                                                   //and minute of reminder
-                                                                   save.bind_int64 (colmn, min);
-                                                                   colmn = 8;
-
-                                                                   //how important it is. determines the notification level type in the daemon
-                                                                   save.bind_int64 (colmn, priority);
-                                                                   colmn = 9;
-
-                                                                   save.bind_text (colmn,description);
-                                                                   colmn=10;
-
-                                                                   save.bind_text (colmn, frequency);
-
-
-                                                                   //save and clear
-                                                                   save.step ();
-                                                                   save.clear_bindings ();
-                                                                   save.reset ();
+                                                                        //saves name
+                                                                        save.bind_text (colmn, name);
+                                                                        colmn = 3;
 
 
 
-                                                                   var makecomplete = "UPDATE Reminders SET Complete = 'true' WHERE rowid = ?;";
-                                                                   db.prepare_v2 (makecomplete,-1,out makecom);
-                                                                   makecom.bind_int64 (1,bv);
-                                                                   makecom.step ();
-                                                                   makecom.reset ();
+                                                                        //saves the year of the reminder
+                                                                        save.bind_int64 (colmn, rn2.get_year ());
+                                                                        colmn = 4;
 
 
-                                                                   Sqlite.Statement del;
-                                                                   var deletecomplete = "DELETE FROM Reminders WHERE (Complete = 'true');";
-                                                                   db.prepare_v2 (deletecomplete,-1,out del);
-                                                                   del.step ();
-                                                                   del.reset ();
-                                                                   break;
+                                                                        //saves the month of the reminder
+                                                                        save.bind_int64 (colmn, rn2.get_month ());
+                                                                        colmn = 5;
+
+
+                                                                        //day of reminder
+                                                                        save.bind_int64 (colmn, rn2.get_day_of_month ());
+                                                                        colmn = 6;
+
+
+                                                                        //hour of reminder
+                                                                        save.bind_int64 (colmn,hour);
+                                                                        colmn = 7;
+
+
+                                                                        //and minute of reminder
+                                                                        save.bind_int64 (colmn, min);
+                                                                        colmn = 8;
+
+                                                                        //how important it is. determines the notification level type in the daemon
+                                                                        save.bind_int64 (colmn, priority);
+                                                                        colmn = 9;
+
+                                                                        save.bind_text (colmn,description);
+                                                                        colmn=10;
+
+                                                                        save.bind_text (colmn, frequency);
+
+
+                                                                        //save and clear
+                                                                        save.step ();
+                                                                        save.clear_bindings ();
+                                                                        save.reset ();
+
+
+
+                                                                        var makecomplete = "UPDATE Reminders SET Complete = 'true' WHERE rowid = ?;";
+                                                                        db.prepare_v2 (makecomplete,-1,out makecom);
+                                                                        makecom.bind_int64 (1,bv);
+                                                                        makecom.step ();
+                                                                        makecom.reset ();
+
+
+                                                                        Sqlite.Statement del;
+                                                                        var deletecomplete = "DELETE FROM Reminders WHERE (Complete = 'true');";
+                                                                        db.prepare_v2 (deletecomplete,-1,out del);
+                                                                        del.step ();
+                                                                        del.reset ();
+                                                                        break;
 
 
 
