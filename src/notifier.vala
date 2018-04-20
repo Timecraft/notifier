@@ -311,6 +311,7 @@ protected override void activate () {
                         newbar.set_title (_("New Reminder"));
                         newbar.show_close_button = true;
                         newrem.set_titlebar (newbar);
+
                         var newremname = new Gtk.Entry ();
                         var rn = new GLib.DateTime.now_local ();
                         var newremdesc = new Gtk.Entry ();
@@ -329,9 +330,12 @@ protected override void activate () {
                         newremmin.set_wrap (true);
                         newremtime.set_wrap (true);
 
-                        var newremcanc = new Gtk.Button.with_label (_("Cancel"));
-                        var newremsave = new Gtk.Button.with_label (_("Save"));
+
+                        var newremsave = new Gtk.Button ();
                         var newremgrid = new Gtk.Grid ();
+                        newremsave.set_image (new Gtk.Image.from_icon_name ("gtk-floppy",Gtk.IconSize.LARGE_TOOLBAR));
+                        newremsave.tooltip_text = _("Save reminder");
+                        newbar.pack_end (newremsave);
                         newremgrid.set_halign (Gtk.Align.CENTER);
                         newremgrid.attach (new Gtk.Label (_("Reminder Name")),0,0,1,1);
                         newremgrid.attach (new Gtk.Label (_("Remind Time")),2,0,4,1);
@@ -422,15 +426,12 @@ protected override void activate () {
                         });
 
                         //attach the necessary buttons to the window, and show
-                        newremgrid.attach (newremsave,5,4,1,1);
-                        newremgrid.attach (newremcanc,0,4,1,1);
                         newrem.add (newremgrid);
+                        newremgrid.attach (new Gtk.Label (" "),0,4,1,1);
                         newrem.show_all ();
 
-                        newremcanc.clicked.connect ( () => {
-                                //user didn't want a new reminder : (
-                                newrem.destroy ();
-                        });
+
+
                         //saves new reminder
                         newremsave.clicked.connect ( () => {
                                 layout.attach (new Gtk.Label (" "),1,spc,1,1);
