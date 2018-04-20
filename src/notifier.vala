@@ -112,20 +112,20 @@ protected override void activate () {
                                 stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
                         }
                         /*Since this is a new update and users who have the app will have
-                        the database but not the timing column, we're going to check to see if it exists.
-                        If it does not, we'll alter the table to have that column.
-                        */
+                           the database but not the timing column, we're going to check to see if it exists.
+                           If it does not, we'll alter the table to have that column.
+                         */
                         var timingstmt = "SELECT * FROM Reminders WHERE Timing;";
                         Sqlite.Statement timingq;
                         db.prepare_v2 (timingstmt,-1,out timingq);
                         if (timingq.step () != Sqlite.OK) {
-                          Sqlite.Statement ctq;
-                          var ctstmt = "ALTER TABLE Reminders ADD COLUMN Timing";
-                          db.prepare_v2 (ctstmt,-1,out ctq);
+                                Sqlite.Statement ctq;
+                                var ctstmt = "ALTER TABLE Reminders ADD COLUMN Timing";
+                                db.prepare_v2 (ctstmt,-1,out ctq);
 
-                          if (ctq.step () != Sqlite.OK) {
-                            stderr.printf (_("Unable to add TIMING column"));
-                          }
+                                if (ctq.step () != Sqlite.OK) {
+                                        stderr.printf (_("Unable to add TIMING column"));
+                                }
                         }
 
                 }finally { /*do what?*/}
@@ -258,14 +258,14 @@ protected override void activate () {
                 string description = countstmt.column_value (8).to_text ();
                 Sqlite.Statement notimeupd;
                 string timing = countstmt.column_value (9).to_text ();
-                if (timing == ""){
-                  timing="None";
-                  string notime = "UPDATE Reminders SET Timing = 'None' WHERE rowid = ?;";
-                  db.prepare_v2 (notime,-1,out notimeupd);
-                  notimeupd.bind_int64(1,bv);
-                  notimeupd.step ();
-                  notimeupd.reset ();
-                  notimeupd.clear_bindings ();
+                if (timing == "") {
+                        timing="None";
+                        string notime = "UPDATE Reminders SET Timing = 'None' WHERE rowid = ?;";
+                        db.prepare_v2 (notime,-1,out notimeupd);
+                        notimeupd.bind_int64(1,bv);
+                        notimeupd.step ();
+                        notimeupd.reset ();
+                        notimeupd.clear_bindings ();
                 }
 
 
@@ -357,14 +357,14 @@ protected override void activate () {
                         var timename = new Gtk.Label ("None");
                         newremgrid.attach (timename,8,3,1,1);
                         newremtime.value_changed.connect ( () => {
-                          switch (newremtime.get_value_as_int ()){
-                            case 0: timename.set_text ("None"); break;
-                            case 1: timename.set_text ("Daily"); break;
-                          //case 2: timename.set_text ("Weekly"); break;
-                            case 2: timename.set_text ("Monthly"); break;
-                            case 3: timename.set_text ("Yearly"); break;
-                          }
-                          });
+                                switch (newremtime.get_value_as_int ()) {
+                                case 0: timename.set_text ("None"); break;
+                                case 1: timename.set_text ("Daily"); break;
+                                //case 2: timename.set_text ("Weekly"); break;
+                                case 2: timename.set_text ("Monthly"); break;
+                                case 3: timename.set_text ("Yearly"); break;
+                                }
+                        });
                         var monthname = new Gtk.Label (_("January"));
 
                         newremgrid.attach (monthname,3,3,1,1);
