@@ -1,6 +1,6 @@
 Format: http://dep.debian.net/deps/dep5
-Upstream-Name: notifier
-Source: https://github.com/Timecraft/notify
+Upstream-Name: Notifier
+Source: https://github.com/Timecraft/notifier
 
 Files: src/* data/* cmake/* debian/*
 Copyright: 2018 Timecraft <timemaster23x@gmail.com>
