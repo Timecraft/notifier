@@ -47,6 +47,8 @@ public override void startup () {
 
 protected override void activate () {
         while (true) {
+          //prove it's running. mostly for dev purposes
+          stdout.printf ("Running...\n");
                 //prepare to load reminders from database...
                 var countq = "SELECT * FROM Reminders WHERE rowid = ?";
                 Sqlite.Statement countstmt;
@@ -65,7 +67,7 @@ protected override void activate () {
                 while (countstmt.step () == Sqlite.ROW) {
                         int colmn = 0;
                         Sqlite.Statement save;
-                        stdout.printf ("Running...\n");
+
 
                         //get times, prepare times
 
@@ -95,6 +97,9 @@ protected override void activate () {
 
 
                         int day = countstmt.column_value (4).to_int ();
+
+
+                        var then = new GLib.DateTime.local (year,month,day,hour,min,0);
 
                         int prior = countstmt.column_value (7).to_int ();
                         var priority = NotificationPriority.LOW;
@@ -274,10 +279,40 @@ protected override void activate () {
                                                                         save.bind_int64 (colmn, rn2.get_month ());
                                                                         colmn = 5;
 
-
+                                                                        //find the reminders equivalent day in this Week
+                                                                        var thatday = then.get_day_of_week ();
+                                                                        var thisday = rn2.get_day_of_week ();
+                                                                        var rn3 = rn2;
                                                                         //day of reminder
-                                                                        save.bind_int64 (colmn, countstmt.column_value (4).to_int ()+7);
+                                                                        var dayofmonth = rn2.get_day_of_month ();
+
+
+
+                                                                        while (thatday < thisday){
+                                                                          stdout.printf ("taking a day away \n");
+                                                                          rn3 = rn3.add_days (-1);
+                                                                          thisday = rn3.get_day_of_week ();
+                                                                          dayofmonth = rn3.get_day_of_month ();
+
+
+
+                                                                        }
+                                                                        while (thatday > thisday){
+                                                                          stdout.printf ("adding a day \n");
+                                                                          rn3 = rn3.add_days (1);
+                                                                            thisday = rn3.get_day_of_week ();
+                                                                            dayofmonth = rn3.get_day_of_month ();
+
+                                                                            //day of reminder
+
+
+                                                                        }
+                                                                        if ( dayofmonth - 7 > today ){
+                                                                          dayofmonth -= 7;
+                                                                        }
+                                                                        save.bind_int64 (colmn, dayofmonth);
                                                                         colmn = 6;
+
 
 
                                                                         //hour of reminder
@@ -290,7 +325,7 @@ protected override void activate () {
                                                                         colmn = 8;
 
                                                                         //how important it is. determines the notification level type in the daemon
-                                                                        save.bind_int64 (colmn, priority);
+                                                                        save.bind_int64 (colmn, countstmt.column_value (7).to_int ());
                                                                         colmn = 9;
 
                                                                         save.bind_text (colmn,description);
