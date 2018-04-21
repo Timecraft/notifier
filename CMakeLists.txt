@@ -2,7 +2,7 @@
     project (notifier)
 
     #some variables
-set (GIT_PREFIX com.github.timecraft.)
+set (GIT_PREFIX com.github.Timecraft.)
 set (GETTEXT_PACKAGE ${CMAKE_PROJECT_NAME})
 set (EXEC_NAME ${GIT_PREFIX}${CMAKE_PROJECT_NAME})
 set (DAEMON_EXEC_NAME ${GIT_PREFIX}${CMAKE_PROJECT_NAME}-daemon)
@@ -60,7 +60,7 @@ add_definitions(-w) # Disable gcc warnings
 
     # now let's actually check for the required dependencies
     pkg_check_modules(DEPS REQUIRED gtk+-3.0)
-    
+
 
 pkg_check_modules(SQLITE3 REQUIRED sqlite3)
 set(CFLAGS
