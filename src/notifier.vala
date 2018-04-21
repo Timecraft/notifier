@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Timemaster2 <timemaster23x@gmail.com>
+ * Copyright (c) 2018 Timecraft <timemaster23x@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -26,7 +26,7 @@ const string GETTEXT_PACKAGE = "...";
 
 public notifier () {
         Object (
-                application_id: "com.github.Timecraft.notifier",
+                application_id: "com.github.timecraft.notifier",
                 flags : ApplicationFlags.FLAGS_NONE
                 );
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Timemaster2 <timemaster23x@gmail.com>
+ * Copyright (c) 2018 Timecraft <timemaster23x@gmail.com>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
@@ -119,7 +119,7 @@ protected override void activate () {
                                                                 }
                                                                 notification.set_priority (priority);
                                                                 notification.set_body (_(description));
-                                                                this.send_notification ("com.github.Timecraft.Notifier",notification);
+                                                                this.send_notification ("com.github.timecraft.notifier",notification);
 
 
                                                                 switch (frequency) {

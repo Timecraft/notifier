@@ -1,12 +1,13 @@
-com.github.timecraft.notifier (0.1.2) precise; urgency=low
+com.github.timecraft.notifier (0.1.2) xenial; urgency=low
 
   * Reminders frequency supports.
   * Minor UI changes.
-  *Icon change.
+  * Icon change.
+  * Is now on the same version as the GitHub latest release.
 
  -- Timecraft <timemaster23x@gmail.com>  Fri, 21 Apr 2018 17:27:00 -0500
 
-com.github.timecraft.notifier (0.1.0) precise; urgency=low
+com.github.timecraft.notifier (0.1.0) xenial; urgency=low
 
   * Source Release.
 
