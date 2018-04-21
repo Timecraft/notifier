@@ -43,9 +43,9 @@ set (CPACK_SOURCE_IGNORE_FILES "/build/;/.bzr/;/.bzrignore;~$;${CPACK_SOURCE_IGN
     set (PKGDATADIR "${DATADIR}/com.github.timecraft.notifier")
 
     set (EXEC_NAME "com.github.timecraft.notifier")
-    set (RELEASE_NAME "A Reminders app")
+    set (RELEASE_NAME "Notify how often?")
     set (VERSION "0.1.2")
-    set (VERSION_INFO "Minor UI update")
+    set (VERSION_INFO "Notifier now supports reminder frequencies.")
 
     #configuration file
 configure_file (${CMAKE_SOURCE_DIR}/src/Config.vala.cmake ${CMAKE_SOURCE_DIR}/src/Config.vala)
@@ -60,7 +60,7 @@ add_definitions(-w) # Disable gcc warnings
 
     # now let's actually check for the required dependencies
     pkg_check_modules(DEPS REQUIRED gtk+-3.0)
-    pkg_check_modules(DEPS REQUIRED granite)
+    
 
 pkg_check_modules(SQLITE3 REQUIRED sqlite3)
 set(CFLAGS
@@ -149,5 +149,5 @@ install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/data/icons/64/com.github.timecraft.no
     # install our .appdata.xml file so AppCenter will see it
     install (FILES ${CMAKE_CURRENT_SOURCE_DIR}/data/com.github.timecraft.notifier.appdata.xml DESTINATION ${DATADIR}/metainfo/)
 
-    
+
 add_subdirectory(src)
