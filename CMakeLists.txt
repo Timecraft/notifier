@@ -14,7 +14,7 @@ set (RELEASE_NAME "Loki")
 set (COMMENT "A Reminders app")
 set (DAEMON_COMMENT "Daemon that deals with sending reminder notifications.")
 set (VERSION "0.1.2")
-set (VERSION_INFO "Minor UI update")
+set (VERSION_INFO "Frequency support")
 
 #data directory stuff
 include (GNUInstallDirs)
