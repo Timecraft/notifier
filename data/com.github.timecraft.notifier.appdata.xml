@@ -50,14 +50,14 @@
         <p>Added support for reminder frequencies. Please note that this will require a restart to initiate if you are updating.</p>
 
         <p>Up to date with the github release</p>
+      </description>
+    </release>
 
-      </release>
+    <release version="0.1.0" date="2018-04-15">
+      <description>
+        <p>Initial Release to AppCenter</p>
+      </description>
+    </release>
+  </releases>
 
-      <release version="0.1.0" date="2018-04-15">
-        <description>
-          <p>Initial Release to AppCenter</p>
-        </description>
-      </release>
-    </releases>
-
-  </component>
+</component>
