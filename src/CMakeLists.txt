@@ -19,7 +19,7 @@ ensure_vala_version("0.16" MINIMUM)
 find_package(PkgConfig)
 
 
-pkg_check_modules(DEPS REQUIRED sqlite3 glib-2.0)
+pkg_check_modules(DEPS REQUIRED gtk+-3.0 sqlite3 glib-2.0)
 
  include(ValaPrecompile)
     vala_precompile(VALA_C ${EXEC_NAME_DAEMON}
@@ -27,6 +27,7 @@ pkg_check_modules(DEPS REQUIRED sqlite3 glib-2.0)
         notifier-daemon.vala
        # config.vala
 PACKAGES
+        gtk+-3.0
         sqlite3
         glib-2.0
 
