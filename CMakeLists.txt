@@ -2,7 +2,7 @@
     project (notifier)
 
     #some variables
-set (GIT_PREFIX com.github.Timecraft.)
+set (GIT_PREFIX com.github.timecraft.)
 set (GETTEXT_PACKAGE ${CMAKE_PROJECT_NAME})
 set (EXEC_NAME ${GIT_PREFIX}${CMAKE_PROJECT_NAME})
 set (DAEMON_EXEC_NAME ${GIT_PREFIX}${CMAKE_PROJECT_NAME}-daemon)
