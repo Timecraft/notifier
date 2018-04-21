@@ -48,8 +48,10 @@
       <description>
         <p>Minor UI improvements</p>
         <p>Changed App icon</p>
-        <p>Added support for reminder frequencies. Please note that this will require a restart to initiate if you are updating.</p>
-
+        <p>Added support for reminder frequencies.</p>
+        <ul>
+          <li>Please note that this will require a restart to initiate if you are updating.</li>
+        </ul>
         <p>Up to date with the github release</p>
       </description>
     </release>
