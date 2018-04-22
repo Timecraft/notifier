@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=com.github.timecraft.notifier-daemon
+Name=com.github.Timecraft.notifier-daemon
 Comment=A daemon to handle sending Notifier notifications
 Exec=com.github.timecraft.notifier-daemon
 Icon=com.github.timecraft.notifier
