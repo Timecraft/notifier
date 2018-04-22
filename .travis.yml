@@ -1,6 +1,6 @@
 ---
 
---name-appstream com.github.timecraft.notifier
+
 
 language: node_js
 
@@ -34,3 +34,4 @@ install:
 script:
   - houston ci
     --distribution $DIST
+    --name-appstream com.github.timecraft.notifier
