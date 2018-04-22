@@ -14,7 +14,7 @@
   <provides>com.github.timecraft.notifier-daemon</provides>
 
   <description>
-    <p>Get notified of what to do and when to do it.</p>
+    <p>Get notified of what to do and when to do it. Reminders as you expect them, where you expect them.</p>
     <p>Set the time of the reminder.</p>
     <p>Set the priority of the notification.</p>
     <p>Automatically saves your reminders.</p>
