@@ -33,5 +33,7 @@ install:
 
 script:
   - houston ci
-    --name-appstream com.github.timecraft.notifier
+    --name-appstream com.github.timecraft.notifier.desktop
+    --name-domain com.github.timecraft.notifier
+    --name-human Notifier
     --distribution $DIST
