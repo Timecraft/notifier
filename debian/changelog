@@ -1,4 +1,4 @@
-com.github.timecraft.notifier (1.2.0) xenial; urgency=low
+com.github.timecraft.notifier (1.2.2) xenial; urgency=low
 
   * Reminders frequency supports.
   * Minor UI changes.
