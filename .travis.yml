@@ -1,5 +1,7 @@
 ---
 
+--name-appstream com.github.timecraft.notifier
+
 language: node_js
 
 node_js:
