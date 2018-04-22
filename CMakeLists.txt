@@ -13,7 +13,7 @@ set (GENERIC_NAME "Reminders")
 set (RELEASE_NAME "Loki")
 set (COMMENT "A Reminders app")
 set (DAEMON_COMMENT "Daemon that deals with sending reminder notifications.")
-set (VERSION "0.1.2")
+set (VERSION "1.2.0")
 set (VERSION_INFO "Frequency support")
 
 #data directory stuff
