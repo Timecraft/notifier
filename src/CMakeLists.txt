@@ -1,7 +1,7 @@
 
-set (PKGDATADIR "${DATADIR}/com.github.Timecraft.notifier")
-set (EXEC_NAME "com.github.Timecraft.notifier")
-set (EXEC_NAME_DAEMON "com.github.Timecraft.notifier-daemon")
+set (PKGDATADIR "${DATADIR}/com.github.timecraft.notifier")
+set (EXEC_NAME "com.github.timecraft.notifier")
+set (EXEC_NAME_DAEMON "com.github.timecraft.notifier-daemon")
 
 
 

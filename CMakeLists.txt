@@ -2,7 +2,7 @@
     project (notifier)
 
     #some variables
-set (GIT_PREFIX com.github.Timecraft.)
+set (GIT_PREFIX com.github.timecraft.)
 set (GETTEXT_PACKAGE ${CMAKE_PROJECT_NAME})
 set (EXEC_NAME ${GIT_PREFIX}${CMAKE_PROJECT_NAME})
 set (DAEMON_EXEC_NAME ${GIT_PREFIX}${CMAKE_PROJECT_NAME}-daemon)
@@ -40,7 +40,7 @@ set (CPACK_SOURCE_IGNORE_FILES "/build/;/.bzr/;/.bzrignore;~$;${CPACK_SOURCE_IGN
     set (DATADIR "${CMAKE_INSTALL_PREFIX}/share")
 
     # what to call that directory where we install data too
-    set (PKGDATADIR "${DATADIR}/com.github.Timecraft.notifier")
+    set (PKGDATADIR "${DATADIR}/com.github.timecraft.notifier")
 
     set (EXEC_NAME "com.github.timecraft.notifier")
     set (RELEASE_NAME "Notify how often?")
