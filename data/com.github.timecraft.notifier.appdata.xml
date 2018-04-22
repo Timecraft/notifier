@@ -7,11 +7,13 @@
   <project_license>GPL-3.0+</project_license>
 
   <name>Notifier</name>
-  <summary>Never forget to do something.</summary>
+  <summary>Never forget to do something</summary>
 
   <developer_name>Timecraft</developer_name>
-  <provides>com.github.timecraft.notifier</provides>
-  <provides>com.github.timecraft.notifier-daemon</provides>
+  <provides>
+    <binary>com.github.timecraft.notifier</binary>
+    <binary>com.github.timecraft.notifier-daemon</binary>
+  </provides>
 
   <description>
     <p>Get notified of what to do and when to do it. Reminders as you expect them, where you expect them.</p>
