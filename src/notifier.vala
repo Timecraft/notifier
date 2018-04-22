@@ -160,7 +160,7 @@ protected override void activate () {
 
         //button for new reminder. in headerbar
         var newrembtn = new Gtk.Button ();
-        newrembtn.set_image (new Gtk.Image.from_icon_name ("add",Gtk.IconSize.LARGE_TOOLBAR));
+        newrembtn.set_image (new Gtk.Image.from_icon_name ("list-add",Gtk.IconSize.LARGE_TOOLBAR));
         newrembtn.tooltip_text = _("Add a new reminder");
 
         bar.pack_end (newrembtn);
@@ -333,7 +333,7 @@ protected override void activate () {
 
                         var newremsave = new Gtk.Button ();
                         var newremgrid = new Gtk.Grid ();
-                        newremsave.set_image (new Gtk.Image.from_icon_name ("gtk-floppy",Gtk.IconSize.LARGE_TOOLBAR));
+                        newremsave.set_image (new Gtk.Image.from_icon_name ("document-save",Gtk.IconSize.LARGE_TOOLBAR));
                         newremsave.tooltip_text = _("Save reminder");
                         newbar.pack_end (newremsave);
                         newremgrid.set_halign (Gtk.Align.CENTER);
