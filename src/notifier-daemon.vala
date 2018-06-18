@@ -46,14 +46,16 @@ public override void startup () {
 }
 
 protected override void activate () {
+var notification = new Notification ("");
+Sqlite.Database db;
+Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
         while (true) {
           //prove it's running. mostly for dev purposes
           stdout.printf ("Running...\n");
                 //prepare to load reminders from database...
                 var countq = "SELECT * FROM Reminders WHERE rowid = ?";
                 Sqlite.Statement countstmt;
-                Sqlite.Database db;
-                Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
+
 
                 db.prepare_v2 (countq,-1, out countstmt);
                 int bv = 1;
@@ -110,16 +112,15 @@ protected override void activate () {
                                         if (day <= today) {
                                                 if (hour <= thishour) {
                                                         if (min <= thismin) {
-                                                                var notification = new Notification (_(name));
+
                                                                 switch (prior) {
                                                                 case 0: priority = NotificationPriority.LOW; break;
                                                                 case 1: priority = NotificationPriority.NORMAL; break;
                                                                 case 2: priority = NotificationPriority.HIGH; break;
                                                                 case 3: priority = NotificationPriority.URGENT; break;
                                                                 }
-                                                                notification.set_priority (priority);
-                                                                notification.set_body (_(description));
-                                                                this.send_notification ("com.github.timecraft.notifier",notification);
+
+
 
 
                                                                 switch (frequency) {
@@ -537,8 +538,12 @@ protected override void activate () {
                                                                         del.reset ();
                                                                         break;
                                                                 }
-
+                                                                notification.set_priority (priority);
+                                                                notification.set_body (_(description));
+                                                                notification.set_title (_(name));
+                                                                this.send_notification ("com.github.timecraft.notifier",notification);
                                                         }
+
                                                 }
                                         }
                                 }
