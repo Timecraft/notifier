@@ -1,0 +1,9 @@
+build/*
+debian/build/*
+debian/com.github.timecraft.notifier.debhelper.log
+debian/com.github.timecraft.notifier.substvars
+debian/com.github.timecraft.notifier/
+debian/debhelper-build-stamp
+debian/files
+src/Config.vala
+src/Config.vala.tmp
