@@ -40,6 +40,7 @@ protected override void activate () {
 
         var window = new Gtk.ApplicationWindow (this);
         var bar = new Gtk.HeaderBar ();
+        window.set_position(Gtk.WindowPosition.CENTER);
 
         //lets set a few variables, eh?
         int c = 0;
@@ -304,7 +305,22 @@ protected override void activate () {
         //create new reminder
         newrembtn.clicked.connect ( () => {
                         spc++;
-                        var priorities = new Gtk.ListStore (4, typeof (string), typeof (string), typeof (string), typeof (string));
+
+                        // Preparing values for the ComboBox
+                        Gtk.TreeIter iter;
+                        var priorities = new Gtk.ListStore (2, typeof (string), typeof (string));
+
+
+                        priorities.append (out iter);
+                        priorities.set (iter, 0, "Normal", 1, "\tA standard notification type.");
+                        priorities.append (out iter);
+                        priorities.set (iter, 0, "Low", 1, "\tNothing super important.");
+                        priorities.append (out iter);
+                        priorities.set (iter, 0, "High", 1, "\tSomething important is happening!");
+                        priorities.append (out iter);
+                        priorities.set (iter, 0, "Urgent", 1, "\tLook at me. Right now.");
+
+
 
 
                         //setup new reminder prompt UI
@@ -317,7 +333,7 @@ protected override void activate () {
                         var newremname = new Gtk.Entry ();
                         var rn = new GLib.DateTime.now_local ();
                         var newremdesc = new Gtk.Entry ();
-                        var newremdate = new  ();
+                        //    var newremdate = new  ();
                         var newremyear = new Gtk.SpinButton.with_range (rn.get_year (),9999,1);
                         var newremhour = new Gtk.SpinButton.with_range (0,23,1);
                         var newremmin = new Gtk.SpinButton.with_range (0,59,5);
@@ -325,6 +341,24 @@ protected override void activate () {
                         var newremday = new Gtk.SpinButton.with_range (1,31,1);
                         var newremprior = new Gtk.ComboBox.with_model (priorities);
                         var newremtime = new Gtk.SpinButton.with_range (0,4,1);
+
+
+                        //Show text in box.
+                        Gtk.CellRendererText renderer = new Gtk.CellRendererText ();
+                        newremprior.pack_start (renderer, true);
+                        newremprior.add_attribute (renderer, "text", 0);
+                        newremprior.active = 0;
+
+                        renderer = new Gtk.CellRendererText ();
+                        newremprior.pack_start (renderer, true);
+                        newremprior.add_attribute (renderer, "text", 1);
+                        newremprior.active = 0;
+
+                        newremprior.set_id_column (0);
+
+
+
+
 
 
                         newremmonth.set_wrap (true);
@@ -350,7 +384,7 @@ protected override void activate () {
                         newremgrid.attach (new Gtk.Label (_("Day")),4,1,1,1);
                         newremgrid.insert_column(7);
                         newremgrid.attach (new Gtk.Label (_("Priority")),7,0,1,1);
-                        newremgrid.attach (new Gtk.Label (_("Frequency")),8,0,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Frequency")),9,0,1,1);
                         newremgrid.attach (newremname,0,2,1,1);
                         newremgrid.attach (newremdesc,1,2,1,1);
                         newremgrid.attach (newremyear,2,2,1,1);
@@ -358,13 +392,13 @@ protected override void activate () {
                         newremgrid.attach (newremday,4,2,1,1);
                         newremgrid.attach (newremhour,5,2,1,1);
                         newremgrid.attach (newremmin,6,2,1,1);
-                        newremgrid.attach (newremprior,7,2,1,1);
-                        newremgrid.attach (newremtime,8,2,1,1);
+                        newremgrid.attach (newremprior,7,2,2,1);
+                        newremgrid.attach (newremtime,9,2,1,1);
 
-                        newremgrid.attach (newremdate,5,4,1,1);
+                        //newremgrid.attach (newremdate,5,4,1,1);
 
                         var timename = new Gtk.Label ("None");
-                        newremgrid.attach (timename,8,3,1,1);
+                        newremgrid.attach (timename,9,3,1,1);
                         newremtime.value_changed.connect ( () => {
                                 switch (newremtime.get_value_as_int ()) {
                                 case 0: timename.set_text ("None"); break;
@@ -440,6 +474,7 @@ protected override void activate () {
                         //saves new reminder
                         newremsave.clicked.connect ( () => {
                                 layout.attach (new Gtk.Label (" "),1,spc,1,1);
+
                                 spc++;
                                 //clears out that "create new reminder" message
                                 rows=3;
@@ -473,7 +508,7 @@ protected override void activate () {
                                 string year = newremyear.get_value ().to_string ();
                                 string month = monthname.get_text ();
                                 string day = newremday.get_value ().to_string ();
-                                string prior = newremprior.get_active ().to_string ();
+
                                 string frequency = timename.get_text ();
 
 
@@ -483,7 +518,7 @@ protected override void activate () {
                                 layout.attach (checkbtn[b],0,spc,1,1);
                                 layout.attach (new Gtk.Label (newremname.get_text ()),1,spc,1,1);
                                 layout.attach (new Gtk.Label (newremdesc.get_text ()),3,spc,1,1);
-                                layout.attach (new Gtk.Label (prior),4,spc,1,1);
+                                layout.attach (new Gtk.Label (newremprior.get_active_id ()),4,spc,1,1);
                                 layout.attach (new Gtk.Label (_(" ")),5,spc,1,1);
                                 layout.attach (new Gtk.Label (_(year + " " + month + " " + day + " ")),6,spc,1,1);
                                 layout.attach (new Gtk.Label (time),7,spc,1,1);
