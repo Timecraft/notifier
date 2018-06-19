@@ -95,7 +95,7 @@ link_directories(${LIB_PATHS})
 
     # tell what libraries to use when compiling
     PACKAGES
-
+        granite
         gtk+-3.0
         sqlite3
 

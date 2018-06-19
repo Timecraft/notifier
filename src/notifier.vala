@@ -17,6 +17,7 @@
  * Boston, MA 02110-1301 USA
  */
 
+//using Granite.Widgets;
 
 public class notifier : Gtk.Application {
 const string GETTEXT_PACKAGE = "...";
@@ -303,6 +304,7 @@ protected override void activate () {
         //create new reminder
         newrembtn.clicked.connect ( () => {
                         spc++;
+                        var priorities = new Gtk.ListStore (4, typeof (string), typeof (string), typeof (string), typeof (string));
 
 
                         //setup new reminder prompt UI
@@ -315,12 +317,13 @@ protected override void activate () {
                         var newremname = new Gtk.Entry ();
                         var rn = new GLib.DateTime.now_local ();
                         var newremdesc = new Gtk.Entry ();
+                        var newremdate = new  ();
                         var newremyear = new Gtk.SpinButton.with_range (rn.get_year (),9999,1);
                         var newremhour = new Gtk.SpinButton.with_range (0,23,1);
                         var newremmin = new Gtk.SpinButton.with_range (0,59,5);
                         var newremmonth = new Gtk.SpinButton.with_range (1,12,1);
                         var newremday = new Gtk.SpinButton.with_range (1,31,1);
-                        var newremprior = new Gtk.SpinButton.with_range (0,3,1);
+                        var newremprior = new Gtk.ComboBox.with_model (priorities);
                         var newremtime = new Gtk.SpinButton.with_range (0,4,1);
 
 
@@ -357,6 +360,8 @@ protected override void activate () {
                         newremgrid.attach (newremmin,6,2,1,1);
                         newremgrid.attach (newremprior,7,2,1,1);
                         newremgrid.attach (newremtime,8,2,1,1);
+
+                        newremgrid.attach (newremdate,5,4,1,1);
 
                         var timename = new Gtk.Label ("None");
                         newremgrid.attach (timename,8,3,1,1);
@@ -468,7 +473,7 @@ protected override void activate () {
                                 string year = newremyear.get_value ().to_string ();
                                 string month = monthname.get_text ();
                                 string day = newremday.get_value ().to_string ();
-                                string prior = newremprior.get_value ().to_string ();
+                                string prior = newremprior.get_active ().to_string ();
                                 string frequency = timename.get_text ();
 
 
@@ -496,7 +501,7 @@ protected override void activate () {
                                 var daynum = (int) newremday.get_value ();
                                 var hournum = (int) newremhour.get_value ();
                                 var minutenum = (int) newremmin.get_value ();
-                                var priornum = (int) newremprior.get_value ();
+                                var priornum = (int) newremprior.get_active ();
                                 var description = newremdesc.get_text ();
 
                                 //open, prep, error trap, save
