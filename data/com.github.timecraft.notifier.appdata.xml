@@ -46,7 +46,7 @@
   </screenshots>
 
   <releases>
-    <release version="1.2.3" date="2018-04-21">
+    <release version="1.2.3" date="2018-06-18">
       <description>
         <p>Major reduction to memory usage.</p>
         <ul>
