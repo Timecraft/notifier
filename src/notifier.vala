@@ -17,7 +17,7 @@
  * Boston, MA 02110-1301 USA
  */
 
-//using Granite.Widgets;
+using Granite.Widgets;
 
 public class notifier : Gtk.Application {
 const string GETTEXT_PACKAGE = "...";
@@ -334,13 +334,19 @@ protected override void activate () {
                         var rn = new GLib.DateTime.now_local ();
                         var newremdesc = new Gtk.Entry ();
                         //    var newremdate = new  ();
+
+                        // Should eventually be replaced by Granite's DatePicker
                         var newremyear = new Gtk.SpinButton.with_range (rn.get_year (),9999,1);
-                        var newremhour = new Gtk.SpinButton.with_range (0,23,1);
-                        var newremmin = new Gtk.SpinButton.with_range (0,59,5);
+                        var newremhour = new TimePicker ();
                         var newremmonth = new Gtk.SpinButton.with_range (1,12,1);
                         var newremday = new Gtk.SpinButton.with_range (1,31,1);
+                        //
+
                         var newremprior = new Gtk.ComboBox.with_model (priorities);
+
+                        // Should eventually be replaced by Granite's TimePicker
                         var newremtime = new Gtk.SpinButton.with_range (0,4,1);
+                        //
 
 
                         //Show text in box.
@@ -363,8 +369,6 @@ protected override void activate () {
 
                         newremmonth.set_wrap (true);
                         newremday.set_wrap (true);
-                        newremhour.set_wrap (true);
-                        newremmin.set_wrap (true);
                         newremtime.set_wrap (true);
 
 
@@ -390,8 +394,7 @@ protected override void activate () {
                         newremgrid.attach (newremyear,2,2,1,1);
                         newremgrid.attach (newremmonth,3,2,1,1);
                         newremgrid.attach (newremday,4,2,1,1);
-                        newremgrid.attach (newremhour,5,2,1,1);
-                        newremgrid.attach (newremmin,6,2,1,1);
+                        newremgrid.attach (newremhour,5,2,2,1);
                         newremgrid.attach (newremprior,7,2,2,1);
                         newremgrid.attach (newremtime,9,2,1,1);
 
@@ -435,34 +438,7 @@ protected override void activate () {
                         //Need help figuring out how to ask the system for this information.
                         var hourampm = new Gtk.Label ("12:00 AM");
                         newremgrid.attach (hourampm,5,3,1,1);
-                        newremhour.value_changed.connect ( () =>{
-                                switch ( (int) newremhour.get_value ()) {
-                                case 0: hourampm.set_text ("12:00 AM"); break;
-                                case 1: hourampm.set_text ("1:00 AM"); break;
-                                case 2: hourampm.set_text ("2:00 AM"); break;
-                                case 3: hourampm.set_text ("3:00 AM"); break;
-                                case 4: hourampm.set_text ("4:00 AM"); break;
-                                case 5: hourampm.set_text ("5:00 AM"); break;
-                                case 6: hourampm.set_text ("6:00 AM"); break;
-                                case 7: hourampm.set_text ("7:00 AM"); break;
-                                case 8: hourampm.set_text ("8:00 AM"); break;
-                                case 9: hourampm.set_text ("9:00 AM"); break;
-                                case 10: hourampm.set_text ("10:00 AM"); break;
-                                case 11: hourampm.set_text ("11:00 AM"); break;
-                                case 12: hourampm.set_text ("12:00 PM"); break;
-                                case 13: hourampm.set_text ("1:00 PM"); break;
-                                case 14: hourampm.set_text ("2:00 PM"); break;
-                                case 15: hourampm.set_text ("3:00 PM"); break;
-                                case 16: hourampm.set_text ("4:00 PM"); break;
-                                case 17: hourampm.set_text ("5:00 PM"); break;
-                                case 18: hourampm.set_text ("6:00 PM"); break;
-                                case 19: hourampm.set_text ("7:00 PM"); break;
-                                case 20: hourampm.set_text ("8:00 PM"); break;
-                                case 21: hourampm.set_text ("9:00 PM"); break;
-                                case 22: hourampm.set_text ("10:00 PM"); break;
-                                case 23: hourampm.set_text ("11:00 PM"); break;
-                                }
-                        });
+
 
                         //attach the necessary buttons to the window, and show
                         newrem.add (newremgrid);
@@ -485,9 +461,9 @@ protected override void activate () {
 
 
                                 /* convert integer to string with .to_string (); */
-                                string hour = newremhour.get_value ().to_string ();
+                                string hour = newremhour.get_text ().to_string ();
                                 string colon = ":";
-                                string min = newremmin.get_value ().to_string ();
+                                string min = "00";
                                 //friendly human minutes
                                 switch (min) {
                                 case "0": min = "00"; break;
@@ -534,8 +510,8 @@ protected override void activate () {
                                 var yearnum = (int) newremyear.get_value ();
                                 var monthnum = (int) newremmonth.get_value ();
                                 var daynum = (int) newremday.get_value ();
-                                var hournum = (int) newremhour.get_value ();
-                                var minutenum = (int) newremmin.get_value ();
+                                var hournum = (int) newremhour.get_text ();
+                                var minutenum = 0;
                                 var priornum = (int) newremprior.get_active ();
                                 var description = newremdesc.get_text ();
 

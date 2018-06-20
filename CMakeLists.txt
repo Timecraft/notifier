@@ -59,7 +59,7 @@ add_definitions(-w) # Disable gcc warnings
     find_package(PkgConfig)
 
     # now let's actually check for the required dependencies
-    pkg_check_modules(DEPS REQUIRED gtk+-3.0)
+    pkg_check_modules(DEPS REQUIRED gtk+-3.0 granite)
 
 
 pkg_check_modules(SQLITE3 REQUIRED sqlite3)
@@ -91,7 +91,7 @@ link_directories(${LIB_PATHS})
     include(ValaPrecompile)
     vala_precompile(VALA_C ${EXEC_NAME}
         src/notifier.vala
-        
+
 
 
     # tell what libraries to use when compiling
