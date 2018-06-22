@@ -675,8 +675,16 @@ protected override void activate () {
                                         message ("Month " + month2);
                                         message ("Day " + day2);
                                         message ("hr " + hr2);
-                                        message ("Min " + minn2);
+
                                         stdout.printf("\n");
+                                        string[] timer = minn2.split (" ");
+                                        minn2 = timer[0];
+                                        message ("Min " + minn2);
+
+                                        string ampm = timer[1];
+                                        message ("ampm " + ampm);
+
+
 
 
                                         //makes reminder visible in main window
@@ -711,6 +719,10 @@ protected override void activate () {
 
 
                                         var hrnum =  int.parse (hr2);
+
+                                        if (ampm == "PM") {
+                                                hrnum = (hrnum + 12);
+                                        }
 
                                         var minutenum =  int.parse (minn2);
 
