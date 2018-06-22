@@ -160,20 +160,32 @@ protected override void activate () {
 
         //sets up main UI
 
-        //button for new reminder. in headerbar
+        //button for new reminder and edit reminder in headerbar
         var newrembtn = new Gtk.Button ();
         newrembtn.set_image (new Gtk.Image.from_icon_name ("list-add",Gtk.IconSize.LARGE_TOOLBAR));
-        newrembtn.tooltip_text = _("Add a new reminder");
+        newrembtn.tooltip_text = (_("Add a new reminder"));
+
+        var spclbl = new Gtk.Label ("\t");
+
+        var editrembtn = new Gtk.Button ();
+        editrembtn.set_image (new Gtk.Image.from_icon_name ("edit",Gtk.IconSize.LARGE_TOOLBAR));
+        editrembtn.tooltip_text = (_("Edit an existing reminder"));
+
+
 
         bar.pack_end (newrembtn);
+        bar.pack_end (spclbl);
+        bar.pack_end (editrembtn);
         bar.set_title (_("Notifier"));
         bar.show_close_button = true;
         window.set_titlebar (bar);
 
-
+        //UI for selecting edited reminder
+        var popover = new Gtk.Popover (editrembtn);
 
 
         layout.row_spacing = 10;
+
         layout.attach (new Gtk.Label (_("\tName\t")),1,1,1,1);
         layout.attach (new Gtk.Label ("\t"),2,1,1,1);
         layout.attach (new Gtk.Label (_("\tDescription\t")),3,1,1,1);
@@ -236,7 +248,7 @@ protected override void activate () {
 
                 string year = countstmt.column_value (2).to_text ();
 
-                int month = countstmt.column_value (3).to_int ();
+                int month =  countstmt.column_value (3).to_int ();
                 string monthn = "";
                 //switchin from integer month to string month. more human friendly
                 switch (month) {
@@ -301,6 +313,22 @@ protected override void activate () {
 
         }
 
+        editrembtn.clicked.connect ( () => {
+                        //        Sqlite.Statement remindname = "SELECT * FROM ";
+                        var editme = new Gtk.ComboBox ();
+                        Gtk.TreeIter iterm;
+                        var priorities = new Gtk.ListStore (2, typeof (string), typeof (string));
+
+
+                        priorities.append (out iterm);
+                        priorities.set (iterm, 0, "Normal", 1, "\tA standard notification type.");
+
+                        popover.add (editme);
+                        popover.show_all ();
+
+
+
+                });
 
         //create new reminder
         newrembtn.clicked.connect ( () => {
@@ -440,13 +468,34 @@ protected override void activate () {
                                 string name = newremname.get_text ();
                                 string[] date = newremdate.get_text ().split ( " " );
                                 string year = date [2];
-                                string month = date [0];
+
                                 string day = date [1];
-                                message (newremdate.get_text ());
+                                message ("date.length " + date.length.to_string ());
+                                if (day.length < 1) {
+                                        message ("Changing year to the 4th part of the date because datetime is weird.");
+                                        year = date [3];
+
+                                        day = date[2];
+
+                                }
+
+
+
+
+                                string month = date [0];
+
+                                stdout.printf("\n");
+                                for (int i = 0; i<date.length; i++ ) {
+                                        message ("i"+date[i]+"i");
+
+                                }
+
+                                //    message (newremdate.get_text ());
 
                                 string frequency = freqname.get_text ();
 
                                 stdout.printf("\n");
+                                message ("Changing month into computer friendly number.");
                                 int monthnum = 0;
                                 switch (month) {
                                 case "Jan":  monthnum = 1; break;
@@ -463,9 +512,18 @@ protected override void activate () {
                                 case "Dec":  monthnum = 12; break;
 
                                 }
+                                //Debugging datetime
+                                stdout.printf("\n");
+                                message ("Year " + year);
+                                message ("Month " + month);
+                                message ("Day " + day);
+                                message ("Hour " + hour);
+                                message ("Min " + min);
+                                stdout.printf("\n");
 
 
                                 //makes reminder visible in main window
+                                message ("Adding reminder to main window.");
                                 checkbtn += new Gtk.CheckButton ();
                                 lngth = checkbtn.length - 1;
                                 layout.attach (checkbtn[b],0,spc,1,1);
@@ -479,24 +537,26 @@ protected override void activate () {
                                 layout.attach (new Gtk.Label (frequency),10,spc,1,1);
                                 b++;
 
+                                message ("Preparing for database!");
                                 //saves reminder into database
                                 Sqlite.Database db3;
                                 Sqlite.Statement save;
 
                                 //database friendly values
-                                var yearnum =  year.to_int ();
-                                message (year);
-                                message (yearnum.to_string ());
 
-                                var daynum =  day.to_int ();
-                                message (day);
-                                message (daynum.to_string ());
-                                message (month);
+                                var yearnum = int.parse (year);
 
-                                var hournum =  hour.to_int ();
-                                message (hour);
-                                var minutenum =  min.to_int ();
-                                message (min);
+
+
+                                var daynum =  int.parse (day);
+
+
+
+
+                                var hournum =  int.parse (hour);
+
+                                var minutenum =  int.parse (min);
+
                                 var priornum = (int) newremprior.get_active ();
                                 var description = newremdesc.get_text ();
 
@@ -509,6 +569,7 @@ protected override void activate () {
                                         stderr.printf (_("Error: %d: %s\n"), db3.errcode (), db3.errmsg ());
 
                                 }
+                                message ("Saving...");
                                 rownum++;
                                 colmn = 1;
 
@@ -561,6 +622,7 @@ protected override void activate () {
                                 save.step ();
                                 save.clear_bindings ();
                                 save.reset ();
+                                message ("SAVED");
 
                                 //destroys the "new reminder" window as it is no longer necessary
                                 newrem.destroy ();
