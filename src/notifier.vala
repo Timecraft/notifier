@@ -319,16 +319,17 @@ protected override void activate () {
                 layout.attach (new Gtk.Label (_("Create a new Reminder!")),4,2,2,1);
 
         }
-        Sqlite.Database db2;
-        Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db2);
-        var remindname = "SELECT Name FROM  Reminders WHERE rowid = ?";
-        var rems = new Gtk.ListStore (1, typeof (string));
+
         editrembtn.clicked.connect ( () => {
                         //UI for selecting edited reminder
                         var popover = new Gtk.Popover (editrembtn);
 
                         Sqlite.Statement remindstmt;
 
+                        Sqlite.Database db2;
+                        Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db2);
+                        var remindname = "SELECT Name FROM  Reminders WHERE rowid = ?";
+                        var rems = new Gtk.ListStore (1, typeof (string));
 
 
                         db2.prepare_v2 (remindname,-1, out remindstmt);
