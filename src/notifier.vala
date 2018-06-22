@@ -286,9 +286,9 @@ protected override void activate () {
                 string prior = countstmt.column_value (7).to_text ();
                 switch (prior) {
                 case "0": prior = "Normal"; break;
-                case "1": prior = "Normal"; break;
-                case "2": prior = "Normal"; break;
-                case "3": prior = "Normal"; break;
+                case "1": prior = "Low"; break;
+                case "2": prior = "High"; break;
+                case "3": prior = "Urgent"; break;
 
                 }
 
@@ -320,6 +320,15 @@ protected override void activate () {
 
         }
 
+
+
+
+
+
+
+
+
+//Selction for editing Reminders
         editrembtn.clicked.connect ( () => {
                         //UI for selecting edited reminder
                         var popover = new Gtk.Popover (editrembtn);
@@ -402,6 +411,14 @@ protected override void activate () {
                         });
 
 
+
+
+
+
+
+
+
+//Actually editing
                         editreminit.clicked.connect ( () => {
                                 popover.remove (editremgrid);
 
@@ -442,6 +459,8 @@ protected override void activate () {
 
                                 string timing = reminderstmt.column_value (9).to_text ();
                                 message ("Reminder timing = " + timing);
+
+                                var editprior = reminderstmt.column_value (7).to_int ();
 
                                 // Preparing values for the ComboBox
                                 Gtk.TreeIter iter;
@@ -485,6 +504,7 @@ protected override void activate () {
 
 
                                 var editremprior = new Gtk.ComboBox.with_model (priorities);
+                                editremprior.set_active (editprior);
 
 
 
@@ -557,7 +577,20 @@ protected override void activate () {
 
 
 
-                                //saves new reminder
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                //saves edited reminder
                                 editremsave.clicked.connect ( () => {
 
                                         //Remove reminder that has been updated
@@ -565,8 +598,9 @@ protected override void activate () {
 
                                         Sqlite.Statement updatestmt;
                                         message ("\nrownumber " + remnum.to_string ());
-                                        layout.remove_row ((remnum + 1));
-                                        layout.remove_row ((remnum + 1));
+                                        layout.remove_row ((remnum * 2 + 1));
+                                        layout.insert_row ((remnum * 2 + 1));
+
 
 
 
@@ -649,15 +683,15 @@ protected override void activate () {
                                         message ("Adding reminder to main window.");
                                         checkbtn += new Gtk.CheckButton ();
                                         lngth = checkbtn.length - 1;
-                                        layout.attach (checkbtn[b],0,spc,1,1);
-                                        layout.attach (new Gtk.Label (editremname.get_text ()),1,spc,1,1);
-                                        layout.attach (new Gtk.Label (editremdesc.get_text ()),3,spc,1,1);
-                                        layout.attach (new Gtk.Label (editremprior.get_active_id ()),4,spc,1,1);
-                                        layout.attach (new Gtk.Label (_(" ")),5,spc,1,1);
-                                        layout.attach (new Gtk.Label (_(year2 + " " + month2 + " " + day2 + " \t")),6,spc,1,1);
-                                        layout.attach (new Gtk.Label (time),7,spc,1,1);
-                                        layout.attach (new Gtk.Label (" "),8,spc,1,1);
-                                        layout.attach (new Gtk.Label (frequency),10,spc,1,1);
+                                        layout.attach (checkbtn[b],0,remnum * 2 + 1,1,1);
+                                        layout.attach (new Gtk.Label (editremname.get_text ()),1,remnum * 2 + 1,1,1);
+                                        layout.attach (new Gtk.Label (editremdesc.get_text ()),3,remnum * 2 + 1,1,1);
+                                        layout.attach (new Gtk.Label (editremprior.get_active_id ()),4,remnum * 2 + 1,1,1);
+                                        layout.attach (new Gtk.Label (_(" ")),5,remnum * 2 + 1,1,1);
+                                        layout.attach (new Gtk.Label (_(year2 + " " + month2 + " " + day2 + " \t")),6,remnum * 2 + 1,1,1);
+                                        layout.attach (new Gtk.Label (time),7,remnum * 2 + 1,1,1);
+                                        layout.attach (new Gtk.Label (" "),8,remnum * 2 + 1,1,1);
+                                        layout.attach (new Gtk.Label (frequency),10,remnum * 2 + 1,1,1);
                                         b++;
 
                                         message ("Preparing for database!");
@@ -761,6 +795,17 @@ protected override void activate () {
 
 
                 });
+
+
+
+
+
+
+
+
+
+
+
 
 
 
