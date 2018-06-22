@@ -332,7 +332,7 @@ protected override void activate () {
                         //UI for selecting edited reminder
                         var rems = new Gtk.ListStore (1, typeof (string));
 
-                        var popover = new Gtk.Window ();
+                        var popover = new Gtk.Popover (editrembtn);
                         var editremgrid = new Gtk.Grid ();
 
                         rems.clear ();
@@ -417,7 +417,6 @@ protected override void activate () {
 
 
                         popover.add (editremgrid);
-                        popover.set_title ("Edit Reminder");
                         popover.show_all ();
 
 
