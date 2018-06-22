@@ -331,14 +331,19 @@ protected override void activate () {
 //Selction for editing Reminders
         editrembtn.clicked.connect ( () => {
                         //UI for selecting edited reminder
-                        var popover = new Gtk.Popover (editrembtn);
+                        var rems = new Gtk.ListStore (1, typeof (string));
+
+                        var popover = new Gtk.Window ();
+                        var editremgrid = new Gtk.Grid ();
+
+                        rems.clear ();
+
 
                         Sqlite.Statement remindstmt;
 
                         Sqlite.Database db2;
                         Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db2);
                         var remindname = "SELECT Name FROM  Reminders WHERE rowid = ?";
-                        var rems = new Gtk.ListStore (1, typeof (string));
 
 
                         db2.prepare_v2 (remindname,-1, out remindstmt);
@@ -348,16 +353,30 @@ protected override void activate () {
 
                         string naming;
                         Gtk.TreeIter iterm;
-                        while (remindstmt.step () == Sqlite.ROW) {
+                        stdout.printf("\n");
+                        message ("Preparing editing");
+                        message ("ld prior: " + ld.to_string ());
 
 
+                        for (int i = 0; i < checkbtn.length; i++) {
+
+
+                                remindstmt.step ();
 
                                 naming = remindstmt.column_value (0).to_text ();
 
 
+                                if (naming != "") {
+                                        rems.append (out iterm);
+                                        rems.set (iterm, 0, naming);
 
-                                rems.append (out iterm);
-                                rems.set (iterm, 0, naming);
+                                        message ("Rem loaded: i" + naming + "i");
+                                }
+
+
+                                naming = "";
+
+
 
 
 
@@ -367,6 +386,8 @@ protected override void activate () {
                                 remindstmt.bind_int64 (1,ld);
 
                         }
+                        message ("ld after: " + ld.to_string ());
+
                         var editme = new Gtk.ComboBox.with_model (rems);
 
                         Gtk.CellRendererText rendertext = new Gtk.CellRendererText ();
@@ -377,7 +398,6 @@ protected override void activate () {
 
 
 
-                        var editremgrid = new Gtk.Grid ();
 
 
 
@@ -391,10 +411,13 @@ protected override void activate () {
 
                         editremgrid.attach (new Gtk.Label ("\tSelect the reminder you wish to edit.\t"),0,0,3,1);
                         editremgrid.attach (editme,1,1,1,1);
+                        message ("editme.get_sensitive: " + editme.get_sensitive ().to_string ());
                         editremgrid.attach (new Gtk.Label (" "),0,2,1,1);
                         editremgrid.attach (editreminit,1,3,1,1);
+
+
                         popover.add (editremgrid);
-                        popover.set_position (Gtk.PositionType.BOTTOM);
+                        popover.set_title ("Edit Reminder");
                         popover.show_all ();
 
 
@@ -420,7 +443,14 @@ protected override void activate () {
 
 //Actually editing
                         editreminit.clicked.connect ( () => {
-                                popover.remove (editremgrid);
+                                ld = 1;
+                                message ("Clearing remindstmt");
+                                remindstmt.clear_bindings ();
+                                remindstmt.reset ();
+
+
+
+
 
                                 var remnum = editme.get_active () + 1;
 
@@ -435,6 +465,18 @@ protected override void activate () {
                                 reminderstmt.bind_int64 (1,remnum);
 
                                 reminderstmt.step ();
+
+
+                                while (reminderstmt.column_value (3).to_int () == 0) {
+                                        reminderstmt.clear_bindings ();
+
+                                        message ("Adding 1 to remnum, as selected reminder is empty. YAY GLITCHES...");
+
+                                        reminder = "SELECT * FROM  Reminders WHERE rowid = ?";
+                                        db.prepare_v2 (reminder,-1, out reminderstmt);
+                                        reminderstmt.bind_int64(1,remnum + 1);
+                                        reminderstmt.step ();
+                                }
 
                                 string name = reminderstmt.column_value (1).to_text ();
                                 message ("Reminder name = " + name);
@@ -587,11 +629,15 @@ protected override void activate () {
 
 
 
+                                editme.destroy ();
 
+                                editme.clear ();
+                                popover.destroy ();
 
 
                                 //saves edited reminder
                                 editremsave.clicked.connect ( () => {
+
 
                                         //Remove reminder that has been updated
 
@@ -611,6 +657,8 @@ protected override void activate () {
 
                                         updatestmt.bind_int64 (1,remnum);
                                         updatestmt.step ();
+                                        updatestmt.clear_bindings ();
+                                        updatestmt.reset ();
 
 
 
