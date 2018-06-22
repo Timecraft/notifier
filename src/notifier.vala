@@ -215,7 +215,6 @@ protected override void activate () {
         //load reminders from database
         while (countstmt.step () == Sqlite.ROW) {
 
-                layout.attach (new Gtk.Label (" "),1,spc,1,1);
                 spc++;
 
 
@@ -341,12 +340,10 @@ protected override void activate () {
 
                         Sqlite.Statement remindstmt;
 
-                        Sqlite.Database db2;
-                        Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db2);
                         var remindname = "SELECT Name FROM  Reminders WHERE rowid = ?";
 
 
-                        db2.prepare_v2 (remindname,-1, out remindstmt);
+                        db.prepare_v2 (remindname,-1, out remindstmt);
 
                         int ld = 1;
                         remindstmt.bind_int64 (1,ld);
@@ -366,11 +363,14 @@ protected override void activate () {
                                 naming = remindstmt.column_value (0).to_text ();
 
 
-                                if (naming != "") {
+
+
+                                message ("Rem loaded: " + naming );
+
+                                if (naming != null) {
                                         rems.append (out iterm);
                                         rems.set (iterm, 0, naming);
 
-                                        message ("Rem loaded: i" + naming + "i");
                                 }
 
 
@@ -476,6 +476,7 @@ protected override void activate () {
                                         db.prepare_v2 (reminder,-1, out reminderstmt);
                                         reminderstmt.bind_int64(1,remnum + 1);
                                         reminderstmt.step ();
+                                        remnum++;
                                 }
 
                                 string name = reminderstmt.column_value (1).to_text ();
@@ -644,21 +645,12 @@ protected override void activate () {
 
                                         Sqlite.Statement updatestmt;
                                         message ("\nrownumber " + remnum.to_string ());
-                                        layout.remove_row ((remnum * 2 + 1));
-                                        layout.insert_row ((remnum * 2 + 1));
 
 
 
 
 
-                                        string updatequery = "DELETE FROM Reminders WHERE rowid = ?;";
 
-                                        db.prepare_v2 (updatequery, -1, out updatestmt);
-
-                                        updatestmt.bind_int64 (1,remnum);
-                                        updatestmt.step ();
-                                        updatestmt.clear_bindings ();
-                                        updatestmt.reset ();
 
 
 
@@ -739,6 +731,8 @@ protected override void activate () {
                                         message ("Adding reminder to main window.");
                                         checkbtn += new Gtk.CheckButton ();
                                         lngth = checkbtn.length - 1;
+                                        layout.remove_row (remnum * 2 + 1);
+                                        layout.insert_row (remnum * 2 + 1);
                                         layout.attach (checkbtn[b],0,remnum * 2 + 1,1,1);
                                         layout.attach (new Gtk.Label (editremname.get_text ()),1,remnum * 2 + 1,1,1);
                                         layout.attach (new Gtk.Label (editremdesc.get_text ()),3,remnum * 2 + 1,1,1);
@@ -781,7 +775,7 @@ protected override void activate () {
 
 
 
-                                        string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority,Description,Timing) VALUES (?,?,?,?,?,?,?,?,?,?);";
+                                        string savequery = "UPDATE Reminders SET Complete=?, Name=?, Year=?, Month=?, Day=?, Hour=?, Minute=?, Priority=?, Description=?, Timing=? WHERE rowid=?;";
                                         int res = db.prepare_v2 (savequery,-1,out save);
                                         if (res != Sqlite.OK) {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
@@ -835,6 +829,8 @@ protected override void activate () {
 
                                         save.bind_text (colmn, frequency);
 
+                                        save.bind_int64 (11,remnum);
+
 
                                         //save and clear
                                         save.step ();
@@ -844,8 +840,6 @@ protected override void activate () {
 
                                         //destroys the "new reminder" window as it is no longer necessary
                                         editrem.destroy ();
-
-
 
                                         window.show_all ();
 
@@ -993,7 +987,6 @@ protected override void activate () {
 
                         //saves new reminder
                         newremsave.clicked.connect ( () => {
-                                layout.attach (new Gtk.Label (" "),1,spc,1,1);
 
                                 spc++;
                                 //clears out that "create new reminder" message
