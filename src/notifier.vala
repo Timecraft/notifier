@@ -239,19 +239,19 @@ protected override void activate () {
                 int month = countstmt.column_value (3).to_int ();
                 string monthn = "";
                 //switchin from integer month to string month. more human friendly
-                switch ( month) {
-                case 1: monthn = "January"; break;
-                case 2: monthn = "February"; break;
-                case 3: monthn = "March"; break;
-                case 4: monthn = "April"; break;
+                switch (month) {
+                case 1: monthn = "Jan"; break;
+                case 2: monthn = "Feb"; break;
+                case 3: monthn = "Mar"; break;
+                case 4: monthn = "Apr"; break;
                 case 5: monthn = "May"; break;
-                case 6: monthn = "June"; break;
-                case 7: monthn = "July"; break;
-                case 8: monthn = "August"; break;
-                case 9: monthn = "September"; break;
-                case 10: monthn = "October"; break;
-                case 11: monthn = "November"; break;
-                case 12: monthn = "December"; break;
+                case 6: monthn = "Jun"; break;
+                case 7: monthn = "Jul"; break;
+                case 8: monthn = "Aug"; break;
+                case 9: monthn = "Sep"; break;
+                case 10: monthn = "Oct"; break;
+                case 11: monthn = "Nov"; break;
+                case 12: monthn = "Dec"; break;
 
                 }
 
@@ -331,22 +331,20 @@ protected override void activate () {
                         newrem.set_titlebar (newbar);
 
                         var newremname = new Gtk.Entry ();
-                        var rn = new GLib.DateTime.now_local ();
+                        //var rn = new GLib.DateTime.now_local ();
                         var newremdesc = new Gtk.Entry ();
                         //    var newremdate = new  ();
 
                         // Should eventually be replaced by Granite's DatePicker
-                        var newremyear = new Gtk.SpinButton.with_range (rn.get_year (),9999,1);
-                        var newremhour = new TimePicker ();
-                        var newremmonth = new Gtk.SpinButton.with_range (1,12,1);
-                        var newremday = new Gtk.SpinButton.with_range (1,31,1);
+                        var newremdate = new DatePicker ();
+                        var newremtime = new TimePicker ();
                         //
 
                         var newremprior = new Gtk.ComboBox.with_model (priorities);
 
-                        // Should eventually be replaced by Granite's TimePicker
-                        var newremtime = new Gtk.SpinButton.with_range (0,4,1);
-                        //
+
+                        var newremfreq = new Gtk.SpinButton.with_range (0,4,1);
+
 
 
                         //Show text in box.
@@ -367,9 +365,8 @@ protected override void activate () {
 
 
 
-                        newremmonth.set_wrap (true);
-                        newremday.set_wrap (true);
-                        newremtime.set_wrap (true);
+
+                        newremfreq.set_wrap (true);
 
 
                         var newremsave = new Gtk.Button ();
@@ -382,62 +379,35 @@ protected override void activate () {
                         newremgrid.attach (new Gtk.Label (_("Remind Time")),2,0,4,1);
                         newremgrid.attach (new Gtk.Label (_("Reminder description")),1,0,1,1);
                         newremgrid.attach (new Gtk.Label (_("Year")),2,1,1,1);
-                        newremgrid.attach (new Gtk.Label (_("Hour")),5,1,1,1);
-                        newremgrid.attach (new Gtk.Label (_("Minute")),6,1,1,1);
-                        newremgrid.attach (new Gtk.Label (_("Month")),3,1,1,1);
-                        newremgrid.attach (new Gtk.Label (_("Day")),4,1,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Time")),5,1,1,1);
                         newremgrid.insert_column(7);
                         newremgrid.attach (new Gtk.Label (_("Priority")),7,0,1,1);
                         newremgrid.attach (new Gtk.Label (_("Frequency")),9,0,1,1);
                         newremgrid.attach (newremname,0,2,1,1);
                         newremgrid.attach (newremdesc,1,2,1,1);
-                        newremgrid.attach (newremyear,2,2,1,1);
-                        newremgrid.attach (newremmonth,3,2,1,1);
-                        newremgrid.attach (newremday,4,2,1,1);
-                        newremgrid.attach (newremhour,5,2,2,1);
+                        newremgrid.attach (newremdate,2,2,1,1);
+                        newremgrid.attach (newremtime,5,2,2,1);
                         newremgrid.attach (newremprior,7,2,2,1);
-                        newremgrid.attach (newremtime,9,2,1,1);
+                        newremgrid.attach (newremfreq,9,2,1,1);
 
                         //newremgrid.attach (newremdate,5,4,1,1);
 
-                        var timename = new Gtk.Label ("None");
-                        newremgrid.attach (timename,9,3,1,1);
-                        newremtime.value_changed.connect ( () => {
-                                switch (newremtime.get_value_as_int ()) {
-                                case 0: timename.set_text ("None"); break;
-                                case 1: timename.set_text ("Daily"); break;
-                                case 2: timename.set_text ("Weekly"); break;
-                                case 3: timename.set_text ("Monthly"); break;
-                                case 4: timename.set_text ("Yearly"); break;
-                                }
-                        });
-                        var monthname = new Gtk.Label (_("January"));
-
-                        newremgrid.attach (monthname,3,3,1,1);
-
-                        newremmonth.value_changed.connect ( () => {
-                                //human friendly string month
-                                switch ( (int) newremmonth.get_value ()) {
-                                case 1: monthname.set_text (_("January")); break;
-                                case 2: monthname.set_text (_("February")); break;
-                                case 3: monthname.set_text (_("March")); break;
-                                case 4: monthname.set_text (_("April")); break;
-                                case 5: monthname.set_text (_("May")); break;
-                                case 6: monthname.set_text (_("June")); break;
-                                case 7: monthname.set_text (_("July")); break;
-                                case 8: monthname.set_text (_("August")); break;
-                                case 9: monthname.set_text (_("September")); break;
-                                case 10: monthname.set_text (_("October")); break;
-                                case 11: monthname.set_text (_("November")); break;
-                                case 12: monthname.set_text (_("December")); break;
-
+                        var freqname = new Gtk.Label ("None");
+                        newremgrid.attach (freqname,9,3,1,1);
+                        newremfreq.value_changed.connect ( () => {
+                                switch (newremfreq.get_value_as_int ()) {
+                                case 0: freqname.set_text ("None"); break;
+                                case 1: freqname.set_text ("Daily"); break;
+                                case 2: freqname.set_text ("Weekly"); break;
+                                case 3: freqname.set_text ("Monthly"); break;
+                                case 4: freqname.set_text ("Yearly"); break;
                                 }
                         });
 
-                        // a very rudimentary way of allowing for AM/PM style time.
-                        //Need help figuring out how to ask the system for this information.
-                        var hourampm = new Gtk.Label ("12:00 AM");
-                        newremgrid.attach (hourampm,5,3,1,1);
+
+
+
+
 
 
                         //attach the necessary buttons to the window, and show
@@ -460,32 +430,39 @@ protected override void activate () {
                                 }
 
 
-                                /* convert integer to string with .to_string (); */
-                                string hour = newremhour.get_text ().to_string ();
-                                string colon = ":";
-                                string min = "00";
+                                /* convert integer to string with .to_string (); */ /* comment deprecated when switching to granite */
+                                string time = newremtime.get_text ();
+                                string[] tm2 = time.split (":");
+                                string hour = tm2 [0];
+                                string min = tm2 [1];
                                 //friendly human minutes
-                                switch (min) {
-                                case "0": min = "00"; break;
-                                case "1": min = "01"; break;
-                                case "2": min = "02"; break;
-                                case "3": min = "03"; break;
-                                case "4": min = "04"; break;
-                                case "5": min = "05"; break;
-                                case "6": min = "06"; break;
-                                case "7": min = "07"; break;
-                                case "8": min = "08"; break;
-                                case "9": min = "09"; break;
-
-                                }
                                 //preparing for putting these into labels
                                 string name = newremname.get_text ();
-                                string time = hour + colon + min;
-                                string year = newremyear.get_value ().to_string ();
-                                string month = monthname.get_text ();
-                                string day = newremday.get_value ().to_string ();
+                                string[] date = newremdate.get_text ().split ( " " );
+                                string year = date [2];
+                                string month = date [0];
+                                string day = date [1];
+                                message (newremdate.get_text ());
 
-                                string frequency = timename.get_text ();
+                                string frequency = freqname.get_text ();
+
+                                stdout.printf("\n");
+                                int monthnum = 0;
+                                switch (month) {
+                                case "Jan":  monthnum = 1; break;
+                                case "Feb":  monthnum = 2; break;
+                                case "Mar":  monthnum = 3; break;
+                                case "Apr":  monthnum = 4; break;
+                                case "May":  monthnum = 5; break;
+                                case "Jun":  monthnum = 6; break;
+                                case "Jul":  monthnum = 7; break;
+                                case "Aug":  monthnum = 8; break;
+                                case "Sep":  monthnum = 9; break;
+                                case "Oct":  monthnum = 10; break;
+                                case "Nov":  monthnum = 11; break;
+                                case "Dec":  monthnum = 12; break;
+
+                                }
 
 
                                 //makes reminder visible in main window
@@ -496,7 +473,7 @@ protected override void activate () {
                                 layout.attach (new Gtk.Label (newremdesc.get_text ()),3,spc,1,1);
                                 layout.attach (new Gtk.Label (newremprior.get_active_id ()),4,spc,1,1);
                                 layout.attach (new Gtk.Label (_(" ")),5,spc,1,1);
-                                layout.attach (new Gtk.Label (_(year + " " + month + " " + day + " ")),6,spc,1,1);
+                                layout.attach (new Gtk.Label (_(year + " " + month + " " + day + " \t")),6,spc,1,1);
                                 layout.attach (new Gtk.Label (time),7,spc,1,1);
                                 layout.attach (new Gtk.Label (" "),8,spc,1,1);
                                 layout.attach (new Gtk.Label (frequency),10,spc,1,1);
@@ -507,11 +484,19 @@ protected override void activate () {
                                 Sqlite.Statement save;
 
                                 //database friendly values
-                                var yearnum = (int) newremyear.get_value ();
-                                var monthnum = (int) newremmonth.get_value ();
-                                var daynum = (int) newremday.get_value ();
-                                var hournum = (int) newremhour.get_text ();
-                                var minutenum = 0;
+                                var yearnum =  year.to_int ();
+                                message (year);
+                                message (yearnum.to_string ());
+
+                                var daynum =  day.to_int ();
+                                message (day);
+                                message (daynum.to_string ());
+                                message (month);
+
+                                var hournum =  hour.to_int ();
+                                message (hour);
+                                var minutenum =  min.to_int ();
+                                message (min);
                                 var priornum = (int) newremprior.get_active ();
                                 var description = newremdesc.get_text ();
 
