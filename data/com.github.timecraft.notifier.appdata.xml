@@ -46,14 +46,16 @@
   </screenshots>
 
   <releases>
-    <release version="1.3.0" date="2018-06-18">
+    <release version="1.3.0" date="2018-06-22">
       <description>
         <p>Now using Granite Widgets</p>
         <p>Reminders are now editable</p>
-        <p>Another new icon. This time it is one that Daniel Foré made for the app</p>
+        <p>Better support for AM/PM</p>
         <ul>
-          <li>Please note that this will require a restart to initiate if you are updating.</li>
+          <li>When restarting Notifier, this will change into its 24h format, as that is how Notifier reads the time.</li>
         </ul>
+        <p>Another new icon. This time it is one that Daniel Foré made for the app</p>
+
       </description>
     </release>
   </releases>
