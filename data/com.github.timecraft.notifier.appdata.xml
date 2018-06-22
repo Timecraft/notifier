@@ -50,11 +50,6 @@
       <description>
         <p>Now using Granite Widgets</p>
         <p>Reminders are now editable</p>
-        <ul>
-          <li>Please note that you will encounter some in-app bugs when using this feature.</li>
-          <li>Reminders may seem duplicated, but are not.</li>
-          <li>Notifier may crash when loading a reminder to edit, especially after editing ones previously in the same session.</li>
-        </ul>
         <p>Another new icon. This time it is one that Daniel Foré made for the app</p>
         <ul>
           <li>Please note that this will require a restart to initiate if you are updating.</li>
