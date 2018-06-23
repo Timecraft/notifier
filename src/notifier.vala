@@ -519,6 +519,22 @@ protected override void activate () {
                                 priorities.set (iter, 0, "Urgent", 1, "\tLook at me. Right now.");
 
 
+                                Gtk.TreeIter iterfreq;
+                                var freqs = new Gtk.ListStore (1, typeof (string));
+
+
+                                freqs.append (out iter);
+                                freqs.set (iter, 0,"None");
+                                freqs.append (out iter);
+                                freqs.set (iter, 0, "Daily");
+                                freqs.append (out iter);
+                                freqs.set (iter, 0, "Weekly");
+                                freqs.append (out iter);
+                                freqs.set (iter, 0, "Monthly");
+                                freqs.append (out iter);
+                                freqs.set (iter, 0, "Yearly");
+
+
 
 
                                 //setup new reminder prompt UI
@@ -550,8 +566,9 @@ protected override void activate () {
 
 
 
-                                var editremfreq = new Gtk.SpinButton.with_range (0,4,1);
-                                editremfreq.set_value (double.parse (timing));
+                                var editremfreq = new Gtk.ComboBox.with_model (freqs);
+
+
 
 
 
@@ -561,6 +578,9 @@ protected override void activate () {
                                 editremprior.add_attribute (renderer, "text", 0);
                                 editremprior.active = 0;
 
+
+
+
                                 renderer = new Gtk.CellRendererText ();
                                 editremprior.pack_start (renderer, true);
                                 editremprior.add_attribute (renderer, "text", 1);
@@ -568,7 +588,13 @@ protected override void activate () {
 
                                 editremprior.set_id_column (0);
 
-                                editremfreq.set_wrap (true);
+
+                                renderer = new Gtk.CellRendererText ();
+                                editremfreq.pack_start (renderer, true);
+                                editremfreq.add_attribute (renderer, "text", 0);
+                                editremfreq.active = 0;
+
+
 
 
                                 var editremsave = new Gtk.Button ();
@@ -594,17 +620,7 @@ protected override void activate () {
 
                                 //editremindgrid.attach (editremdate,5,4,1,1);
 
-                                var freqname = new Gtk.Label ("None");
-                                editremindgrid.attach (freqname,9,3,1,1);
-                                editremfreq.value_changed.connect ( () => {
-                                        switch (editremfreq.get_value_as_int ()) {
-                                        case 0: freqname.set_text ("None"); break;
-                                        case 1: freqname.set_text ("Daily"); break;
-                                        case 2: freqname.set_text ("Weekly"); break;
-                                        case 3: freqname.set_text ("Monthly"); break;
-                                        case 4: freqname.set_text ("Yearly"); break;
-                                        }
-                                });
+
 
 
 
@@ -688,7 +704,7 @@ protected override void activate () {
 
                                         //    message (editremdate.get_text ());
 
-                                        string frequency = freqname.get_text ();
+                                        string frequency = editremfreq.get_active_id ();
 
                                         stdout.printf("\n");
                                         message ("Changing month into computer friendly number.");
@@ -888,6 +904,21 @@ protected override void activate () {
                         priorities.set (iter, 0, "Urgent", 1, "\tLook at me. Right now.");
 
 
+                        Gtk.TreeIter iterfreq;
+                        var freqs = new Gtk.ListStore (1, typeof (string));
+
+
+                        freqs.append (out iter);
+                        freqs.set (iter, 0,"None");
+                        freqs.append (out iter);
+                        freqs.set (iter, 0, "Daily");
+                        freqs.append (out iter);
+                        freqs.set (iter, 0, "Weekly");
+                        freqs.append (out iter);
+                        freqs.set (iter, 0, "Monthly");
+                        freqs.append (out iter);
+                        freqs.set (iter, 0, "Yearly");
+
 
 
                         //setup new reminder prompt UI
@@ -910,7 +941,7 @@ protected override void activate () {
                         var newremprior = new Gtk.ComboBox.with_model (priorities);
 
 
-                        var newremfreq = new Gtk.SpinButton.with_range (0,4,1);
+                        var newremfreq = new Gtk.ComboBox.with_model (freqs);
 
 
 
@@ -925,15 +956,22 @@ protected override void activate () {
                         newremprior.add_attribute (renderer, "text", 1);
                         newremprior.active = 0;
 
+
+
                         newremprior.set_id_column (0);
 
+                        renderer = new Gtk.CellRendererText ();
+                        newremfreq.pack_start (renderer, true);
+                        newremfreq.add_attribute (renderer, "text", 0);
+                        newremfreq.active = 0;
 
 
 
 
 
 
-                        newremfreq.set_wrap (true);
+
+
 
 
                         var newremsave = new Gtk.Button ();
@@ -959,17 +997,7 @@ protected override void activate () {
 
                         //newremgrid.attach (newremdate,5,4,1,1);
 
-                        var freqname = new Gtk.Label ("None");
-                        newremgrid.attach (freqname,9,3,1,1);
-                        newremfreq.value_changed.connect ( () => {
-                                switch (newremfreq.get_value_as_int ()) {
-                                case 0: freqname.set_text ("None"); break;
-                                case 1: freqname.set_text ("Daily"); break;
-                                case 2: freqname.set_text ("Weekly"); break;
-                                case 3: freqname.set_text ("Monthly"); break;
-                                case 4: freqname.set_text ("Yearly"); break;
-                                }
-                        });
+
 
 
 
@@ -1030,7 +1058,7 @@ protected override void activate () {
 
                                 //    message (newremdate.get_text ());
 
-                                string frequency = freqname.get_text ();
+                                string frequency = newremfreq.get_active_id ();
 
                                 stdout.printf("\n");
                                 message ("Changing month into computer friendly number.");
