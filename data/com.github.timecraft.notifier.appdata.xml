@@ -46,7 +46,7 @@
   </screenshots>
 
   <releases>
-    <release version="1.3.0" date="2018-06-22">
+    <release version="2.0.0" date="2018-06-22">
       <description>
         <p>Now using Granite Widgets</p>
         <p>Many UI changes</p>
