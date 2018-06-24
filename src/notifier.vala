@@ -36,9 +36,19 @@ public notifier () {
 protected override void activate () {
 
 
+        //Welcome to Notifier
+        var welcome = new Granite.Widgets.Welcome ("Notifier", "\t\t\t\t\t\t\t\t\t\t\t\t");
+        welcome.append ("list-add","Add a reminder","");
+
+
+
+
+
 
 
         var window = new Gtk.ApplicationWindow (this);
+
+
 
         var bar = new Gtk.HeaderBar ();
         window.set_position(Gtk.WindowPosition.CENTER);
@@ -47,9 +57,10 @@ protected override void activate () {
         int c = 0;
         int colmn = 0;
         int rownum = 0;
-        var spc = 2;
+        var spc = 1;
         Gtk.CheckButton[] checkbtn = {};
         int b = 0;
+
 
 
         //Create database directory
@@ -166,6 +177,13 @@ protected override void activate () {
         newrembtn.set_image (new Gtk.Image.from_icon_name ("list-add",Gtk.IconSize.LARGE_TOOLBAR));
         newrembtn.tooltip_text = (_("Add a new reminder"));
 
+        //You pressed a thing on the Welcome Screen, so this should open up the New Reminder Window
+        welcome.activated.connect ( (i) => {
+                        newrembtn.activate ();
+                });
+
+
+
         var spclbl = new Gtk.Label ("\t");
 
         var editrembtn = new Gtk.Button ();
@@ -186,12 +204,13 @@ protected override void activate () {
 
         layout.row_spacing = 10;
 
-        layout.attach (new Gtk.Label (_("\tName\t")),1,1,1,1);
-        layout.attach (new Gtk.Label ("\t"),2,1,1,1);
-        layout.attach (new Gtk.Label (_("\tDescription\t")),3,1,1,1);
-        layout.attach (new Gtk.Label (_("\tPriority\t")),4,1,1,1);
-        layout.attach (new Gtk.Label (_("\tTime\t")),6,1,4,1);
-        layout.attach (new Gtk.Label (_("\tFrequency\t")),10,1,1,1);
+
+        layout.attach (new Gtk.Label (_("\tName\t")), 1,0,1,1);
+        layout.attach (new Gtk.Label ("\t"),2,0,1,1);
+        layout.attach (new Gtk.Label (_("\tDescription\t")),3,0,1,1);
+        layout.attach (new Gtk.Label (_("\tPriority\t")),4,0,1,1);
+        layout.attach (new Gtk.Label (_("\tTime\t")),6,0,4,1);
+        layout.attach (new Gtk.Label (_("\tFrequency\t")),10,0,1,1);
 
 
         int lngth = checkbtn.length - 1;
@@ -213,12 +232,15 @@ protected override void activate () {
 
 
         //load reminders from database
+        int spc2 = 1;
         while (countstmt.step () == Sqlite.ROW) {
 
                 spc++;
+                spc2++;
+                message (spc2.to_string ());
 
 
-                layout.insert_row (spc);
+
                 lngth = checkbtn.length - 1;
 
 
@@ -298,14 +320,13 @@ protected override void activate () {
                 layout.attach (new Gtk.Label (name),1,spc,1,1);
                 layout.attach (new Gtk.Label (description),3,spc,1,1);
                 layout.attach (new Gtk.Label (prior),4,spc,1,1);
-                layout.attach (new Gtk.Label (_("")),5,spc,1,1);
-                layout.attach (new Gtk.Label (_(year + " " + monthn + " " + day + " ")),5,spc,1,1);
+                layout.attach (new Gtk.Label (_(" ")),5,spc,1,1);
+                layout.attach (new Gtk.Label (_("\t" + year + " " + monthn + " " + day + " ")),6,spc,1,1);
                 layout.attach (new Gtk.Label (time),7,spc,1,1);
                 layout.attach (new Gtk.Label (" "),11,spc,1,1);
                 layout.attach (new Gtk.Label (timing),10,spc,1,1);
                 b++;
-                spc++;
-                spc++;
+
                 rows = 3;
                 //Onto the next database row, if any
                 var countq2 = "SELECT * FROM Reminders WHERE rowid = ?";
@@ -314,9 +335,12 @@ protected override void activate () {
                 countstmt.bind_int64 (1,bv);
         }
         //You have no reminders!
-        if (rows==1) {
-                layout.attach (new Gtk.Label (_("Create a new Reminder!")),4,2,2,1);
+        if (spc == 1) {
+                window.add (welcome);
 
+        }
+        else {
+                window.add (layout);
         }
 
 
@@ -562,11 +586,14 @@ protected override void activate () {
 
 
                                 var editremprior = new Gtk.ComboBox.with_model (priorities);
+                                editremprior.set_id_column (0);
                                 editremprior.set_active (editprior);
 
 
 
                                 var editremfreq = new Gtk.ComboBox.with_model (freqs);
+
+                                editremfreq.set_id_column (0);
 
 
 
@@ -652,112 +679,124 @@ protected override void activate () {
 
 
                                 //saves edited reminder
+
+
+                                //Remove reminder that has been updated
+
+
+                                Sqlite.Statement updatestmt;
+                                message ("\nrownumber " + (remnum).to_string ());
+
+
+
+
+
+
+
+
+
+
+                                /* convert integer to string with .to_string (); */ /* comment deprecated when switching to granite */
+                                string time = editremtime.get_text ();
+                                string[] tm2 = time.split (":");
+                                string hr2 = tm2 [0];
+                                string minn2 = tm2 [1];
+                                //friendly human minutes
+                                //preparing for putting these into labels
+                                string name2 = editremname.get_text ();
+                                string[] date2 = editremdate.get_text ().split ( " " );
+                                string year2 = date2 [2];
+
+                                string day2 = date2 [1];
+                                message ("date2.length " + date2.length.to_string ());
+                                if (day2.length < 1) {
+                                        message ("Changing year to the 4th part of the date because datetime is weird.");
+                                        day2 = date2 [2];
+
+                                        year2 = date2 [3];
+
+                                }
+
+
+
+
+                                string month2 = date2 [0];
+
+                                stdout.printf("\n");
+                                for (int i = 0; i<date2.length; i++ ) {
+                                        message ("i"+date2[i]+"i");
+
+                                }
+
+                                //    message (editremdate.get_text ());
+
+                                string frequency = editremfreq.get_active_id ();
+
+                                stdout.printf("\n");
+                                message ("Changing month into computer friendly number.");
+                                int monthnum = 0;
+                                switch (month2) {
+                                case "Jan":  monthnum = 1; break;
+                                case "Feb":  monthnum = 2; break;
+                                case "Mar":  monthnum = 3; break;
+                                case "Apr":  monthnum = 4; break;
+                                case "May":  monthnum = 5; break;
+                                case "Jun":  monthnum = 6; break;
+                                case "Jul":  monthnum = 7; break;
+                                case "Aug":  monthnum = 8; break;
+                                case "Sep":  monthnum = 9; break;
+                                case "Oct":  monthnum = 10; break;
+                                case "Nov":  monthnum = 11; break;
+                                case "Dec":  monthnum = 12; break;
+
+                                }
+                                //Debugging datetime
+                                stdout.printf("\n");
+                                message ("Year " + year2);
+                                message ("Month " + month2);
+                                message ("Day " + day2);
+                                message ("hr " + hr2);
+
+                                stdout.printf("\n");
+                                string[] timer = minn2.split (" ");
+                                minn2 = timer[0];
+                                message ("Min " + minn2);
+
+                                string ampm = timer[1];
+                                message ("ampm " + ampm);
+
+                                remnum++;
                                 editremsave.clicked.connect ( () => {
+                                        for (int h = 1; h<=10; h++) {
+
+                                                layout.get_child_at (h,remnum).destroy ();
 
 
-                                        //Remove reminder that has been updated
-
-
-                                        Sqlite.Statement updatestmt;
-                                        message ("\nrownumber " + remnum.to_string ());
-
-
-
-
-
-
-
-
-
-
-                                        /* convert integer to string with .to_string (); */ /* comment deprecated when switching to granite */
-                                        string time = editremtime.get_text ();
-                                        string[] tm2 = time.split (":");
-                                        string hr2 = tm2 [0];
-                                        string minn2 = tm2 [1];
-                                        //friendly human minutes
-                                        //preparing for putting these into labels
-                                        string name2 = editremname.get_text ();
-                                        string[] date2 = editremdate.get_text ().split ( " " );
-                                        string year2 = date2 [2];
-
-                                        string day2 = date2 [1];
-                                        message ("date2.length " + date2.length.to_string ());
-                                        if (day2.length < 1) {
-                                                message ("Changing year to the 4th part of the date because datetime is weird.");
-                                                day2 = date2 [2];
-
-                                                year2 = date2 [3];
-
+                                                message ("At:\t" + remnum.to_string () + " " + h.to_string ());
                                         }
 
-
-
-
-                                        string month2 = date2 [0];
-
-                                        stdout.printf("\n");
-                                        for (int i = 0; i<date2.length; i++ ) {
-                                                message ("i"+date2[i]+"i");
-
-                                        }
-
-                                        //    message (editremdate.get_text ());
-
-                                        string frequency = editremfreq.get_active_id ();
-
-                                        stdout.printf("\n");
-                                        message ("Changing month into computer friendly number.");
-                                        int monthnum = 0;
-                                        switch (month2) {
-                                        case "Jan":  monthnum = 1; break;
-                                        case "Feb":  monthnum = 2; break;
-                                        case "Mar":  monthnum = 3; break;
-                                        case "Apr":  monthnum = 4; break;
-                                        case "May":  monthnum = 5; break;
-                                        case "Jun":  monthnum = 6; break;
-                                        case "Jul":  monthnum = 7; break;
-                                        case "Aug":  monthnum = 8; break;
-                                        case "Sep":  monthnum = 9; break;
-                                        case "Oct":  monthnum = 10; break;
-                                        case "Nov":  monthnum = 11; break;
-                                        case "Dec":  monthnum = 12; break;
-
-                                        }
-                                        //Debugging datetime
-                                        stdout.printf("\n");
-                                        message ("Year " + year2);
-                                        message ("Month " + month2);
-                                        message ("Day " + day2);
-                                        message ("hr " + hr2);
-
-                                        stdout.printf("\n");
-                                        string[] timer = minn2.split (" ");
-                                        minn2 = timer[0];
-                                        message ("Min " + minn2);
-
-                                        string ampm = timer[1];
-                                        message ("ampm " + ampm);
 
 
 
 
                                         //makes reminder visible in main window
                                         message ("Adding reminder to main window.");
+
                                         checkbtn += new Gtk.CheckButton ();
                                         lngth = checkbtn.length - 1;
-                                        layout.remove_row (remnum * 2 + 1);
-                                        layout.insert_row (remnum * 2 + 1);
-                                        layout.attach (checkbtn[b],0,remnum * 2 + 1,1,1);
-                                        layout.attach (new Gtk.Label (editremname.get_text ()),1,remnum * 2 + 1,1,1);
-                                        layout.attach (new Gtk.Label (editremdesc.get_text ()),3,remnum * 2 + 1,1,1);
-                                        layout.attach (new Gtk.Label (editremprior.get_active_id ()),4,remnum * 2 + 1,1,1);
-                                        layout.attach (new Gtk.Label (_(" ")),5,remnum * 2 + 1,1,1);
-                                        layout.attach (new Gtk.Label (_(year2 + " " + month2 + " " + day2 + " \t")),6,remnum * 2 + 1,1,1);
-                                        layout.attach (new Gtk.Label (time),7,remnum * 2 + 1,1,1);
-                                        layout.attach (new Gtk.Label (" "),8,remnum * 2 + 1,1,1);
-                                        layout.attach (new Gtk.Label (frequency),10,remnum * 2 + 1,1,1);
-                                        b++;
+
+
+                                        layout.attach (checkbtn[remnum],0,(remnum),1,1);
+                                        //Gtk.Grid.attach (widget,column,row,rows taken, columns taken)
+                                        layout.attach (new Gtk.Label (editremname.get_text ()),1,(remnum),1,1);
+                                        layout.attach (new Gtk.Label (editremdesc.get_text ()),3,(remnum),1,1);
+                                        layout.attach (new Gtk.Label (editremprior.get_active_id ()),4,(remnum),1,1);
+                                        layout.attach (new Gtk.Label (_(" ")),5,(remnum),1,1);
+                                        layout.attach (new Gtk.Label (_("\t" + year2 + " " + month2 + " " + day2 + " ")),6,(remnum),1,1);
+                                        layout.attach (new Gtk.Label (time),7,(remnum),1,1);
+                                        layout.attach (new Gtk.Label (" "),8,(remnum),1,1);
+                                        layout.attach (new Gtk.Label (frequency),10,(remnum),1,1);
+
 
                                         message ("Preparing for database!");
                                         //saves reminder into database
@@ -842,9 +881,9 @@ protected override void activate () {
                                         save.bind_text (colmn,description2);
                                         colmn=10;
 
-                                        save.bind_text (colmn, frequency);
 
-                                        save.bind_int64 (11,remnum);
+                                        save.bind_text (colmn, frequency);
+                                        save.bind_int64 (11,remnum - 1);
 
 
                                         //save and clear
@@ -855,6 +894,8 @@ protected override void activate () {
 
                                         //destroys the "new reminder" window as it is no longer necessary
                                         editrem.destroy ();
+
+
 
                                         window.show_all ();
 
@@ -965,6 +1006,8 @@ protected override void activate () {
                         newremfreq.add_attribute (renderer, "text", 0);
                         newremfreq.active = 0;
 
+                        newremfreq.set_id_column (0);
+
 
 
 
@@ -1017,11 +1060,7 @@ protected override void activate () {
 
                                 spc++;
                                 //clears out that "create new reminder" message
-                                rows=3;
-                                if (rows==3) {
-                                        layout.remove_row (2);
-                                        layout.insert_row (2);
-                                }
+
 
 
                                 /* convert integer to string with .to_string (); */ /* comment deprecated when switching to granite */
@@ -1097,7 +1136,7 @@ protected override void activate () {
                                 layout.attach (new Gtk.Label (newremdesc.get_text ()),3,spc,1,1);
                                 layout.attach (new Gtk.Label (newremprior.get_active_id ()),4,spc,1,1);
                                 layout.attach (new Gtk.Label (_(" ")),5,spc,1,1);
-                                layout.attach (new Gtk.Label (_(year + " " + month + " " + day + " \t")),6,spc,1,1);
+                                layout.attach (new Gtk.Label (_("\t" +year + " " + month + " " + day + " ")),6,spc,1,1);
                                 layout.attach (new Gtk.Label (time),7,spc,1,1);
                                 layout.attach (new Gtk.Label (" "),8,spc,1,1);
                                 layout.attach (new Gtk.Label (frequency),10,spc,1,1);
@@ -1192,6 +1231,8 @@ protected override void activate () {
 
                                 //destroys the "new reminder" window as it is no longer necessary
                                 newrem.destroy ();
+                                welcome.destroy ();
+                                window.add (layout);
 
                                 window.show_all ();
 
@@ -1207,7 +1248,6 @@ protected override void activate () {
 
 
 
-        window.add (layout);
 
 
         window.show_all ();
