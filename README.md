@@ -1,4 +1,5 @@
 # Notifier
+![BuildStatus](https://travis-ci.org/Timecraft/notifier.svg?branch=master)
 
 ## A reminders application designed with elementary OS in mind.
 
