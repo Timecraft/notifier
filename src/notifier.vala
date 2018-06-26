@@ -44,6 +44,22 @@ protected override void activate () {
 
 
 
+        //Checking to see if User's computer is configured for 24h or am/pm
+        var am24pm = new DateTime.now_local ();
+        var testampm = new TimePicker ();
+        testampm.time = am24pm;
+        string wit = testampm.get_text ();
+        message (wit);
+
+        var ap = wit.contains ("AM");
+
+        if (ap == false) {
+                ap = wit.contains ("PM");
+        }
+
+
+
+
 
 
         var window = new Gtk.ApplicationWindow (this);
@@ -250,6 +266,8 @@ protected override void activate () {
 
                 string min = countstmt.column_value (6).to_text ();
                 //adding a 0 to single digit minutes. human friendly
+
+
                 switch (min) {
                 case "0": min = "00"; break;
                 case "1": min = "01"; break;
@@ -262,6 +280,17 @@ protected override void activate () {
                 case "8": min = "08"; break;
                 case "9": min = "09"; break;
 
+                }
+
+                //If the User's computer is configured in am/pm, Notifier will switch the view to show AM/PM
+                if (ap == true) {
+                        var pa = " am";
+                        if (int.parse (hour) > 12) {
+                                hour = (int.parse (hour) - 12).to_string ();;
+                                pa = " pm";
+
+                        }
+                        min = min + pa;
                 }
 
                 string time = hour + ":" + min;
@@ -543,7 +572,6 @@ protected override void activate () {
                                 priorities.set (iter, 0, "Urgent", 1, "\tLook at me. Right now.");
 
 
-                                Gtk.TreeIter iterfreq;
                                 var freqs = new Gtk.ListStore (1, typeof (string));
 
 
@@ -633,7 +661,7 @@ protected override void activate () {
                                 editremindgrid.attach (new Gtk.Label (_("Reminder Name")),0,0,1,1);
                                 editremindgrid.attach (new Gtk.Label (_("Remind Time")),2,0,4,1);
                                 editremindgrid.attach (new Gtk.Label (_("Reminder description")),1,0,1,1);
-                                editremindgrid.attach (new Gtk.Label (_("Year")),2,1,1,1);
+                                editremindgrid.attach (new Gtk.Label (_("Day")),2,1,1,1);
                                 editremindgrid.attach (new Gtk.Label (_("Time")),5,1,1,1);
                                 editremindgrid.insert_column(7);
                                 editremindgrid.attach (new Gtk.Label (_("Priority")),7,0,1,1);
@@ -681,10 +709,6 @@ protected override void activate () {
                                 //saves edited reminder
 
 
-                                //Remove reminder that has been updated
-
-
-                                Sqlite.Statement updatestmt;
                                 message ("\nrownumber " + (remnum).to_string ());
 
 
@@ -724,7 +748,7 @@ protected override void activate () {
 
                                 stdout.printf("\n");
                                 for (int i = 0; i<date2.length; i++ ) {
-                                        message ("i"+date2[i]+"i");
+                                        message (date2[i]);
 
                                 }
 
@@ -776,6 +800,32 @@ protected override void activate () {
                                         }
 
 
+                                        /* convert integer to  with .to_ (); */ /* comment deprecated when switching to granite */
+                                        time = editremtime.get_text ();
+                                        tm2 = time.split (":");
+                                        hr2 = tm2 [0];
+                                        minn2 = tm2 [1];
+                                        //friendly human minutes
+                                        //preparing for putting these into labels
+                                        name2 = editremname.get_text ();
+                                        date2 = editremdate.get_text ().split ( " " );
+                                        year2 = date2 [2];
+
+                                        day2 = date2 [1];
+                                        message ("date2.length " + date2.length.to_string ());
+                                        if (day2.length < 1) {
+                                                message ("Changing year to the 4th part of the date because datetime is weird.");
+                                                day2 = date2 [2];
+
+                                                year2 = date2 [3];
+
+                                        }
+
+
+
+
+                                        month2 = date2 [0];
+
 
 
 
@@ -817,7 +867,9 @@ protected override void activate () {
                                         var hrnum =  int.parse (hr2);
 
                                         if (ampm == "PM") {
+                                                message ("Adding 12 to because this is a PM situation");
                                                 hrnum = (hrnum + 12);
+                                                message ("Hour is now: " + hrnum.to_string ());
                                         }
 
                                         var minutenum =  int.parse (minn2);
@@ -825,69 +877,115 @@ protected override void activate () {
                                         var priornum = (int) editremprior.get_active ();
                                         var description2 = editremdesc.get_text ();
 
+
                                         //open, prep, error trap, save
 
 
 
-                                        string savequery = "UPDATE Reminders SET Complete=?, Name=?, Year=?, Month=?, Day=?, Hour=?, Minute=?, Priority=?, Description=?, Timing=? WHERE rowid=?;";
+                                        string savequery = "UPDATE Reminders SET Complete='false', Name=?, Year=?, Month=?, Day=?, Hour=?, Minute=?, Priority=?, Description=?, Timing=? WHERE rowid=?;";
                                         int res = db.prepare_v2 (savequery,-1,out save);
                                         if (res != Sqlite.OK) {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
                                         }
+
                                         message ("Saving...");
                                         rownum++;
+
+
+                                        message ("rownum: " + (remnum - 1).to_string ());
                                         colmn = 1;
 
-                                        //saves the completed state, false by default
-                                        save.bind_text (colmn, "false");
-                                        colmn = 2;
+
+
+                                        if (res != Sqlite.OK) {
+                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
+
+                                        }
 
 
                                         //saves name
-                                        save.bind_text (colmn, name2);
-                                        colmn = 3;
+                                        res = save.bind_text (colmn, name2);
+                                        colmn = 2;
+                                        if (res != Sqlite.OK) {
+                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
+                                        }
 
 
                                         //saves the year of the reminder
-                                        save.bind_int64 (colmn, yearnum);
-                                        colmn = 4;
+                                        res = save.bind_int64 (colmn, yearnum);
+                                        colmn = 3;
+                                        if (res != Sqlite.OK) {
+                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
+                                        }
 
                                         //saves the month of the reminder
-                                        save.bind_int64 (colmn, monthnum);
-                                        colmn = 5;
+                                        res = save.bind_int64 (colmn, monthnum);
+                                        colmn = 4;
+                                        if (res != Sqlite.OK) {
+                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
+                                        }
 
                                         //day of reminder
-                                        save.bind_int64 (colmn, daynum);
-                                        colmn = 6;
+                                        res = save.bind_int64 (colmn, daynum);
+                                        colmn = 5;
+                                        if (res != Sqlite.OK) {
+                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
+                                        }
 
                                         //hr of reminder
-                                        save.bind_int64 (colmn,hrnum);
-                                        colmn = 7;
+                                        res = save.bind_int64 (colmn,hrnum);
+                                        colmn = 6;
+                                        if (res != Sqlite.OK) {
+                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
+                                        }
 
                                         //and minute of reminder
-                                        save.bind_int64 (colmn, minutenum);
-                                        colmn = 8;
+                                        res = save.bind_int64 (colmn, minutenum);
+                                        colmn = 7;
+                                        if (res != Sqlite.OK) {
+                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
+
+                                        }
 
                                         //how important it is. determines the notification level type in the daemon
-                                        save.bind_int64 (colmn, priornum);
-                                        colmn = 9;
+                                        res = save.bind_int64 (colmn, priornum);
+                                        colmn = 8;
+                                        if (res != Sqlite.OK) {
+                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
-                                        save.bind_text (colmn,description2);
-                                        colmn=10;
+                                        }
 
+                                        res = save.bind_text (colmn,description2);
+                                        colmn=9;
+                                        if (res != Sqlite.OK) {
+                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
-                                        save.bind_text (colmn, frequency);
-                                        save.bind_int64 (11,remnum - 1);
+                                        }
 
+                                        res = save.bind_text (colmn, frequency);
+                                        colmn = 10;
+                                        if (res != Sqlite.OK) {
+                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
+
+                                        }
+                                        res = save.bind_int64 (colmn,(remnum - 1));
+                                        if (res != Sqlite.OK) {
+                                                stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
+
+                                        }
 
                                         //save and clear
-                                        save.step ();
+                                        res = save.step ();
+                                        if (res != Sqlite.OK) {
+                                                message (res.to_string ());
+
+                                        }
                                         save.clear_bindings ();
                                         save.reset ();
                                         message ("SAVED");
@@ -945,7 +1043,6 @@ protected override void activate () {
                         priorities.set (iter, 0, "Urgent", 1, "\tLook at me. Right now.");
 
 
-                        Gtk.TreeIter iterfreq;
                         var freqs = new Gtk.ListStore (1, typeof (string));
 
 
@@ -1026,7 +1123,7 @@ protected override void activate () {
                         newremgrid.attach (new Gtk.Label (_("Reminder Name")),0,0,1,1);
                         newremgrid.attach (new Gtk.Label (_("Remind Time")),2,0,4,1);
                         newremgrid.attach (new Gtk.Label (_("Reminder description")),1,0,1,1);
-                        newremgrid.attach (new Gtk.Label (_("Year")),2,1,1,1);
+                        newremgrid.attach (new Gtk.Label (_("Day")),2,1,1,1);
                         newremgrid.attach (new Gtk.Label (_("Time")),5,1,1,1);
                         newremgrid.insert_column(7);
                         newremgrid.attach (new Gtk.Label (_("Priority")),7,0,1,1);
