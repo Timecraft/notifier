@@ -52,9 +52,6 @@
         <p>Many UI changes</p>
         <p>Reminders are now editable</p>
         <p>Better support for AM/PM</p>
-        <ul>
-          <li>When restarting Notifier, this will change into its 24h format, as that is how Notifier reads the time.</li>
-        </ul>
         <p>Another new icon. This time it is one that Daniel Foré made for the app</p>
 
       </description>
