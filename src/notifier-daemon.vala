@@ -557,7 +557,7 @@ protected override void activate () {
                         countstmt.bind_int64 (1,bv);
                 }
                 bv=0;
-                Thread.usleep(60000000);
+                Thread.usleep(15000000);
 
         }
 }
