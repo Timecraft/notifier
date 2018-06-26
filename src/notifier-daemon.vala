@@ -46,12 +46,12 @@ public override void startup () {
 }
 
 protected override void activate () {
-var notification = new Notification ("");
-Sqlite.Database db;
-Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
+        var notification = new Notification ("");
+        Sqlite.Database db;
+        Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
         while (true) {
-          //prove it's running. mostly for dev purposes
-          stdout.printf ("Running...\n");
+                //prove it's running. mostly for dev purposes
+                stdout.printf ("Running...\n");
                 //prepare to load reminders from database...
                 var countq = "SELECT * FROM Reminders WHERE rowid = ?";
                 Sqlite.Statement countstmt;
@@ -289,27 +289,27 @@ Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Ti
 
 
 
-                                                                        while (thatday < thisday){
-                                                                          stdout.printf ("taking a day away \n");
-                                                                          rn3 = rn3.add_days (-1);
-                                                                          thisday = rn3.get_day_of_week ();
-                                                                          dayofmonth = rn3.get_day_of_month ();
+                                                                        while (thatday < thisday) {
+                                                                                stdout.printf ("taking a day away \n");
+                                                                                rn3 = rn3.add_days (-1);
+                                                                                thisday = rn3.get_day_of_week ();
+                                                                                dayofmonth = rn3.get_day_of_month ();
 
 
 
                                                                         }
-                                                                        while (thatday > thisday){
-                                                                          stdout.printf ("adding a day \n");
-                                                                          rn3 = rn3.add_days (1);
-                                                                            thisday = rn3.get_day_of_week ();
-                                                                            dayofmonth = rn3.get_day_of_month ();
+                                                                        while (thatday > thisday) {
+                                                                                stdout.printf ("adding a day \n");
+                                                                                rn3 = rn3.add_days (1);
+                                                                                thisday = rn3.get_day_of_week ();
+                                                                                dayofmonth = rn3.get_day_of_month ();
 
-                                                                            //day of reminder
+                                                                                //day of reminder
 
 
                                                                         }
-                                                                        if ( dayofmonth - 7 > today ){
-                                                                          dayofmonth -= 7;
+                                                                        if ( dayofmonth - 7 > today ) {
+                                                                                dayofmonth -= 7;
                                                                         }
                                                                         save.bind_int64 (colmn, dayofmonth);
                                                                         colmn = 6;
