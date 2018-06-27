@@ -36,15 +36,19 @@
   </custom>
 
   <screenshots>
+    <screenshot type=default>
+      <caption>Welcome to Notifier</caption>
+      <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/Welcome.png</image>
+    </screenshot>
     <screenshot type="default">
       <caption>The main UI of Notifier</caption>
       <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/MainUI.png</image>
     </screenshot>
-    <screenshot>
+    <screenshot type="default">
       <caption>Create a new Reminder</caption>
       <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/NewReminder.png</image>
     </screenshot>
-    <screenshot>
+    <screenshot  type="default">
       <caption>Edit a Reminder</caption>
       <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/EditReminder.png</image>
     </screenshot>
