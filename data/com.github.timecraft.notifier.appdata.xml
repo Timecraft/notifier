@@ -36,7 +36,7 @@
   </custom>
 
   <screenshots>
-    <screenshot type=default>
+    <screenshot type="default">
       <caption>Welcome to Notifier</caption>
       <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/Welcome.png</image>
     </screenshot>
