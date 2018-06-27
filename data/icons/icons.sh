@@ -1,4 +1,5 @@
 #!/bin/sh
+###For manual install of icons
 sudo cp 16/com.github.timecraft.notifier.svg /usr/share/icons/hicolor/16x16/apps/
 echo Installed 16x16
 
