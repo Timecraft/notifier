@@ -41,18 +41,29 @@
       <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/MainUI.png</image>
     </screenshot>
     <screenshot>
+      <caption>Create a new Reminder</caption>
       <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/NewReminder.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Edit a Reminder</caption>
+      <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/EditReminder.png</image>
     </screenshot>
   </screenshots>
 
   <releases>
-    <release version="2.0.0" date="2018-06-22">
+    <release version="2.0.0" date="2018-06-26">
       <description>
         <p>Now using Granite Widgets</p>
         <p>Many UI changes</p>
         <p>Reminders are now editable</p>
         <p>Better support for AM/PM</p>
         <p>Another new icon. This time it is one that Daniel Foré made for the app</p>
+        <p>Daemon runs every 15 seconds instead of every 60 seconds</p>
+        <ul>
+          <li>This allows for more accurately timed notifications so that they are not late</li>
+          <li>Please note that this will require a restart</li>
+        </ul>
+
 
       </description>
     </release>
