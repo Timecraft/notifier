@@ -6,7 +6,8 @@ Build-Depends: libsqlite3-dev,
                debhelper (>= 9),
                libgranite-dev,
                libgtk-3-dev,
-               meson,
+               cmake,
+               cmake-elementary,
                valac
 Standards-Version: 3.9.3
 
