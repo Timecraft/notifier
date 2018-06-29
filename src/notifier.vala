@@ -1061,6 +1061,7 @@ protected override void activate () {
 
                         //setup new reminder prompt UI
                         var newrem = new Gtk.Window ();
+                        newrem.set_size_request (400,500);
                         var newbar = new Gtk.HeaderBar ();
                         newbar.set_title (_("New Reminder"));
                         newbar.show_close_button = true;
