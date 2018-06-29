@@ -2,13 +2,12 @@ Source: com.github.timecraft.notifier
 Section: x11
 Priority: extra
 Maintainer: Timecraft <timemaster23x@gmail.com>
-Build-Depends: meson,
-               debhelper,
-               libgtk-3-dev,
-               valac,
-               libsqlite3-dev,
+Build-Depends: libsqlite3-dev,
+               debhelper (>= 9),
                libgranite-dev,
-               libglib2.0-dev
+               libgtk-3-dev,
+               meson,
+               valac
 Standards-Version: 3.9.3
 
 Package: com.github.timecraft.notifier
