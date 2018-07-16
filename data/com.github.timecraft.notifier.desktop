@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Notifier
+GenericName=Reminders
+Comment=Remind yourself
+Categories=GNOME;GTK;Office;ProjectManagement;Utility;
+Exec=com.github.timecraft.notifier
+Icon=com.github.timecraft.notifier
+Terminal=false
+
+X-GNOME-Gettext-domain=notifier
+X-GNOME-UsesNotifications=true
+Keywords=Reminders;Alerts;

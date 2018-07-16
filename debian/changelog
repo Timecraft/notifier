@@ -1,0 +1,24 @@
+-- Timecraft <timemaster23x@gmail.com>  Fri, 29 Jun 2018 17:27:00 -0500
+
+com.github.timecraft.notifier (2.0.0) xenial; urgency=low
+    * Now using Granite Widgets
+    * Many UI changes
+    * Reminders are now editable
+    * Better AM/PM support
+    * New icon created by Daniel Foré
+* Daemon runs more often for more accurately timed notifications
+
+com.github.timecraft.notifier (1.2.2) xenial; urgency=low
+
+  * Reminders frequency supports.
+  * Minor UI changes.
+  * Icon change.
+  * Is now on the same version as the GitHub latest release.
+
+ -- Timecraft <timemaster23x@gmail.com>  Fri, 21 Apr 2018 17:27:00 -0500
+
+com.github.timecraft.notifier (0.1.0) xenial; urgency=low
+
+  * Source Release.
+
+ -- Timecraft <timemaster23x@gmail.com>  Fri, 16 Mar 2018 10:13:00 -0500
