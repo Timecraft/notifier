@@ -2,8 +2,8 @@ Source: com.github.timecraft.notifier
 Section: x11
 Priority: extra
 Maintainer: Timecraft <timemaster23x@gmail.com>
-Build-Depends: cmake,
-               cmake-elementary,
+Build-Depends: meson,
+               ninja,
                debhelper (>= 9),
                libgtk-3-dev,
                valac (>= 0.16),
