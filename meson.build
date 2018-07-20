@@ -60,3 +60,6 @@ i18n.merge_file(
 )
 
 subdir ('po')
+
+
+meson.add_install_script('meson/post_install.py')
