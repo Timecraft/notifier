@@ -1,0 +1,4 @@
+src/notifier.vala
+src/notifier-daemon.vala
+data/com.github.timecraft.notifier.desktop.in
+data/com.github.timecraft.notifier.appdata.xml.in
