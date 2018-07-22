@@ -38,7 +38,7 @@ protected override void activate () {
 
         //Welcome to Notifier
         var welcome = new Granite.Widgets.Welcome ("Notifier", "\t\t\t\t\t\t\t\t\t\t\t\t");
-        welcome.append ("list-add","Add a reminder","");
+        welcome.append ("list-add",_("Add a reminder"),"");
 
 
 
@@ -302,18 +302,18 @@ protected override void activate () {
                 string monthn = "";
                 //switchin from integer month to string month. more human friendly
                 switch (month) {
-                case 1: monthn = "Jan"; break;
-                case 2: monthn = "Feb"; break;
-                case 3: monthn = "Mar"; break;
-                case 4: monthn = "Apr"; break;
-                case 5: monthn = "May"; break;
-                case 6: monthn = "Jun"; break;
-                case 7: monthn = "Jul"; break;
-                case 8: monthn = "Aug"; break;
-                case 9: monthn = "Sep"; break;
-                case 10: monthn = "Oct"; break;
-                case 11: monthn = "Nov"; break;
-                case 12: monthn = "Dec"; break;
+                case 1: monthn = _("Jan"); break;
+                case 2: monthn = _("Feb"); break;
+                case 3: monthn = _("Mar"); break;
+                case 4: monthn = _("Apr"); break;
+                case 5: monthn = _("May"); break;
+                case 6: monthn = _("Jun"); break;
+                case 7: monthn = _("Jul"); break;
+                case 8: monthn = _("Aug"); break;
+                case 9: monthn = _("Sep"); break;
+                case 10: monthn = _("Oct"); break;
+                case 11: monthn = _("Nov"); break;
+                case 12: monthn = _("Dec"); break;
 
                 }
 
@@ -323,7 +323,7 @@ protected override void activate () {
                 Sqlite.Statement notimeupd;
                 string timing = countstmt.column_value (9).to_text ();
                 if (timing == "") {
-                        timing="None";
+                        timing=_("None");
                         string notime = "UPDATE Reminders SET Timing = 'None' WHERE rowid = ?;";
                         db.prepare_v2 (notime,-1,out notimeupd);
                         notimeupd.bind_int64(1,bv);
@@ -335,10 +335,10 @@ protected override void activate () {
 
                 string prior = countstmt.column_value (7).to_text ();
                 switch (prior) {
-                case "0": prior = "Normal"; break;
-                case "1": prior = "Low"; break;
-                case "2": prior = "High"; break;
-                case "3": prior = "Urgent"; break;
+                case "0": prior = _("Normal"); break;
+                case "1": prior = _("Low"); break;
+                case "2": prior = _("High"); break;
+                case "3": prior = _("Urgent"); break;
 
                 }
 
@@ -454,7 +454,7 @@ protected override void activate () {
 
 
 
-                        var editreminit = new Gtk.Button.with_label ("\nEdit!\n");
+                        var editreminit = new Gtk.Button.with_label (_("\nEdit!\n"));
                         if (editme.get_active () == -1) {
                                 editreminit.set_sensitive (false);
                         }
@@ -462,7 +462,7 @@ protected override void activate () {
                                 editreminit.set_sensitive (true);
                         }
 
-                        editremgrid.attach (new Gtk.Label ("\tSelect the reminder you wish to edit.\t"),0,0,3,1);
+                        editremgrid.attach (new Gtk.Label (_("\tSelect the reminder you wish to edit.\t")),0,0,3,1);
                         editremgrid.attach (editme,1,1,1,1);
                         message ("editme.get_sensitive: " + editme.get_sensitive ().to_string ());
                         editremgrid.attach (new Gtk.Label (" "),0,2,1,1);
@@ -563,26 +563,26 @@ protected override void activate () {
 
 
                                 priorities.append (out iter);
-                                priorities.set (iter, 0, "Normal", 1, "\tA standard notification type.");
+                                priorities.set (iter, 0, _("Normal"), 1, _("\tA standard notification type."));
                                 priorities.append (out iter);
-                                priorities.set (iter, 0, "Low", 1, "\tNothing super important.");
+                                priorities.set (iter, 0, _("Low"), 1, _("\tNothing super important."));
                                 priorities.append (out iter);
-                                priorities.set (iter, 0, "High", 1, "\tSomething important is happening!");
+                                priorities.set (iter, 0, _("High"), 1, _("\tSomething important is happening!"));
                                 priorities.append (out iter);
-                                priorities.set (iter, 0, "Urgent", 1, "\tLook at me. Right now.");
+                                priorities.set (iter, 0, _("Urgent"), 1, _("\tLook a)t me. Right now."));
 
 
                                 var freqs = new Gtk.ListStore (1, typeof (string));
 
 
                                 freqs.append (out iter);
-                                freqs.set (iter, 0,"None");
+                                freqs.set (iter, 0,_("None"));
                                 freqs.append (out iter);
-                                freqs.set (iter, 0, "Daily");
+                                freqs.set (iter, 0, _("Daily"));
                                 freqs.append (out iter);
-                                freqs.set (iter, 0, "Weekly");
+                                freqs.set (iter, 0, _("Weekly"));
                                 freqs.append (out iter);
-                                freqs.set (iter, 0, "Monthly");
+                                freqs.set (iter, 0, _("Monthly"));
                                 freqs.append (out iter);
                                 freqs.set (iter, 0, "Yearly");
 
@@ -1034,26 +1034,26 @@ protected override void activate () {
 
 
                         priorities.append (out iter);
-                        priorities.set (iter, 0, "Normal", 1, "\tA standard notification type.");
+                        priorities.set (iter, 0, _("Normal"), 1, _("\tA standard notification type."));
                         priorities.append (out iter);
-                        priorities.set (iter, 0, "Low", 1, "\tNothing super important.");
+                        priorities.set (iter, 0, _("Low"), 1, _("\tNothing super important."));
                         priorities.append (out iter);
-                        priorities.set (iter, 0, "High", 1, "\tSomething important is happening!");
+                        priorities.set (iter, 0, _("High"), 1, _("\tSomething important is happening!"));
                         priorities.append (out iter);
-                        priorities.set (iter, 0, "Urgent", 1, "\tLook at me. Right now.");
+                        priorities.set (iter, 0, _("Urgent"), 1, _("\tLook at me. Right now."));
 
 
                         var freqs = new Gtk.ListStore (1, typeof (string));
 
 
                         freqs.append (out iter);
-                        freqs.set (iter, 0,"None");
+                        freqs.set (iter, 0,_("None"));
                         freqs.append (out iter);
-                        freqs.set (iter, 0, "Daily");
+                        freqs.set (iter, 0, _("Daily"));
                         freqs.append (out iter);
-                        freqs.set (iter, 0, "Weekly");
+                        freqs.set (iter, 0, _("Weekly"));
                         freqs.append (out iter);
-                        freqs.set (iter, 0, "Monthly");
+                        freqs.set (iter, 0, _("Monthly"));
                         freqs.append (out iter);
                         freqs.set (iter, 0, "Yearly");
 
