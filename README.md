@@ -10,34 +10,18 @@
 
 ### Screenshots
 #### Welcome to Notifier.
-<IMG SRC=
-"
-https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/WelcomeUI.png
-"
->
+![NotifierScreenshot](data/images/WelcomeUI.png?raw=true)
 
 #### What does it look like?
-<IMG SRC=
-"
-https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/MainUI.png
-"
->
+![NotifierScreenshot](data/images/MainUI.png?raw=true)
 
 #### Make a new reminder.
 
-<IMG SRC=
-"
-https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/NewReminder.png
-"
->
+![NotifierScreenshot](data/images/NewReminder.png?raw=true)
 
 #### Edit all of the reminders.
 
-<IMG SRC=
-"
-https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/EditReminder.png
-"
->
+![NotifierScreenshot](data/images/EditReminder.png?raw=true)
 
 <br /><br /><br />
 
