@@ -38,11 +38,12 @@
 <li> libgtk-3-dev </li>
 <li> libgranite-dev </li>
 <li> libsqlite3-dev </li>
+<li> elementary-sdk </li>
 <li> meson </li>
 
 ###### A one liner:
 
-`sudo apt install valac libgtk-3-dev libgranite-dev libsqlite3-dev meson`
+`sudo apt install valac libgtk-3-dev libgranite-dev libsqlite3-dev meson elementary-sdk`
 
 #### Installation
 
