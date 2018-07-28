@@ -36,10 +36,7 @@
   </custom>
 
   <screenshots>
-    <screenshot type="default">
-      <caption>Edit all the reminders</caption>
-      <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/EditReminder.png</image>
-    </screenshot>
+
     <screenshot type="default">
       <caption>Welcome to Notifier</caption>
       <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/WelcomeUI.png</image>
@@ -52,6 +49,11 @@
       <caption>Create a new Reminder</caption>
       <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/NewReminder.png</image>
     </screenshot>
+    <screenshot type="default">
+      <caption>Edit all the reminders</caption>
+      <image>https://raw.githubusercontent.com/Timecraft/notifier/master/data/images/EditReminder.png</image>
+    </screenshot>
+
   </screenshots>
 
   <releases>
@@ -67,7 +69,6 @@
           <li>This allows for more accurately timed notifications so that they are not late</li>
           <li>Please note that this will require a restart</li>
         </ul>
-
 
       </description>
     </release>
