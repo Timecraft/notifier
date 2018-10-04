@@ -3,6 +3,7 @@ project ('com.github.timecraft.notifier','vala','c')
 
 #GETTEXT option
 i18n = import ('i18n')
+gnome = import ('gnome')
 add_global_arguments('-DGETTEXT_PACKAGE="com.github.timecraft.notifier"', language:'c')
 
 # Create the executable: List files to compile, dependencies, and install it

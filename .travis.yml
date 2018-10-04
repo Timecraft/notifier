@@ -1,13 +1,11 @@
 ---
 
-
-
-language:      node_js
+language: node_js
 
 node_js:
   - lts/*
 
-sudo:          required
+sudo: required
 
 services:
   - docker
@@ -25,12 +23,12 @@ cache:
 
 matrix:
   include:
-    - env:     DIST=loki
-    - env:     DIST=juno
+    - env: DIST=loki
+    - env: DIST=juno
 
 install:
   - npm install @elementaryos/houston
 
 script:
   - houston ci
-    --distribution $DIST
+--distribution $DIST
