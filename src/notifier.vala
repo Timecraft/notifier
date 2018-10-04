@@ -386,6 +386,7 @@ protected override void activate () {
                         var rems = new Gtk.ListStore (1, typeof (string));
 
                         var popover = new Gtk.Popover (editrembtn);
+                        popover.popdown ();
                         var editremgrid = new Gtk.Grid ();
 
                         rems.clear ();
