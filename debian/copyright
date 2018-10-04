@@ -1,8 +1,8 @@
 Format: http://dep.debian.net/deps/dep5
-Upstream-Name: Notifier
+Upstream-Name: com.github.timecraft.notifier
 Source: https://github.com/Timecraft/notifier
 
-Files: src/* data/* cmake/* debian/*
+Files: *
 Copyright: 2018 Timecraft <timemaster23x@gmail.com>
 License: GPL-3.0+
  This program is free software: you can redistribute it and/or modify
