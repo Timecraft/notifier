@@ -3,10 +3,10 @@ Section: x11
 Priority: extra
 Maintainer: Timecraft <timemaster23x@gmail.com>
 Build-Depends: meson,
-               debhelper (>= 9),
+               debhelper (>= 10.5.1),
                libgtk-3-dev,
                valac (>= 0.26),
-               libsqlite3-dev (>= 0.5),
+               libsqlite3-dev, 
                libgranite-dev
 Standards-Version: 3.9.3
 
