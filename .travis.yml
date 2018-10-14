@@ -30,8 +30,8 @@ install:
 
 script:
   - houston ci
-	--distribution $DIST
+    --distribution $DIST
 
 branches:
   only:
-     - master
+- master
