@@ -1,12 +1,15 @@
 -- Timecraft <timemaster23x@gmail.com>  Fri, 29 Jun 2018 17:27:00 -0500
 
+com.github.timecraft.notifier (2.1.0) bionic; urgency=low
+    * Hello Juno
+
 com.github.timecraft.notifier (2.0.0) xenial; urgency=low
     * Now using Granite Widgets
     * Many UI changes
     * Reminders are now editable
     * Better AM/PM support
     * New icon created by Daniel Foré
-* Daemon runs more often for more accurately timed notifications
+    * Daemon runs more often for more accurately timed notifications
 
 com.github.timecraft.notifier (1.2.2) xenial; urgency=low
 
