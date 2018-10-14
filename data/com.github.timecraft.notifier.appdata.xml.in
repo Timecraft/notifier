@@ -57,6 +57,11 @@
   </screenshots>
 
   <releases>
+    <release version="2.1.0" date="2018-10-14">
+      <description>
+        <p>Hello Juno.</p>
+      </description>
+    </release>
     <release version="2.0.0" date="2018-06-26">
       <description>
         <p>Now using Granite Widgets</p>
