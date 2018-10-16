@@ -57,6 +57,11 @@
   </screenshots>
 
   <releases>
+    <release version="2.1.1" date="2018-10-16">
+      <description>
+        <p>Icons now install properly!</p>
+      </description>
+    </release>
     <release version="2.1.0" date="2018-10-14">
       <description>
         <p>Hello Juno.</p>
