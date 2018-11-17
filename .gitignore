@@ -7,3 +7,4 @@ debian/debhelper-build-stamp
 debian/files
 src/Config.vala
 src/Config.vala.tmp
+issues.txt

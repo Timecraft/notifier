@@ -154,7 +154,7 @@ protected override void activate () {
                                 db.prepare_v2 (ctstmt,-1,out ctq);
 
                                 if (ctq.step () != Sqlite.OK) {
-                                        stderr.printf (_("Unable to add TIMING column"));
+                                      message (_("Unable to add TIMING column"));
                                 }
                         }
 
@@ -523,7 +523,7 @@ protected override void activate () {
                                 while (reminderstmt.column_value (3).to_int () == 0) {
                                         reminderstmt.clear_bindings ();
 
-                                        message ("Adding 1 to remnum, as selected reminder is empty. YAY GLITCHES...");
+                                        message ("Adding 1 to remnum, as selected reminder is empty.");
 
                                         reminder = "SELECT * FROM  Reminders WHERE rowid = ?";
                                         db.prepare_v2 (reminder,-1, out reminderstmt);
@@ -788,7 +788,7 @@ protected override void activate () {
                                 message ("Min " + minn2);
 
                                 string ampm = timer[1];
-                                message ("ampm " + ampm);
+                                message ("ampm = " + ampm);
 
                                 remnum++;
                                 editremsave.clicked.connect ( () => {
@@ -912,6 +912,7 @@ protected override void activate () {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
                                         }
+                                        message ("Name: " + name2);
 
 
                                         //saves the year of the reminder
@@ -921,6 +922,7 @@ protected override void activate () {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
                                         }
+                                        message ("Year: " + yearnum.to_string ());
 
                                         //saves the month of the reminder
                                         res = save.bind_int64 (colmn, monthnum);
@@ -929,6 +931,7 @@ protected override void activate () {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
                                         }
+                                        message ("Month: " + monthnum.to_string ());
 
                                         //day of reminder
                                         res = save.bind_int64 (colmn, daynum);
@@ -937,6 +940,7 @@ protected override void activate () {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
                                         }
+                                        message ("Day: " + daynum.to_string ());
 
                                         //hr of reminder
                                         res = save.bind_int64 (colmn,hrnum);
@@ -945,6 +949,7 @@ protected override void activate () {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
                                         }
+                                        message ("Hour: " + hrnum.to_string ());
 
                                         //and minute of reminder
                                         res = save.bind_int64 (colmn, minutenum);
@@ -953,6 +958,7 @@ protected override void activate () {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
                                         }
+                                        message ("Minute: " + minutenum.to_string ());
 
                                         //how important it is. determines the notification level type in the daemon
                                         res = save.bind_int64 (colmn, priornum);
@@ -961,6 +967,7 @@ protected override void activate () {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
                                         }
+                                        message ("Priority: " + priornum.to_string ());
 
                                         res = save.bind_text (colmn,description2);
                                         colmn=9;
@@ -968,6 +975,7 @@ protected override void activate () {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
                                         }
+                                        message ("Description: " + description2);
 
                                         res = save.bind_text (colmn, frequency);
                                         colmn = 10;
@@ -975,6 +983,7 @@ protected override void activate () {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
 
                                         }
+                                        message ("Frequency: " + frequency);
                                         res = save.bind_int64 (colmn,(remnum - 1));
                                         if (res != Sqlite.OK) {
                                                 stderr.printf (_("Error: %d: %s\n"), db.errcode (), db.errmsg ());
@@ -1188,11 +1197,7 @@ protected override void activate () {
 
                                 string month = date [0];
 
-                                stdout.printf("\n");
-                                for (int i = 0; i<date.length; i++ ) {
-                                        message ("i"+date[i]+"i");
 
-                                }
 
                                 //    message (newremdate.get_text ());
 
@@ -1218,11 +1223,11 @@ protected override void activate () {
                                 }
                                 //Debugging datetime
                                 stdout.printf("\n");
-                                message ("Year " + year);
-                                message ("Month " + month);
-                                message ("Day " + day);
-                                message ("Hour " + hour);
-                                message ("Min " + min);
+                                message ("Year " + yearnum.to_string ());
+                                message ("Month " + monthnum.to_string ());
+                                message ("Day " + daynum.to_string ());
+                                message ("Hour " + hournum.to_string ());
+                                message ("Min " + minnum.to_string ());
                                 stdout.printf("\n");
 
 
@@ -1279,47 +1284,57 @@ protected override void activate () {
 
                                 //saves the completed state, false by default
                                 save.bind_text (colmn, "false");
+
                                 colmn = 2;
 
 
                                 //saves name
                                 save.bind_text (colmn, name);
+                                message ("Name: " + name);
                                 colmn = 3;
 
 
 
                                 //saves the year of the reminder
                                 save.bind_int64 (colmn, yearnum);
+                                message ("Year: " + yearnum.to_string ());
                                 colmn = 4;
 
 
                                 //saves the month of the reminder
-                                save.bind_int64 (colmn, monthnum);
+                                save.bind_int64 (colmn, monthnum
+                                  message ("Month: " + monthnum.to_string ());
                                 colmn = 5;
 
 
                                 //day of reminder
                                 save.bind_int64 (colmn, daynum);
+                                message ("Day: " daynum.to_string ());
                                 colmn = 6;
 
 
                                 //hour of reminder
                                 save.bind_int64 (colmn,hournum);
+                                message ("Hour: " + hournum.to_string ());
                                 colmn = 7;
 
 
                                 //and minute of reminder
                                 save.bind_int64 (colmn, minutenum);
+                                message ("Minute: " + minutenum.to_string ());
                                 colmn = 8;
 
                                 //how important it is. determines the notification level type in the daemon
                                 save.bind_int64 (colmn, priornum);
+                                message ("Priority: " + priornum.to_string ());
                                 colmn = 9;
 
                                 save.bind_text (colmn,description);
+                                message ("Description: " + description);
                                 colmn=10;
 
                                 save.bind_text (colmn, frequency);
+                                message ("Frequency: " + frequency)
 
 
                                 //save and clear
@@ -1382,6 +1397,7 @@ protected override void activate () {
 
                                 if (checkbtn[i].get_active () == true) {
                                         updatequery = "UPDATE Reminders SET Complete = 'true' WHERE rowid = ?;";
+                                        message ("Reminder number " + c.to_string () + " is to be deleted.");
 
                                 }
                                 if (db.prepare_v2 (updatequery,-1,out update) != Sqlite.OK) {
@@ -1408,6 +1424,7 @@ protected override void activate () {
                         var deletecomplete = "DELETE FROM Reminders WHERE (Complete = 'true');";
                         db.prepare_v2 (deletecomplete,-1,out del);
                         del.step ();
+                        message ("All \"Completed\" reminders have been removed.");
                         del.reset ();
 
 
