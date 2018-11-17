@@ -83,7 +83,11 @@ protected override void activate () {
         File notifdir = File.new_for_path (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier");
         File notifdata = File.new_for_path (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/" + "reminders.db");
         if (!notifdir.query_exists ()) {
-                notifdir.make_directory ();
+                try {
+                  notifdir.make_directory ();
+                } catch (Error e) {
+                  message (_("Error: " + e.message));
+                }
         }
 
         Sqlite.Database db;
@@ -386,7 +390,7 @@ protected override void activate () {
                         var rems = new Gtk.ListStore (1, typeof (string));
 
                         var popover = new Gtk.Popover (editrembtn);
-                        popover.popdown ();
+                      //  popover.popdown ();
                         var editremgrid = new Gtk.Grid ();
 
                         rems.clear ();
@@ -1221,13 +1225,31 @@ protected override void activate () {
                                 case "Dec":  monthnum = 12; break;
 
                                 }
+                                //database friendly values
+
+                                var yearnum = int.parse (year);
+
+
+
+                                var daynum =  int.parse (day);
+
+
+
+
+                                var hournum =  int.parse (hour);
+
+                                var minutenum =  int.parse (min);
+
+                                var priornum = (int) newremprior.get_active ();
+                                var description = newremdesc.get_text ();
+
                                 //Debugging datetime
                                 stdout.printf("\n");
                                 message ("Year " + yearnum.to_string ());
                                 message ("Month " + monthnum.to_string ());
                                 message ("Day " + daynum.to_string ());
                                 message ("Hour " + hournum.to_string ());
-                                message ("Min " + minnum.to_string ());
+                                message ("Min " + minutenum.to_string ());
                                 stdout.printf("\n");
 
 
@@ -1251,23 +1273,7 @@ protected override void activate () {
 
                                 Sqlite.Statement save;
 
-                                //database friendly values
 
-                                var yearnum = int.parse (year);
-
-
-
-                                var daynum =  int.parse (day);
-
-
-
-
-                                var hournum =  int.parse (hour);
-
-                                var minutenum =  int.parse (min);
-
-                                var priornum = (int) newremprior.get_active ();
-                                var description = newremdesc.get_text ();
 
                                 //open, prep, error trap, save
 
@@ -1302,14 +1308,14 @@ protected override void activate () {
 
 
                                 //saves the month of the reminder
-                                save.bind_int64 (colmn, monthnum
+                                save.bind_int64 (colmn, monthnum);
                                   message ("Month: " + monthnum.to_string ());
                                 colmn = 5;
 
 
                                 //day of reminder
                                 save.bind_int64 (colmn, daynum);
-                                message ("Day: " daynum.to_string ());
+                                message ("Day: " + daynum.to_string ());
                                 colmn = 6;
 
 
@@ -1334,7 +1340,7 @@ protected override void activate () {
                                 colmn=10;
 
                                 save.bind_text (colmn, frequency);
-                                message ("Frequency: " + frequency)
+                                message ("Frequency: " + frequency);
 
 
                                 //save and clear
@@ -1346,6 +1352,7 @@ protected override void activate () {
                                 //destroys the "new reminder" window as it is no longer necessary
                                 newrem.destroy ();
                                 welcome.destroy ();
+                                window.remove (layout);
                                 window.add (layout);
 
                                 window.show_all ();
