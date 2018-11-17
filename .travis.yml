@@ -1,11 +1,11 @@
 ---
 
-language: node_js
+language:        node_js
 
 node_js:
   - lts/*
 
-sudo: required
+sudo:            required
 
 services:
   - docker
@@ -23,13 +23,13 @@ cache:
 
 matrix:
   include:
-    - env: DIST=juno
+    - env:       DIST=juno
 
 before_install:
   - docker pull ubuntu:18.04
 
 install:
-  - npm install @elementaryos/houston
+    - npm i -g @elementaryos/houston
 
 script:
   - houston ci
