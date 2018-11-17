@@ -84,9 +84,9 @@ protected override void activate () {
         File notifdata = File.new_for_path (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/" + "reminders.db");
         if (!notifdir.query_exists ()) {
                 try {
-                  notifdir.make_directory ();
+                        notifdir.make_directory ();
                 } catch (Error e) {
-                  message (_("Error: " + e.message));
+                        message (_("Error: " + e.message));
                 }
         }
 
@@ -158,7 +158,7 @@ protected override void activate () {
                                 db.prepare_v2 (ctstmt,-1,out ctq);
 
                                 if (ctq.step () != Sqlite.OK) {
-                                      message (_("Unable to add TIMING column"));
+                                        message (_("Unable to add TIMING column"));
                                 }
                         }
 
@@ -390,7 +390,7 @@ protected override void activate () {
                         var rems = new Gtk.ListStore (1, typeof (string));
 
                         var popover = new Gtk.Popover (editrembtn);
-                      //  popover.popdown ();
+                        popover.popdown ();
                         var editremgrid = new Gtk.Grid ();
 
                         rems.clear ();
@@ -1309,7 +1309,7 @@ protected override void activate () {
 
                                 //saves the month of the reminder
                                 save.bind_int64 (colmn, monthnum);
-                                  message ("Month: " + monthnum.to_string ());
+                                message ("Month: " + monthnum.to_string ());
                                 colmn = 5;
 
 
