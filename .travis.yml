@@ -33,5 +33,4 @@ install:
 
 script:
   - houston ci
-    --name-human Notifier
     --distribution $DIST
