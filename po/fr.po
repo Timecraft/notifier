@@ -1,0 +1,193 @@
+# French translations for the com.github.timecraft.notifier package.
+# Copyright (C) 2019 THE com.github.timecraft.notifier package.'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.timecraft.notifier package.
+# NathanBnm, 2019.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.timecraft.notifier\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-19 21:40-0400\n"
+"PO-Revision-Date: 2019-01-15 22:17+0100\n"
+"Last-Translator: NathanBnm\n"
+"Language-Team: none\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/notifier.vala:98 src/notifier.vala:119 src/notifier.vala:142
+#, c-format
+msgid "Can't open the reminders database: %d: %s\n"
+msgstr "Impossible d'ouvrir la base de données des rappels : %d : %s\n"
+
+#: src/notifier.vala:125 src/notifier.vala:129
+#, c-format
+msgid "Error:  %s\n"
+msgstr "Erreur :  %s\n"
+
+#: src/notifier.vala:127
+msgid "Created.\n"
+msgstr "Créé.\n"
+
+#: src/notifier.vala:157
+msgid "Unable to add TIMING column"
+msgstr "Impossible d'ajouter la colonne TIMING"
+
+#: src/notifier.vala:194
+msgid "Add a new reminder"
+msgstr "Ajouter un nouveau rappel"
+
+#: src/notifier.vala:207
+msgid "Edit an existing reminder"
+msgstr "Modifier un rappel existant"
+
+#: src/notifier.vala:214 data/com.github.timecraft.notifier.desktop.in:4
+#: data/com.github.timecraft.notifier.appdata.xml.in:9
+msgid "Notifier"
+msgstr "Notifier"
+
+#: src/notifier.vala:224
+msgid "\tName\t"
+msgstr "\tName\t"
+
+#: src/notifier.vala:226
+msgid "\tDescription\t"
+msgstr "\tDescription\t"
+
+#: src/notifier.vala:227
+msgid "\tPriority\t"
+msgstr "\tPriority\t"
+
+#: src/notifier.vala:228
+msgid "\tTime\t"
+msgstr "\tTime\t"
+
+#: src/notifier.vala:229
+msgid "\tFrequency\t"
+msgstr "\tFrequency\t"
+
+#: src/notifier.vala:352 src/notifier.vala:844 src/notifier.vala:1236
+msgid " "
+msgstr " "
+
+#: src/notifier.vala:353 src/notifier.vala:845 src/notifier.vala:1237
+msgid "\t"
+msgstr "\t"
+
+#: src/notifier.vala:596
+msgid "Edit Reminder"
+msgstr "Modifier le rappel"
+
+#: src/notifier.vala:658 src/notifier.vala:1121
+msgid "Save reminder"
+msgstr "Enregistrer le rappel"
+
+#: src/notifier.vala:661 src/notifier.vala:1124
+msgid "Reminder Name"
+msgstr "Nom du rappel"
+
+#: src/notifier.vala:662 src/notifier.vala:1125
+msgid "Remind Time"
+msgstr "Heure du rappel"
+
+#: src/notifier.vala:663 src/notifier.vala:1126
+msgid "Reminder description"
+msgstr "Description du rappel"
+
+#: src/notifier.vala:664 src/notifier.vala:1127
+msgid "Day"
+msgstr "Jour"
+
+#: src/notifier.vala:665 src/notifier.vala:1128
+msgid "Time"
+msgstr "Heure"
+
+#: src/notifier.vala:667 src/notifier.vala:1130
+msgid "Priority"
+msgstr "Priorité"
+
+#: src/notifier.vala:668 src/notifier.vala:1131
+msgid "Frequency"
+msgstr "Fréquence"
+
+#: src/notifier.vala:888 src/notifier.vala:902 src/notifier.vala:911
+#: src/notifier.vala:920 src/notifier.vala:928 src/notifier.vala:936
+#: src/notifier.vala:944 src/notifier.vala:952 src/notifier.vala:960
+#: src/notifier.vala:967 src/notifier.vala:974 src/notifier.vala:979
+#: src/notifier.vala:1272 src/notifier-daemon.vala:168
+#: src/notifier-daemon.vala:257 src/notifier-daemon.vala:377
+#: src/notifier-daemon.vala:469
+#, c-format
+msgid "Error: %d: %s\n"
+msgstr "Erreur : %d : %s\n"
+
+#: src/notifier.vala:1066
+msgid "New Reminder"
+msgstr "Nouveau rappel"
+
+#: data/com.github.timecraft.notifier.desktop.in:5
+msgid "Reminders"
+msgstr "Rappels"
+
+#: data/com.github.timecraft.notifier.desktop.in:6
+msgid "Remind yourself"
+msgstr "Rappelle-toi"
+
+#: data/com.github.timecraft.notifier.desktop.in:9
+msgid "com.github.timecraft.notifier"
+msgstr "com.github.timecraft.notifier"
+
+#: data/com.github.timecraft.notifier.desktop.in:14
+msgid "Reminders;Alerts;"
+msgstr "Rappels;Alertes;"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:10
+msgid "Never forget to do something"
+msgstr "N'oubliez jamais de faire quoi que ce soit"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:12
+msgid "Timecraft"
+msgstr "Timecraft"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:19
+msgid ""
+"Get notified of what to do and when to do it. Reminders as you expect them, "
+"where you expect them."
+msgstr ""
+"Soyez averti de ce qu'il faut faire et quand le faire. Des rappels comme vous les attendez, "
+"là où vous les attendez."
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:20
+msgid "Set the time of the reminder."
+msgstr "Réglez l'heure du rappel."
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:21
+msgid "Set the priority of the notification."
+msgstr "Réglez la priorité de la notification."
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:22
+msgid "Automatically saves your reminders."
+msgstr "Sauvegardez automatiquement vos rappels."
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:23
+msgid "Supports closing with Ctrl + Q"
+msgstr "Supporte la fermeture avec Ctrl + Q"
+
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:40
+msgid "Edit all the reminders"
+msgstr "Modifier tous les rappels"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:44
+msgid "Welcome to Notifier"
+msgstr "Bienvenue dans Notifier"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:48
+msgid "The main UI of Notifier"
+msgstr "Principale interface du Notifier"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:52
+msgid "Create a new Reminder"
+msgstr "Créer un nouveau rappel"
