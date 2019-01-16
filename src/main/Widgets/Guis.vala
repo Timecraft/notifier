@@ -18,8 +18,12 @@
  */
  
  using notifier.Rems, notifier.Vars;
+ 
+ 
+ 
  namespace notifier.Widgets {
      public void mainWindow () {
+     
          //Welcome to Notifier
          welcome = new Granite.Widgets.Welcome ("Notifier", "\t\t\t\t\t\t\t\t\t\t\t\t");
          welcome.append ("list-add",_("Add a reminder"),"");
@@ -93,13 +97,14 @@
                           
                           int lngth = checkbtn.length - 1;
                           int rows = 1;
-                 
+                         window.show_all ();
+                         var quit_action = new SimpleAction ("quit", null);
      }
      
      
      
      
-     public void reminderWindow () {
+     public void reminderWindow (bool isNew, Reminder userRem) {
          spc++;
 
          // Preparing values for the ComboBox
@@ -142,11 +147,16 @@
 
          reminderName = new Gtk.Entry ();
          //var rn = new GLib.DateTime.now_local ();
+         
          reminderDesc = new Gtk.Entry ();
          //    var newremdate = new  ();
 
 
          reminderDate = new Granite.Widgets.DatePicker ();
+         if (!isNew) {
+             reminderDate.date = new DateTime.local (userRem.year, userRem.month, userRem.day, userRem.hour, userRem.min, 0);
+         }
+         
          reminderTime = new Granite.Widgets.TimePicker ();
 
 
