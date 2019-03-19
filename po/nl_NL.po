@@ -1,0 +1,193 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the com.github.timecraft.notifier package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: com.github.timecraft.notifier\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-19 21:40-0400\n"
+"PO-Revision-Date: 2019-03-19 17:23+0100\n"
+"Language-Team: Dutch <vistausss@outlook.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.1.1\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: nl_NL\n"
+
+#: src/notifier.vala:98 src/notifier.vala:119 src/notifier.vala:142
+#, c-format
+msgid "Can't open the reminders database: %d: %s\n"
+msgstr "Kan de herinneringsdatabank niet openen: %d: %s\n"
+
+#: src/notifier.vala:125 src/notifier.vala:129
+#, c-format
+msgid "Error:  %s\n"
+msgstr "Fout:  %s\n"
+
+#: src/notifier.vala:127
+msgid "Created.\n"
+msgstr "Gecreëerd.\n"
+
+#: src/notifier.vala:157
+msgid "Unable to add TIMING column"
+msgstr "Kan kolom 'TIJDSTIP' niet toevoegen"
+
+#: src/notifier.vala:194
+msgid "Add a new reminder"
+msgstr "Nieuwe herinnering toevoegen"
+
+#: src/notifier.vala:207
+msgid "Edit an existing reminder"
+msgstr "Bestaande herinnering bewerken"
+
+#: src/notifier.vala:214 data/com.github.timecraft.notifier.desktop.in:4
+#: data/com.github.timecraft.notifier.appdata.xml.in:9
+msgid "Notifier"
+msgstr "Notifier"
+
+#: src/notifier.vala:224
+msgid "\tName\t"
+msgstr "\tNaam\t"
+
+#: src/notifier.vala:226
+msgid "\tDescription\t"
+msgstr "\tOmschrijving\t"
+
+#: src/notifier.vala:227
+msgid "\tPriority\t"
+msgstr "\tPrioriteit\t"
+
+#: src/notifier.vala:228
+msgid "\tTime\t"
+msgstr "\tTijdstip\t"
+
+#: src/notifier.vala:229
+msgid "\tFrequency\t"
+msgstr "\tFrequentie\t"
+
+#: src/notifier.vala:352 src/notifier.vala:844 src/notifier.vala:1236
+msgid " "
+msgstr ""
+
+#: src/notifier.vala:353 src/notifier.vala:845 src/notifier.vala:1237
+msgid "\t"
+msgstr "\t"
+
+#: src/notifier.vala:596
+msgid "Edit Reminder"
+msgstr "Herinnering bewerken"
+
+#: src/notifier.vala:658 src/notifier.vala:1121
+msgid "Save reminder"
+msgstr "Herinnering opslaan"
+
+#: src/notifier.vala:661 src/notifier.vala:1124
+msgid "Reminder Name"
+msgstr "Naam van herinnering"
+
+#: src/notifier.vala:662 src/notifier.vala:1125
+msgid "Remind Time"
+msgstr "Tijdstip van herinnering"
+
+#: src/notifier.vala:663 src/notifier.vala:1126
+msgid "Reminder description"
+msgstr "Omschrijving van herinnering"
+
+#: src/notifier.vala:664 src/notifier.vala:1127
+msgid "Day"
+msgstr "Dag"
+
+#: src/notifier.vala:665 src/notifier.vala:1128
+msgid "Time"
+msgstr "Tijdstip"
+
+#: src/notifier.vala:667 src/notifier.vala:1130
+msgid "Priority"
+msgstr "Prioriteit"
+
+#: src/notifier.vala:668 src/notifier.vala:1131
+msgid "Frequency"
+msgstr "Frequentie"
+
+#: src/notifier.vala:888 src/notifier.vala:902 src/notifier.vala:911
+#: src/notifier.vala:920 src/notifier.vala:928 src/notifier.vala:936
+#: src/notifier.vala:944 src/notifier.vala:952 src/notifier.vala:960
+#: src/notifier.vala:967 src/notifier.vala:974 src/notifier.vala:979
+#: src/notifier.vala:1272 src/notifier-daemon.vala:168
+#: src/notifier-daemon.vala:257 src/notifier-daemon.vala:377
+#: src/notifier-daemon.vala:469
+#, c-format
+msgid "Error: %d: %s\n"
+msgstr "Fout: %d: %s\n"
+
+#: src/notifier.vala:1066
+msgid "New Reminder"
+msgstr "Nieuwe herinnering"
+
+#: data/com.github.timecraft.notifier.desktop.in:5
+msgid "Reminders"
+msgstr "Herinneringen"
+
+#: data/com.github.timecraft.notifier.desktop.in:6
+msgid "Remind yourself"
+msgstr "Herinner jezelf"
+
+#: data/com.github.timecraft.notifier.desktop.in:9
+msgid "com.github.timecraft.notifier"
+msgstr "com.github.timecraft.notifier"
+
+#: data/com.github.timecraft.notifier.desktop.in:14
+msgid "Reminders;Alerts;"
+msgstr "Herinneringen;Meldingen;"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:10
+msgid "Never forget to do something"
+msgstr "Vergeet nooit meer iets te doen"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:12
+msgid "Timecraft"
+msgstr "Timecraft"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:19
+msgid ""
+"Get notified of what to do and when to do it. Reminders as you expect them, "
+"where you expect them."
+msgstr ""
+"Word herinnerd aan wat je moet doen en wanneer. Herinneringen zoals je ze "
+"verwacht, en waar je ze verwacht."
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:20
+msgid "Set the time of the reminder."
+msgstr "Stel het tijdstip in van de herinnering."
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:21
+msgid "Set the priority of the notification."
+msgstr "Stel de prioriteit in van de melding."
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:22
+msgid "Automatically saves your reminders."
+msgstr "Je herinneringen worden automatisch opgeslagen."
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:23
+msgid "Supports closing with Ctrl + Q"
+msgstr "Ondersteuning voor afsluiten middels Ctrl + Q"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:40
+msgid "Edit all the reminders"
+msgstr "Alle herinneringen bewerken"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:44
+msgid "Welcome to Notifier"
+msgstr "Welkom bij Notifier"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:48
+msgid "The main UI of Notifier"
+msgstr "Notifier-venster"
+
+#: data/com.github.timecraft.notifier.appdata.xml.in:52
+msgid "Create a new Reminder"
+msgstr "Creëer een nieuwe herinnering"
