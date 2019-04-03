@@ -37,7 +37,7 @@ public notifier () {
 protected override void activate () {
 
 
-        
+
 
 
 window = new Gtk.ApplicationWindow (this);
@@ -57,155 +57,15 @@ window = new Gtk.ApplicationWindow (this);
         }
 
 
-
-
-
-
-        
-
-        //lets set a few variables, eh?
-        
-        
-
-
-        //Create database directory
-        notifdir = File.new_for_path (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier");
-        notifdata = File.new_for_path (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/" + "reminders.db");
-        if (!notifdir.query_exists ()) {
-                try {
-                        notifdir.make_directory ();
-                } catch (Error e) {
-                        message (_("Error: " + e.message));
-                }
-        }
-
-        
-        if (!notifdata.query_exists ()) {
-                try {
-
-
-
-                        //Create Database
-                        data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
-                        if (data != Sqlite.OK) {
-                                stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
-                        }
-                        //create table
-                        string q = "
-                        CREATE TABLE Reminders (
-              Complete		TEXT      ,
-              Name            TEXT            ,
-              Year          INTEGER		,
-              Month           INTEGER		,
-              Day           INTEGER		,
-              Hour			INTEGER         ,
-              Minute		INTEGER         ,
-              Priority		INTEGER     ,
-              Description TEXT        ,
-              Timing TEXT
-                          );
-            ";
-                        //checking for errors
-
-
-                        if (data != Sqlite.OK) {
-                                stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
-                        }
-                        
-                        db.prepare_v2 (q,-1, out query);
-
-                        if (query.step () != Sqlite.OK) {
-                                stderr.printf (_("Error:  %s\n"), db.errmsg ());
-                        }
-                        stdout.puts (_("Created.\n"));
-                } catch (Error e) {
-                        stdout.printf (_("Error:  %s\n"),e.message);
-
-
-                }
-        }
-
-        else {
-                try {
-                        //so there is one... let's make sure we can open it
-
-
-                        data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
-                        if (data != Sqlite.OK) {
-                                stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
-                        }
-                        /*Since this is a new update and users who have the app will have
-                           the database but not the timing column, we're going to check to see if it exists.
-                           If it does not, we'll alter the table to have that column.
-                         */
-                        timingstmt = "SELECT * FROM Reminders WHERE Timing;";
-                        
-                        db.prepare_v2 (timingstmt,-1,out timingq);
-                        if (timingq.step () != Sqlite.OK) {
-                                Sqlite.Statement ctq;
-                                ctstmt = "ALTER TABLE Reminders ADD COLUMN Timing";
-                                db.prepare_v2 (ctstmt,-1,out ctq);
-
-                                if (ctq.step () != Sqlite.OK) {
-                                        message (_("Unable to add TIMING column"));
-                                }
-                        }
-
-                }finally { /*do what?*/}
-        }
-
-
-
-
-        
-
-       
-
-
-
-
-
-
-
-
-
-        
-
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
                         //Gtk.Grid.attach (widget,column,row,rows taken, columns taken)
 
 
-                
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
 }
 }
 }
+
+
+
 public static int main (string [] args ) {
         var app = new notifier.main.notifier ();
         return app.run (args);

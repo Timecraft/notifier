@@ -118,15 +118,15 @@ public void buttonEvents () {
     message ("Reminder timing = " + reminderstmt.column_value (9).to_text ());
     reminderWindow (false, userrem);
     }
-    
-    
+
+
    reminderSave.clicked.connect ( () => {
 
            saveRems ();
 
    });
-   
-   
+
+
    //Window was quit
    quit_action.activate.connect ( () => {
 
@@ -141,20 +141,20 @@ public void buttonEvents () {
 
 
 
-   
-                  
 
 
-                   
+
+
+
                    string changerowid = "VACUUM;";
                    db.prepare_v2 (changerowid, -1, out chngrowid);
                    chngrowid.step ();
                    chngrowid.reset ();
 
            });
-           
-           
-           
+
+
+
            //Find editableReminders
            //Selction for editing Reminders
                    editrembtn.clicked.connect ( () => {

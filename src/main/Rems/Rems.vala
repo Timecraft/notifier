@@ -16,12 +16,12 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA
  */
- 
+
  using notifier.main, notifier.Vars, notifier.Widgets;
- 
+
  namespace notifier.Rems {
- 
- 
+
+
      public class Reminder : GLib.Object {
      public string name {get; set;}
      public int year {get; set;}
@@ -32,50 +32,147 @@
      public int prior {get; set;}
      public string description {get; set;}
      public string timing {get; set;}
-     
+
      public Reminder (
-     string name, 
-     int year, 
-     int month, 
-     int day, 
-     int hour, 
-     int min, 
-     int prior, 
-     string description, 
+     string name,
+     int year,
+     int month,
+     int day,
+     int hour,
+     int min,
+     int prior,
+     string description,
      string timing
      ) {
-         
+
      }
-     
-     
+
+
      }
-     
+
+     public void makeReminderDatabase () {
+                 //Create database directory
+                 notifdir = File.new_for_path (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier");
+                 notifdata = File.new_for_path (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/" + "reminders.db");
+                 if (!notifdir.query_exists ()) {
+                         try {
+                                 notifdir.make_directory ();
+                         } catch (Error e) {
+                                 message (_("Error: " + e.message));
+                         }
+                 }
+
+
+                 if (!notifdata.query_exists ()) {
+                         try {
+
+
+
+                                 //Create Database
+                                 data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
+                                 if (data != Sqlite.OK) {
+                                         stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
+                                 }
+                                 //create table
+                                 string q = "
+                                 CREATE TABLE Reminders (
+                       Complete		TEXT      ,
+                       Name            TEXT            ,
+                       Year          INTEGER		,
+                       Month           INTEGER		,
+                       Day           INTEGER		,
+                       Hour			INTEGER         ,
+                       Minute		INTEGER         ,
+                       Priority		INTEGER     ,
+                       Description TEXT        ,
+                       Timing TEXT
+                                   );
+                     ";
+                                 //checking for errors
+
+
+                                 if (data != Sqlite.OK) {
+                                         stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
+                                 }
+
+                                 db.prepare_v2 (q,-1, out query);
+
+                                 if (query.step () != Sqlite.OK) {
+                                         stderr.printf (_("Error:  %s\n"), db.errmsg ());
+                                 }
+                                 stdout.puts (_("Created.\n"));
+                         } catch (Error e) {
+                                 stdout.printf (_("Error:  %s\n"),e.message);
+
+
+                         }
+                 }
+
+                 else {
+                         try {
+                                 //so there is one... let's make sure we can open it
+
+
+                                 data = Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
+                                 if (data != Sqlite.OK) {
+                                         stderr.printf (_("Can't open the reminders database: %d: %s\n"), db.errcode (), db.errmsg ());
+                                 }
+                                 /*Since this is a new update and users who have the app will have
+                                    the database but not the timing column, we're going to check to see if it exists.
+                                    If it does not, we'll alter the table to have that column.
+                                  */
+                                 timingstmt = "SELECT * FROM Reminders WHERE Timing;";
+
+                                 db.prepare_v2 (timingstmt,-1,out timingq);
+                                 if (timingq.step () != Sqlite.OK) {
+                                         Sqlite.Statement ctq;
+                                         ctstmt = "ALTER TABLE Reminders ADD COLUMN Timing";
+                                         db.prepare_v2 (ctstmt,-1,out ctq);
+
+                                         if (ctq.step () != Sqlite.OK) {
+                                                 message (_("Unable to add TIMING column"));
+                                         }
+                                 }
+
+                         }finally { /*do what?*/}
+                 }
+
+     }
+
+
+
+
+
+
+
+
+
      public void loadPreviousReminders () {
-     
+
          //prepare to load reminders from database...
          countq = "SELECT * FROM Reminders WHERE rowid = ?";
-         
- 
+
+
          Sqlite.Database.open (Environment.get_home_dir () + "/.local/share/com.github.Timecraft.notifier/reminders.db", out db);
- 
+
          db.prepare_v2 (countq,-1, out countstmt);
-         
+
          countstmt.bind_int64 (1,bv);
- 
- 
- 
- 
- 
+
+
+
+
+
          //load reminders from database
-         
+
          while (countstmt.step () == Sqlite.ROW) {
-         
- 
+
+
                  spc++;
                  spc2++;
                  message (spc2.to_string ());
- 
- 
+
+
  //The user's reminder
                 userrem = new Reminder (
                 //name
@@ -97,13 +194,13 @@
                     //timing
                     countstmt.column_value (9).to_text ()
                 );
- 
-                 
- 
+
+
+
 
                  //adding a 0 to single digit minutes. human friendly
- 
- 
+
+
                  switch (userrem.min.to_string ()) {
                  case "0": min = "00"; break;
                  case "1": min = "01"; break;
@@ -115,24 +212,24 @@
                  case "7": min = "07"; break;
                  case "8": min = "08"; break;
                  case "9": min = "09"; break;
- 
+
                  }
- 
+
                  //If the User's computer is configured in am/pm, Notifier will switch the view to show AM/PM
                  if (ap == true) {
                          var pa = " am";
                          if (int.parse (hour) > 12) {
                                  hour = (int.parse (hour) - 12).to_string ();;
                                  pa = " pm";
- 
+
                          }
                          min = min + pa;
                  }
- 
+
                  time = hour + ":" + min;
- 
- 
-                 
+
+
+
                  monthn = "";
                  //switchin from integer month to string month. more human friendly
                  switch (userrem.month) {
@@ -148,13 +245,13 @@
                  case 10: monthn = _("Oct"); break;
                  case 11: monthn = _("Nov"); break;
                  case 12: monthn = _("Dec"); break;
- 
+
                  }
- 
-                 
- 
-                 
-                 
+
+
+
+
+
                  if (timing == "") {
                          timing=_("None");
                          notime = "UPDATE Reminders SET Timing = 'None' WHERE rowid = ?;";
@@ -164,19 +261,19 @@
                          notimeupd.reset ();
                          notimeupd.clear_bindings ();
                  }
- 
- 
-                 
+
+
+
                  switch (userrem.prior.to_string ()) {
                  case "0": prior = _("Normal"); break;
                  case "1": prior = _("Low"); break;
                  case "2": prior = _("High"); break;
                  case "3": prior = _("Urgent"); break;
- 
+
                  }
- 
-                 
-                 
+
+
+
                  //adding to the UI
                  layout.attach (new Gtk.CheckButton (),0,spc,1,1);
                  layout.attach (new Gtk.Label (name),1,spc,1,1);
@@ -188,7 +285,7 @@
                  layout.attach (new Gtk.Label (" "),11,spc,1,1);
                  layout.attach (new Gtk.Label (timing),10,spc,1,1);
                  b++;
- 
+
                  rows = 3;
                  //Onto the next database row, if any
                  countq2 = "SELECT * FROM Reminders WHERE rowid = ?";
@@ -199,27 +296,27 @@
          //You have no reminders!
          if (spc == 1) {
                  window.add (welcome);
- 
+
          }
          else {
                  window.add (layout);
          }
      }
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
-     
+
+
+
+
+
+
+
+
+
+
+
     public void updateRems () {
          c = 1;
 
-         
+
          while ( i <= lngth) {
 
 
@@ -267,10 +364,10 @@
          message ("All \"Completed\" reminders have been removed.");
          del.reset ();
     }
-    
-    
-    
-    
+
+
+
+
     public void editableRems () {
     //UI for selecting edited reminder
     var rems = new Gtk.ListStore (1, typeof (string));
@@ -380,17 +477,17 @@
             }
 });
 }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
     //Save reminders
     public void saveRems (bool isNew) {
         spc++;
@@ -478,8 +575,8 @@
 
         //makes reminder visible in main window
         message ("Adding reminder to main window.");
-        
-        
+
+
         layout.attach (new Gtk.CheckButton (),0,spc,1,1);
         layout.attach (new Gtk.Label (reminderName.get_text ()),1,spc,1,1);
         layout.attach (new Gtk.Label (reminderDesc.get_text ()),3,spc,1,1);
@@ -504,7 +601,7 @@
         string savequery = "INSERT INTO Reminders (Complete,Name,Year,Month,Day,Hour,Minute,Priority,Description,Timing) VALUES (?,?,?,?,?,?,?,?,?,?);";
         }
         else {
-            
+
         }
         res = db.prepare_v2 (savequery,-1,out save);
         if (res != Sqlite.OK) {

@@ -4,6 +4,9 @@
 
 ## A reminders application designed with elementary OS in mind.
 
+### Please note that the current version of the source code does not run, and is unlikely to be updated further.
+#### Motivation to continue this app has been diminished
+
 #### Author: Timecraft:
 
 #### timemaster23x@gmail.com
@@ -26,9 +29,7 @@
 <br /><br /><br />
 
 ### Installation
-<br />
-<a href="https://appcenter.elementary.io/com.github.timecraft.notifier"><img alt="Get it on the AppCenter" src="https://appcenter.elementary.io/badge.svg"></a>
-<br /><br /> <br />
+#### Notifier is no longer available on the AppCenter. If you really wish to install Notifier, see the [Releases](https://github.com/Timecraft/notifier/releases) tab, and use the most current version.
 
 ### Building, Testing, and Installation
 
