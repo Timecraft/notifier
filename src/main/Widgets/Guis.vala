@@ -16,20 +16,24 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA
  */
- 
+
  using notifier.Rems, notifier.Vars;
+
+
+
  namespace notifier.Widgets {
      public void mainWindow () {
+
          //Welcome to Notifier
          welcome = new Granite.Widgets.Welcome ("Notifier", "\t\t\t\t\t\t\t\t\t\t\t\t");
          welcome.append ("list-add",_("Add a reminder"),"");
          Gtk.CheckButton[] checkbtn = {};
- 
- 
- 
+
+
+
          bar = new Gtk.HeaderBar ();
          window.set_position(Gtk.WindowPosition.CENTER);
-         
+
          //create the layout grid
          layout = new Gtk.Grid ();
          layout.set_halign (Gtk.Align.START);
@@ -45,35 +49,35 @@
          layout.insert_column (8);
          layout.insert_column (9);
          layout.insert_column (10);
- 
+
          //sets up main UI
-         
-         
+
+
                  bar.pack_end (newrembtn);
                  bar.pack_end (spclbl);
                  bar.pack_end (editrembtn);
                  bar.set_title (_("Notifier"));
                  bar.show_close_button = true;
                  window.set_titlebar (bar);
-                 
+
                          layout.row_spacing = 10;
-                 
-                 
+
+
                          layout.attach (new Gtk.Label (_("\tName\t")), 1,0,1,1);
                          layout.attach (new Gtk.Label ("\t"),2,0,1,1);
                          layout.attach (new Gtk.Label (_("\tDescription\t")),3,0,1,1);
                          layout.attach (new Gtk.Label (_("\tPriority\t")),4,0,1,1);
                          layout.attach (new Gtk.Label (_("\tTime\t")),6,0,4,1);
                          layout.attach (new Gtk.Label (_("\tFrequency\t")),10,0,1,1);
-                         
+
                          //set some app settings
                          window.deletable = true;
                          window.resizable = false;
                          window.set_size_request(150,330);
-                 
-                 
-                         
-                 
+
+
+
+
                          //button for new reminder and edit reminder in headerbar
                          newrembtn = new Gtk.Button ();
                          newrembtn.set_image (new Gtk.Image.from_icon_name ("list-add",Gtk.IconSize.LARGE_TOOLBAR));
@@ -82,24 +86,25 @@
                           welcome.activated.connect ( (i) => {
                                           newrembtn.activate ();
                                   });
-                  
-                  
-                  
+
+
+
                           spclbl = new Gtk.Label ("\t");
-                  
+
                           var editrembtn = new Gtk.Button ();
                           editrembtn.set_image (new Gtk.Image.from_icon_name ("edit",Gtk.IconSize.LARGE_TOOLBAR));
                           editrembtn.tooltip_text = (_("Edit an existing reminder"));
-                          
+
                           int lngth = checkbtn.length - 1;
                           int rows = 1;
-                 
+                         window.show_all ();
+                         var quit_action = new SimpleAction ("quit", null);
      }
-     
-     
-     
-     
-     public void reminderWindow () {
+
+
+
+
+     public void reminderWindow (bool isNew, Reminder userRem) {
          spc++;
 
          // Preparing values for the ComboBox
@@ -142,11 +147,16 @@
 
          reminderName = new Gtk.Entry ();
          //var rn = new GLib.DateTime.now_local ();
+
          reminderDesc = new Gtk.Entry ();
          //    var newremdate = new  ();
 
 
          reminderDate = new Granite.Widgets.DatePicker ();
+         if (!isNew) {
+             reminderDate.date = new DateTime.local (userRem.year, userRem.month, userRem.day, userRem.hour, userRem.min, 0);
+         }
+
          reminderTime = new Granite.Widgets.TimePicker ();
 
 

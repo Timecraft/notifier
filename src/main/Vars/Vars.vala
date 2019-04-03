@@ -16,9 +16,9 @@
  * Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA
  */
- 
+
  using notifier.Rems;
- 
+
  namespace notifier.Vars {
  // Main window gui variables
     Granite.Widgets.Welcome welcome;
@@ -28,9 +28,10 @@
     Gtk.Button newrembtn;
     Gtk.Button editrembtn;
     Gtk.Label spclbl;
-    
-    
-    
+
+
+
+
 // Time manager vars
     DateTime am24pm;
     Granite.Widgets.TimePicker testampm;
@@ -42,10 +43,10 @@
     int b = 0;
     int lngth;
     int rows = 1;
-    
-    
-    
-    
+
+
+
+
 // File Management vars
 File notifdir;
 File notifdata;
